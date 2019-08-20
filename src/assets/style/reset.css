@@ -1,0 +1,19 @@
+/* 公共部分 */
+html {height: 100%;}
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin: 0;padding: 0;}
+body{
+  width: 100vw;
+  box-sizing: border-box;
+  height: 100%;
+  font-size: 14px;
+  color: #606266;
+  background: #f1f4f7;
+  font-family: "PingFang SC","Heiti SC","Microsoft YaHei",Arial,sans-serif;
+}
+a{text-decoration: none; color:#333;}
+hr{background-color: #F0F0F0;height:1px;border:0;}
+li{list-style: none;}
+img{border: 0;vertical-align: middle;}
+img[src=""],img:not([src]){opacity:0;}
+p{margin: 0;}
+table{border-collapse: collapse;border-spacing: 0;}
