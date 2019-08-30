@@ -162,6 +162,10 @@
   }
   .btn__search{
     margin: 24px 0 15px 0px;
+    .el-button{
+      border: 1px solid #4da6f7;
+      color: #4da6f7;
+    }
     .iconfont{
       font-size: 14px;
       padding-right: 4px;

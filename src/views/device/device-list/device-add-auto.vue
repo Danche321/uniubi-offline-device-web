@@ -2,17 +2,17 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title" @click="$router.back()"
-        ><i class="iconfont icon-retreat"></i>自动添加</span
+        ><i class="iconfont icon-retreat"></i>{{$t('device_addAuto.title')}}</span
       >
     </div>
     <div class="page__content">
       <div v-if="searchLoading" class="header__searching">
         <i class="iconfont icon-load"></i>
-        <p class="text">正在搜索中···（{{ searchSecond }}s）</p>
+        <p class="text">{{$t('device_addAuto.search.searching')}}···（{{ searchSecond }}s）</p>
       </div>
       <div v-else class="header__result">
-        <p>搜索到设备（{{ listData.length }}）</p>
-        <el-button type="text" @click="handleSearch">重新检查</el-button>
+        <p>{{$t('device_addAuto.search.res')}}（{{ listData.length }}）</p>
+        <el-button type="text" @click="handleSearch">{{$t('device_addAuto.search.reSearch')}}</el-button>
       </div>
       <el-table
         :data="listData"
@@ -22,41 +22,41 @@
       >
         <el-table-column
           prop="deviceKey"
-          label="设备序列号"
+          :label="$t('device_addAuto.tableHeader.deviceKey')"
           min-width="80"
         ></el-table-column>
         <el-table-column
           prop="sdkVersion"
-          label="软件版本"
+          :label="$t('device_addAuto.tableHeader.version')"
           min-width="80"
         ></el-table-column>
         <el-table-column
           prop="ip"
-          label="IP地址"
+          :label="$t('device_addAuto.tableHeader.ipAddress')"
           min-width="80"
         ></el-table-column>
         <el-table-column
           prop="deviceName"
-          label="设备名称"
+          :label="$t('device_addAuto.tableHeader.deviceName')"
           min-width="80"
         ></el-table-column>
         <el-table-column
           prop="deviceGroupName"
-          label="设备组"
+          :label="$t('device_addAuto.tableHeader.deviceGroup')"
           min-width="80"
         ></el-table-column>
-        <el-table-column prop="deviceGroup" label="操作" min-width="80">
+        <el-table-column prop="deviceGroup" :label="$t('device_addAuto.tableHeader.handle')" min-width="80">
           <template slot-scope="scope">
-            <span v-if="scope.row.alreadyExist">已接入</span>
+            <span v-if="scope.row.alreadyExist">{{$t('device_addAuto.hasAccess')}}</span>
             <span v-else class="f-blue f-pointer" @click="handleAdd(scope.row)"
-              >添加</span
+              >{{$t('common_add')}}</span
             >
           </template>
         </el-table-column>
       </el-table>
     </div>
     <el-dialog
-      title="自动添加"
+      :title="$t('device_addAuto.dialog.title')"
       :visible.sync="dialog.visible"
       width="400px"
       :close-on-click-modal="false"
@@ -68,10 +68,10 @@
         :rules="dialog.rules"
         label-position="top"
       >
-        <el-form-item prop="deviceName" label="名称" required>
+        <el-form-item prop="deviceName" :label="$t('device_addAuto.dialog.labels.name')" required>
           <el-input v-model.trim="dialog.form.deviceName" clearable></el-input>
         </el-form-item>
-        <el-form-item prop="groupId" label="分组">
+        <el-form-item prop="groupId" :label="$t('device_addAuto.dialog.labels.group')">
           <el-select v-model="dialog.form.groupId" clearable class="w100">
             <el-option
               v-for="item in dialog.deviceGroupList"
@@ -84,12 +84,12 @@
         <div v-if="!dialog.hasPassword">
           <el-form-item prop="newPassword1">
             <div slot="label" style="display: inline-block">
-              <span class="mr20">设置设备密码</span>
+              <span class="mr20">{{$t('device_addAuto.dialog.setPassword')}}</span>
               <el-checkbox
                 v-model="useAdminPassword"
                 class="f-blue"
                 @change="handleUseAdmin"
-                >使用Admin密码</el-checkbox
+                >{{$t('device_addAuto.dialog.userAdminPassword')}}</el-checkbox
               >
             </div>
             <input type="text" class="f-hidden" />
@@ -98,7 +98,7 @@
               v-model.trim="dialog.form.newPassword1"
               type="password"
               :disabled="useAdminPassword"
-              placeholder="请输入密码"
+              :placeholder="$t('device_addAuto.dialog.requiredPassword')"
               clearable
             ></el-input>
           </el-form-item>
@@ -107,7 +107,7 @@
               v-model.trim="dialog.form.newPassword2"
               type="password"
               :disabled="useAdminPassword"
-              placeholder="请再次输入密码"
+              :placeholder="$t('device_addAuto.dialog.requireAgain')"
               clearable
             ></el-input>
           </el-form-item>
@@ -115,18 +115,18 @@
         <el-form-item
           v-else
           prop="oldPassword"
-          label="设备已存在密码，请输入密码"
+          :label="$t('device_addAuto.dialog.hasPasswordTip')"
         >
           <el-input
             v-model.trim="dialog.form.oldPassword"
             type="password"
-            placeholder="请输入密码"
+            :placeholder="$t('device_addAuto.dialog.requiredPassword')"
             clearable
           ></el-input>
         </el-form-item>
         <div class="ac mt30">
-          <el-button @click="dialog.visible = false">取消</el-button>
-          <el-button type="primary" @click="handelDialogAdd">添加</el-button>
+          <el-button @click="dialog.visible = false">{{$t('common_cancel')}}</el-button>
+          <el-button type="primary" @click="handelDialogAdd">{{$t('common_add')}}</el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -165,17 +165,17 @@ export default {
         },
         rules: {
           deviceName: [
-            { required: true, message: '请输入设备名称', trigger: 'blur' }
+            { required: true, message: this.$t('device_addAuto.message.requiredName'), trigger: 'blur' }
           ],
           newPassword1: [
-            { required: true, message: '请输入密码', trigger: ['blur', 'change'] }
+            { required: true, message: this.$t('device_addAuto.message.requiredPassword'), trigger: ['blur', 'change'] }
           ],
           newPassword2: [
-            { required: true, message: '请输入确认密码', trigger: ['blur', 'change'] },
+            { required: true, message: this.$t('device_addAuto.message.requiredAgain'), trigger: ['blur', 'change'] },
             { validator: psw2Validate, trigger: 'blur' }
           ],
           oldPassword: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
+            { required: true, message: this.$t('device_addAuto.message.requiredPassword'), trigger: 'blur' }
           ]
         }
       },
@@ -298,7 +298,7 @@ export default {
           }
           createDevice(params).then(res => {
             if (res.success) {
-              this.$message.success('添加成功')
+              this.$message.success(this.$t('device_addAuto.message.addSuccess'))
               this.dialog.visible = false
               this.handleGetResult()
             }

@@ -3,7 +3,7 @@
     <header-bar />
     <div class="unLogin-box">
       <div class="body">
-        <p class="title">找回密码</p>
+        <p class="title">{{$t('main_lost_password_title')}}</p>
         <ul class="progress">
           <li
             v-for="(item, index) in progress"
@@ -42,9 +42,9 @@ export default {
   data () {
     return {
       progress: [
-        { text: '回答密保问题' },
-        { text: '设置新密码' },
-        { text: '完成' }
+        { text: this.$t('main_lost_password_progress_0_text') },
+        { text: this.$t('main_lost_password_progress_1_text') },
+        { text: this.$t('main_lost_password_progress_2_text') }
       ],
       progressIndex: 1,
       params: {

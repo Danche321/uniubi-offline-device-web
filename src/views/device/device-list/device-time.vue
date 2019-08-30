@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>设备校时
+        <i class="iconfont icon-retreat"></i>{{$t('device_time.title')}}
       </span>
     </div>
 
@@ -16,11 +16,11 @@
             :hide-required-asterisk="true"
             label-position="right"
             label-width="100px">
-            <el-form-item label="时区：">
-              北京
+            <el-form-item :label="`${$t('device_time.form.timeArea')}：`">
+              {{$t('device_time.form.beijing')}}
             </el-form-item>
-            <el-form-item label="校时方式：">
-              <el-radio v-model="timeForm.handle" :label="true">手动校时</el-radio>
+            <el-form-item :label="`${$t('device_time.form.typeLabel')}：`">
+              <el-radio v-model="timeForm.handle" :label="true">{{$t('device_time.form.setManual')}}</el-radio>
             </el-form-item>
             <el-form-item>
               <el-date-picker
@@ -34,16 +34,17 @@
                 v-model="timeForm.time"
                 value-format="HH:mm:ss">
               </el-time-picker>
-              <el-checkbox v-model="timeForm.nowTime" @change="handleCheck()">本机时间</el-checkbox>
+              <el-checkbox v-model="timeForm.nowTime" @change="handleCheck()">{{$t('device_time.form.selfTime')}}</el-checkbox>
               <p class="tip f-red">
                 <span v-show="(!timeForm.date || !timeForm.time) && validate">
-                  请填写完整时间
+                  {{$t('device_time.form.message')}}
                 </span>
               </p>
+              <p class="tip mb30 pb10">{{$t('device_time.form.tip1')}}；<br />{{$t('device_time.form.tip2')}}</p>
             </el-form-item>
             <div class="ml100">
-              <el-button @click="$router.push({name: 'batch'})">取消</el-button>
-              <el-button type="primary" @click="handleSaveTime()">保存</el-button>
+              <el-button @click="$router.push({name: 'batch'})">{{$t('common_cancel')}}</el-button>
+              <el-button type="primary" @click="handleSaveTime()">{{$t('common_save')}}</el-button>
             </div>
           </el-form>
         </div>
@@ -51,14 +52,14 @@
     </div>
 
     <el-dialog
-      title="校时失败设备"
+      :title="$t('device_time.dialog.title')"
       :visible.sync="dialog.failVisible"
       width="860px">
       <div>
         <el-table class="table__fail" :data="failList" :height="300">
-          <el-table-column prop="deviceName" label="设备名称" min-width="100"></el-table-column>
-          <el-table-column prop="deviceKey" label="设备序列号" min-width="80"></el-table-column>
-          <el-table-column prop="reason" label="失败原因" min-width="200">
+          <el-table-column prop="deviceName" :label="$t('device_time.dialog.deviceName')" min-width="100"></el-table-column>
+          <el-table-column prop="deviceKey" :label="$t('device_time.dialog.deviceKey')" min-width="80"></el-table-column>
+          <el-table-column prop="reason" :label="$t('device_time.dialog.failReason')" min-width="200">
             <template slot-scope="scope">
               <span class="f-red">{{ scope.row.reason }}</span>
             </template>
@@ -110,7 +111,7 @@ export default {
     handleSaveTime () {
       this.validate = true
       if (!this.timeForm.date || !this.timeForm.time) return
-      let params = { 
+      let params = {
         time: this.fullTime,
         deviceKeyList: this.checkList.map(ele => ele.deviceKey)
       }
@@ -120,7 +121,7 @@ export default {
           if (this.failList.length) {
             this.dialog.failVisible = true
           } else {
-            this.$message.success('设备校时成功！')
+            this.$message.success(this.$t('device_time.successMsg'))
             this.$router.go(-1)
           }
         }
@@ -146,6 +147,8 @@ export default {
   .tip{
     height: 20px;
     line-height: 20px;
+    color: #909399;
+    font-size: 12px;
   }
 }
 .table__fail/deep/{

@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title">
-        部门管理
+        {{ $t('department_page_title') }}
       </span>
       <div class="page__header--btn">
         <span class="mr30 pointer" @click="handleTypeChange()">
@@ -13,13 +13,13 @@
               'icon-List': type === 'tree'
             }">
           </i>
-          {{ type === 'tree' ? '列表模式' : '树状图模式' }}
+          {{ type === 'tree' ? $t('department_header_type_list') : $t('department_header_type_tree') }}
         </span>
         <el-button
           type="primary"
           size="small"
           @click="$router.push({name: 'depInfo'})">
-          添加部门
+          {{ $t('department_header_btn_add') }}
         </el-button>
       </div>
     </div>
@@ -105,11 +105,11 @@ export default {
     // 不能被删除，有子部门，子员工
     cannotDelete (depId) {
       this.$confirm(`
-        <p>无法删除部门，删除时该部门需为空部门（无子部门，无员工）</p>
-        <p>前往人员管理，转移或删除人员</p>`, '删除部门', {
+        <p>${this.$t('department_cannotDelete_comfirm1')}</p>
+        <p>${this.$t('department_cannotDelete_comfirm2')}</p>`, `${this.$t('department_cannotDelete_comfirm3')}`, {
         customClass: 'larger',
         dangerouslyUseHTMLString: true,
-        confirmButtonText: '前往人员管理',
+        confirmButtonText: `${this.$t('department_cannotDelete_comfirm4')}`,
         center: true
       }).then(() => {
         this.$router.push({
@@ -122,14 +122,14 @@ export default {
     },
     // 能删除
     canDelete (depId, parentDepId, deleteCurrent) {
-      this.$confirm('是否确认删除部门', '删除部门', {
+      this.$confirm(this.$t('department_canDelete_comfirm1'), this.$t('department_canDelete_comfirm2'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '删除',
+        confirmButtonText: this.$t('department_canDelete_comfirm3'),
         center: true
       }).then(() => {
         api.deleteDepartment(depId).then(res => {
           if (res.success) {
-            this.$message.success('删除成功！')
+            this.$message.success(this.$t('department_canDelete_comfirm4'))
             this.updateChildren(parentDepId)
             if (deleteCurrent) {
               this.$refs.tree.checkRoot()

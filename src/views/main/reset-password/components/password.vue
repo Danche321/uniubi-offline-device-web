@@ -1,6 +1,6 @@
 <template>
   <el-form ref="form" :model="form" class="form-password" :rules="rules">
-    <el-form-item prop="oldPassword" label="旧密码">
+    <el-form-item prop="oldPassword" :label="$t('main_reset_password_password_oldPassword_label')">
       <el-input
         v-model.trim="form.oldPassword"
         autocomplete="off"
@@ -8,9 +8,9 @@
         clearable
       ></el-input>
     </el-form-item>
-    <el-form-item prop="newPassword1" label="新密码">
+    <el-form-item prop="newPassword1" :label="$t('main_reset_password_password_newPassword1_label')">
       <uniubi-input
-        focus-message="提示：密码由6-18位数字/字母/符号两种及以上任意组合组成"
+        :focus-message="$t('main_reset_password_password_newPassword1_focus_message')"
         v-model.trim="form.newPassword1"
         type="password"
         autocomplete="off"
@@ -18,7 +18,7 @@
       >
       </uniubi-input>
     </el-form-item>
-    <el-form-item prop="newPassword2" label="重复密码">
+    <el-form-item prop="newPassword2" :label="$t('main_reset_password_password_newPassword2_label')">
       <el-input
         v-model.trim="form.newPassword2"
         autocomplete="off"
@@ -29,7 +29,7 @@
     </el-form-item>
 
     <el-button type="primary" @click="handleSubmit" class="btn-login mt10"
-      >修改</el-button
+      >{{$t('main_reset_password_password_submit_text')}}</el-button
     >
   </el-form>
 </template>
@@ -56,15 +56,15 @@ export default {
       },
       rules: {
         oldPassword: [
-          { required: true, message: '请输入旧密码', trigger: 'blur' },
+          { required: true, message: this.$t('main_reset_password_password_rules_oldPassword'), trigger: 'blur' },
           { validator: passwordRule, trigger: 'blur' }
         ],
         newPassword1: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { required: true, message: this.$t('main_reset_password_password_rules_newPassword1'), trigger: 'blur' },
           { validator: passwordRule, trigger: 'blur' }
         ],
         newPassword2: [
-          { required: true, message: '请输入重复密码', trigger: 'blur' },
+          { required: true, message: this.$t('main_reset_password_password_rules_newPassword2'), trigger: 'blur' },
           { validator: psw2Validate, trigger: 'blur' }
         ]
       }
@@ -97,7 +97,7 @@ export default {
                   'updatePassword',
                   require('js-base64').Base64.encode(this.form.newPassword1)
                 )
-                this.$message.success('修改成功')
+                this.$message.success(this.$t('main_reset_password_password_handleSubmit_success'))
                 this.$refs.form.resetFields()
               }
             })

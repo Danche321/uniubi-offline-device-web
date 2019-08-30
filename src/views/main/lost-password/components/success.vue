@@ -1,8 +1,8 @@
 <template>
   <div class="from">
     <i class="iconfont icon-success"></i>
-    <p class="success__text">密码修改成功</p>
-    <el-button type="primary" @click="$router.push('/login')" class="btn-next">登录页面（{{ second }}s）</el-button>
+    <p class="success__text">{{$t('main_lost_password_success_success_text')}}</p>
+    <el-button type="primary" @click="$router.push('/login')" class="btn-next">{{$t('main_lost_password_secret_button_text')}}（{{ second }}s）</el-button>
   </div>
 </template>
 

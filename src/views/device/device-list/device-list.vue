@@ -1,11 +1,11 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">设备列表</span>
+      <span class="page__header--title">{{ $t('deviceList_page_title') }}</span>
       <div class="page__header--btn">
-        <el-button class="mr30" type="text" @click="$router.push({name: 'deviceCheck'})">检查设备</el-button>
-        <el-button class="mr30" type="text"  @click="$router.push({name: 'batch'})">批量操作</el-button>
-        <el-button type="primary" size="small" @click="dialog.chooseVisible = true">添加设备</el-button>
+        <el-button class="mr30" type="text" @click="$router.push({name: 'deviceCheck'})">{{ $t('deviceList_header_deviceCheck_button') }}</el-button>
+        <el-button class="mr30" type="text"  @click="$router.push({name: 'batch'})">{{ $t('deviceList_header_batch_button') }}</el-button>
+        <el-button type="primary" size="small" @click="dialog.chooseVisible = true">{{ $t('deviceList_header_addDevice_button') }}</el-button>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
           :inline="true"
           :model="searchParams"
           @keyup.enter.native="handleQuery('firstPage')">
-          <el-form-item label="设备组">
+          <el-form-item :label="$t('deviceList_search_deviceGroup')">
             <el-select
               v-model="searchParams.deviceGroup"
               placeholder=""
@@ -36,7 +36,7 @@
                 :label="item.groupName"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="设备名称">
+          <el-form-item :label="$t('deviceList_search_deviceName')">
             <el-input
               v-model="searchParams.deviceName"
               @blur="searchParams.deviceName = searchParams.deviceName.trim()"
@@ -44,7 +44,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="设备序列号">
+          <el-form-item :label="$t('deviceList_search_deviceKey')">
             <el-input
               v-model="searchParams.deviceKey"
               @blur="searchParams.deviceKey = searchParams.deviceKey.trim()"
@@ -52,7 +52,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="状态">
+          <el-form-item :label="$t('deviceList_search_status')">
             <el-select
               v-model="searchParams.status"
               placeholder=""
@@ -66,14 +66,14 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="IP地址">
+          <el-form-item :label="$t('deviceList_search_deviceIp')">
             <el-input
               v-model="searchParams.deviceIp"
               @blur="searchParams.deviceIp = searchParams.deviceIp.trim()"
               maxlength="32"
               clearable></el-input>
           </el-form-item>
-          <el-form-item label="识别模式">
+          <el-form-item :label="$t('deviceList_search_recognitionMode')">
             <el-select
               v-model="searchParams.recognitionMode"
               placeholder=""
@@ -89,7 +89,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="软件版本">
+          <el-form-item :label="$t('deviceList_search_softwareVersion')">
             <el-input
               v-model="searchParams.softwareVersion"
               @blur="searchParams.softwareVersion = searchParams.softwareVersion.trim()"
@@ -102,13 +102,13 @@
             :class="{'filter--reduce': !filterOption.showMore}"
             :style="{'left': `${filterOption.leftNum}px`}">
             <el-form-item class="btn__search">
-              <el-button icon="iconfont icon-search" @click="handleQuery('firstPage')">查询</el-button>
+              <el-button icon="iconfont icon-search" @click="handleQuery('firstPage')">{{ $t('deviceList_search_button') }}</el-button>
             </el-form-item>
             <el-form-item class="btn__expand">
               <span
                 @click="filterOption.showMore = !filterOption.showMore"
                 v-if="filterOption.showExpandBtn">
-                {{ filterOption.showMore ? '收起' : '展开' }}
+                {{ filterOption.showMore ? $t('deviceList_search_retract_button') : $t('deviceList_search_unfold_button') }}
                 <i
                   class="iconfont"
                   :class="{
@@ -126,20 +126,50 @@
         <el-table-column width="30">
           <template slot-scope="scope">
             <el-tooltip
-                    content="访问被拒绝，请重新编辑设备的访问密码"
+                    :content="$t('deviceList_table_tooltip_error')"
                     placement="right"
                     :enterable="false">
               <i class="iconfont icon-Error f-red" v-if="scope.row.expType === 3"></i>
             </el-tooltip>
+            <el-tooltip
+                    :content="$t('deviceList_table_tooltip_outLine')"
+                    placement="right"
+                    :enterable="false">
+              <i class="iconfont icon-Disable f-red" v-if="scope.row.status !== 1"></i>
+            </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="deviceName" label="设备名称" min-width="120"></el-table-column>
-        <el-table-column prop="deviceKey" label="设备序列号" min-width="160"></el-table-column>
-        <el-table-column prop="softwareVersion" label="软件版本" min-width="130"></el-table-column>
-        <el-table-column prop="deviceIp" label="IP地址" min-width="130"></el-table-column>
-        <el-table-column prop="recognitionModeZh" label="识别模式" min-width="120" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="deviceGroup" label="设备组" min-width="120"></el-table-column>
-        <el-table-column prop="status" label="状态" min-width="100">
+        <el-table-column prop="deviceName" :label="$t('deviceList_table_th_deviceName')" min-width="120">
+          <template slot-scope="{ row }">
+            {{ row.deviceName || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="deviceKey" :label="$t('deviceList_table_th_deviceKey')" min-width="160">
+          <template slot-scope="{ row }">
+            {{ row.deviceKey || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="softwareVersion" :label="$t('deviceList_table_th_softwareVersion')" min-width="130">
+          <template slot-scope="{ row }">
+            {{ row.softwareVersion || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="deviceIp" :label="$t('deviceList_table_th_deviceIp')" min-width="130">
+          <template slot-scope="{ row }">
+            {{ row.deviceIp || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="recognitionModeZh" :label="$t('deviceList_table_th_recognitionModeZh')" min-width="120" :show-overflow-tooltip="true">
+          <template slot-scope="{ row }">
+            {{ row.recognitionModeZh || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="deviceGroup" :label="$t('deviceList_table_th_deviceGroup')" min-width="120">
+          <template slot-scope="{ row }">
+            {{ row.deviceGroup || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" :label="$t('deviceList_table_th_status')" min-width="100">
           <template slot-scope="scope">
             <div class="fl mr5 point">
               <span
@@ -152,15 +182,15 @@
             <span class="fl">{{ filter(scope.row.status, select.status) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" min-width="120">
+        <el-table-column prop="createTime" :label="$t('deviceList_table_th_createTime')" min-width="120">
           <template slot-scope="scope">
-            {{ scope.row.createTime && scope.row.createTime.split(' ')[0] }}
+            {{ scope.row.createTime && scope.row.createTime.split(' ')[0] || '--' }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="170" class-name="table__icon--btn">
+        <el-table-column :label="$t('deviceList_table_th_operete')" min-width="170" class-name="table__icon--btn">
           <template slot-scope="scope">
             <el-tooltip
-              content="刷新"
+              :content="$t('deviceList_table_tootip_refresh')"
               placement="top"
               :enterable="false"
               :open-delay="500">
@@ -170,18 +200,18 @@
               </i>
             </el-tooltip>
             <el-tooltip
-              content="编辑"
+              :content="$t('deviceList_table_tootip_edit')"
               placement="top"
               :enterable="false"
               :open-delay="500">
               <i
                 class="iconfont icon-edit"
                 @click="handleEdit(scope.row)"
-                v-if="scope.row.status !== 2">
+                v-if="scope.row.expType !== 2">
               </i>
             </el-tooltip>
             <el-tooltip
-              content="删除"
+              :content="$t('deviceList_table_tootip_delete')"
               placement="top"
               :enterable="false"
               :open-delay="500">
@@ -191,15 +221,15 @@
             </el-tooltip>
             <el-button
               type="text"
-              v-if="scope.row.status !== 2"
+              v-if="scope.row.expType !== 2"
               @click="handelMore(scope.row)">
-              更多操作
+              {{ $t('deviceList_table_button_more') }}
             </el-button>
             <el-button
               type="text"
               @click="handleEnable(scope.row)"
-              v-if="scope.row.status === 2">
-              启用
+              v-if="scope.row.expType === 2">
+              {{ $t('deviceList_table_button_enabled') }}
             </el-button>
           </template>
         </el-table-column>
@@ -211,19 +241,19 @@
     </div>
 
     <el-dialog
-      title="添加设备"
+      :title="$t('deviceList_dialog_choose_title')"
       :visible.sync="dialog.chooseVisible"
       width="460px">
       <div class="pl30 pr30">
         <div class="choose__item">
           <i class="iconfont icon-Manual" @click="$router.push({name:'addManual'})"></i>
-          <p class="mt20">手动添加</p>
-          <p class="tip">需知道设备IP地址</p>
+          <p class="mt20">{{ $t('deviceList_dialog_choose_manual_title') }}</p>
+          <p class="tip">{{ $t('deviceList_dialog_choose_manual_tip') }}</p>
         </div>
         <div class="choose__item">
           <i class="iconfont icon-search" @click="$router.push({name:'addAuto'})"></i>
-          <p class="mt20">自动搜索</p>
-          <p class="tip">需要与设备同一网段</p>
+          <p class="mt20">{{ $t('deviceList_dialog_choose_search_title') }}</p>
+          <p class="tip">{{ $t('deviceList_dialog_choose_search_tip') }}</p>
         </div>
       </div>
     </el-dialog>
@@ -233,26 +263,26 @@
       class="delete__dialog"
       width="400px">
       <div class="pl30 pr30">
-        <p class="delete__dialog--title">删除</p>
+        <p class="delete__dialog--title">{{ $t('deviceList_dialog_delete_title') }}</p>
         <p>
           <el-radio v-model="deleteDevice.clearDevice" :label="true">
-            同时删除系统和设备上的数据
+            {{ $t('deviceList_dialog_delete_clearDevice1') }}
           </el-radio>
         </p>
         <p>
           <el-radio v-model="deleteDevice.clearDevice" :label="false">
-            删除系统数据，保留设备上的数据
+            {{ $t('deviceList_dialog_delete_clearDevice2') }}
           </el-radio>
         </p>
         <div class="ac pt30">
-          <el-button @click="dialog.deleteVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleDelete()">删除</el-button>
+          <el-button @click="dialog.deleteVisible = false">{{ $t('deviceList_dialog_delete_cancel_button') }}</el-button>
+          <el-button type="primary" @click="handleDelete()">{{ $t('deviceList_dialog_delete_delete_button') }}</el-button>
         </div>
       </div>
     </el-dialog>
 
     <el-dialog
-      title="编辑设备"
+      :title="$t('deviceList_dialog_edit_title')"
       :visible.sync="updateDialog.visible"
       width="400px"
       @close="handleUpdateClose"
@@ -262,13 +292,13 @@
         :model="updateDialog.form"
         :rules="updateDialog.rules"
         label-position="top">
-        <el-form-item prop="deviceName" label="名称" required>
+        <el-form-item prop="deviceName" :label="$t('deviceList_dialog_edit_form_deviceName')" required>
           <el-input
             v-model.trim="updateDialog.form.deviceName"
             clearable>
           </el-input>
         </el-form-item>
-        <el-form-item prop="groupId" label="分组">
+        <el-form-item prop="groupId" :label="$t('deviceList_dialog_edit_form_groupId')">
           <el-select v-model="updateDialog.form.groupId" clearable class="w100">
             <el-option
               v-for="item in updateDialog.deviceGroupList"
@@ -280,21 +310,21 @@
         </el-form-item>
         <el-form-item class="form-item-showPass-wrap">
           <div class="form-item__showPass" @click="updateDialog.showPassField=!updateDialog.showPassField">
-            <span class="mr10">更新设备访问密码</span>
+            <span class="mr10">{{ $t('deviceList_dialog_edit_form_showPassField') }}</span>
             <i v-if="updateDialog.showPassField" class="iconfont icon-Collapse"></i>
             <i v-else class="iconfont icon-drop_down"></i>
           </div>
         </el-form-item>
         <el-form-item v-if="updateDialog.showPassField" prop="newPass">
           <div slot="label">
-            密码<span class="f-gray">（设备端通过该密码访问设备）</span>
+            {{ $t('deviceList_dialog_edit_form_password1') }}<span class="f-gray">{{ $t('deviceList_dialog_edit_form_password2') }}</span>
           </div>
           <el-input type="password" v-model.trim="updateDialog.form.newPass" clearable>
           </el-input>
         </el-form-item>
         <div class="ac mt30">
-          <el-button @click="updateDialog.visible=false">取消</el-button>
-          <el-button type="primary" @click="handelUpdateSubmit">保存</el-button>
+          <el-button @click="updateDialog.visible=false">{{ $t('deviceList_dialog_edit_form_button_cancel') }}</el-button>
+          <el-button type="primary" @click="handelUpdateSubmit">{{ $t('deviceList_dialog_edit_form_button_save') }}</el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -340,14 +370,14 @@ export default {
       },
       select: {
         status: [
-          { value: 0, label: '离线' },
-          { value: 1, label: '在线' }
+          { value: 0, label: this.$t('deviceList_select_status_option1') },
+          { value: 1, label: this.$t('deviceList_select_status_option2') }
         ],
         recognitionMode: [
-          { value: 1, label: '人脸识别' },
-          { value: 2, label: '刷卡识别' },
-          { value: 3, label: '人卡合一' },
-          { value: 4, label: '认证比对' }
+          { value: 1, label: this.$t('deviceList_select_recognitionMode_option1') },
+          { value: 2, label: this.$t('deviceList_select_recognitionMode_option2') },
+          { value: 3, label: this.$t('deviceList_select_recognitionMode_option3') },
+          { value: 4, label: this.$t('deviceList_select_recognitionMode_option4') }
         ],
         deviceGroup: []
       },
@@ -363,7 +393,7 @@ export default {
         },
         rules: {
           deviceName: [
-            { required: true, message: '请输入设备名称', trigger: 'blur' },
+            { required: true, message: this.$t('deviceList_rules_deviceName_required'), trigger: 'blur' },
             { validator: nameRule, trigger: 'blur' }
           ]
         },
@@ -409,7 +439,7 @@ export default {
             deviceInfo.recognitionModeZh = deviceInfo.recognitionMode.map(ele => this.filter(ele, this.select.recognitionMode)).join('，')
           }
           this.deviceList.splice(index, 1, deviceInfo)
-          this.$message.success('设备刷新成功！')
+          this.$message.success(this.$t('deviceList_refresh_message_success'))
         }
       })
     },
@@ -423,20 +453,20 @@ export default {
       }
     },
     handleEnable ({ deviceKey }) {
-      this.$confirm('设备启用后，将会正常运行', '设备启用', {
-        confirmButtonText: '启用',
+      this.$confirm(this.$t('deviceList_enable_comfirm_message'), this.$t('deviceList_enable_comfirm_text'), {
+        confirmButtonText: this.$t('deviceList_enable_comfirm_button_text'),
         center: true
       }).then(() => {
         const params = {
           deviceKeyList: [deviceKey]
         }
-        api.restartDevice(params).then(res => {
+        api.deviceEnable(params).then(res => {
           if (res.success) {
             this.failList = res.data.filter(ele => !ele.success)
             if (this.failList.length) {
               this.$message.success(this.failList[0].reason)
             } else {
-              this.$message.success('设备启用成功！')
+              this.$message.success(this.$t('deviceList_enable_comfirm_success'))
             }
             this.handleQuery()
           }
@@ -450,7 +480,7 @@ export default {
     },
     handleDelete () {
       if (this.deleteDevice.clearDevice === '') {
-        this.$message.warning('请选择删除方式！')
+        this.$message.warning(this.$t('deviceList_delete_message_warn'))
         return
       }
       const params = {
@@ -463,7 +493,7 @@ export default {
           if (this.failList.length) {
             this.$message.error(this.failList[0].reason)
           } else {
-            this.$message.success('设备删除成功！')
+            this.$message.success(this.$t('deviceList_delete_response_success'))
           }
           this.dialog.deleteVisible = false
           this.handleQuery()
@@ -474,7 +504,7 @@ export default {
       const { deviceKey } = this.updateDialog.form
       api['deviceUpdate'](deviceKey, this.updateDialog.form).then(res => {
         if (res.success) {
-          this.$message.success('修改成功！')
+          this.$message.success(this.$t('deviceList_update_success'))
           this.updateDialog.visible = false
           this.handleQuery()
         }

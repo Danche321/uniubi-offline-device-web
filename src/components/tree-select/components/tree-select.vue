@@ -122,7 +122,7 @@ export default {
           'node-click': function (data, node, component) {
             if (!vm.$attrs.multiple) {
               const nodesMap = vm.$refs.tree.store.nodesMap
-              if (data[vm.props.disabled]) {
+              if (data[vm.props.disabled] || node.disabled) {
                 node.isCurrent = false
                 vm.prevCurrentNodeKeys.forEach(key => {
                   nodesMap[key].isCurrent = true

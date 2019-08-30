@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
 import { Loading, Message } from 'element-ui'
+import i18n from '@/locale'
 
 class HttpRequest {
   constructor (baseUrl) {
@@ -13,8 +14,8 @@ class HttpRequest {
   getInsideConfig () {
     const config = {
       baseURL: this.baseUrl,
-      headers: {},
-      timeout: 8000 // request timeout
+      headers: {}
+      // timeout: 8000 // request timeout
     }
     return config
   }
@@ -35,7 +36,7 @@ class HttpRequest {
       }
       if (Object.keys(this.queue).length) {
         this.loadingInstance = Loading.service({
-          text: '加载中···'
+
         })
       }
       return config
@@ -55,7 +56,7 @@ class HttpRequest {
         }
         this.message.close && this.message.close()
         if (!closeMsg) {
-          this.message = Message.error(data.msg)
+          this.message = Message.error(i18n.t(data.code))
         }
       }
       return data
@@ -72,7 +73,7 @@ class HttpRequest {
       }
       let errTip = ''
       if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
-        errTip = '网络请求超时,请刷新页面重试'
+        errTip = i18n.t('ARES-FONT-ERROR')
       }
       Message({
         message: errTip || error,

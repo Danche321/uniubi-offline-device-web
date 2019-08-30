@@ -1,7 +1,7 @@
 <template>
   <el-form ref="form" :model="form" class="from" :rules="rules">
-    <el-form-item label="请选择密保问题" prop="passwordQuestionType">
-      <el-select v-model="form.passwordQuestionType" placeholder="请选择" style="width: 100%" clearable v-leftClear>
+    <el-form-item :label="$t('main_new_password_secret_passwordQuestionType_label')" prop="passwordQuestionType">
+      <el-select v-model="form.passwordQuestionType" :placeholder="$t('common_placeholder')" style="width: 100%" clearable v-leftClear>
         <el-option
           v-for="item in questionList"
           :key="item.type"
@@ -14,7 +14,7 @@
     <el-form-item prop="passwordQuestionAnswer">
       <el-input v-model.trim="form.passwordQuestionAnswer" placeholder="" clearable @keyup.enter.native="nextStep"></el-input>
     </el-form-item>
-    <el-button type="primary" @click="nextStep" class="btn-next">下一步</el-button>
+    <el-button type="primary" @click="nextStep" class="btn-next">{{$t('main_new_password_secret_button_text')}}</el-button>
   </el-form>
 </template>
 
@@ -36,8 +36,8 @@ export default {
       },
       questionList: secretList,
       rules: {
-        passwordQuestionType: [{ required: true, message: '请选择密保问题', trigger: 'change' }],
-        passwordQuestionAnswer: [{ required: true, message: '请输入密保答案', trigger: 'blur' }]
+        passwordQuestionType: [{ required: true, message: this.$t('main_new_password_secret_rules_passwordQuestionType'), trigger: 'change' }],
+        passwordQuestionAnswer: [{ required: true, message: this.$t('main_new_password_secret_rules_passwordQuestionAnswer'), trigger: 'blur' }]
       }
     }
   },

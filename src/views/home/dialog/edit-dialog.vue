@@ -2,12 +2,11 @@
   <div>
     <div class="dialog__body">
       <div class="dialog__body--left">
-        <p>请选择{{ dialogType === 'quickBtn' ? '操作' : '菜单' }}</p>
+        <p>{{ $t(dialogType === 'quickBtn' ? 'home_dialog_quick_btn_left_title' : 'home_dialog_quick_enter_left_title') }}</p>
         <el-scrollbar class="scroll--y">
           <div class="pr10">
             <el-input
               class="mb5"
-              placeholder="输入关键字进行过滤"
               @input="filterTextChange()"
               v-model="filterText"
               prefix-icon="el-icon-search"
@@ -30,14 +29,14 @@
       </div>
 
       <div class="dialog__body--right">
-        <p>已添加{{ dialogType === 'quickBtn' ? '操作' : '菜单' }}
+        <p>{{ $t(dialogType === 'quickBtn' ? 'home_dialog_quick_btn_right_title' : 'home_dialog_quick_enter_right_title') }}
           <span class="f-blue">{{ checkList.length }}/{{ dialogType === 'quickBtn' ? 8 : 11 }}</span>
         </p>
         <el-scrollbar class="scroll--y">
           <div class="pr10">
             <el-table :data="checkList">
-              <el-table-column label="排序" min-width="40" type="index"></el-table-column>
-              <el-table-column prop="name" label="快捷菜单" min-width="105" class-name="tr__icon"></el-table-column>
+              <el-table-column :label="$t('home_dialog_table_column1')" min-width="40" type="index"></el-table-column>
+              <el-table-column prop="name" :label="$t('home_dialog_table_column2')" min-width="105" class-name="tr__icon"></el-table-column>
               <el-table-column min-width="65" class-name="tr__icon">
                 <template slot-scope="scope">
                   <div class="handle__btn">
@@ -64,8 +63,8 @@
       </div>
     </div>
     <div class="dialog__footer ac">
-      <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="handleSave()">保存</el-button>
+      <el-button @click="$emit('update:visible', false)">{{ $t('common_cancel') }}</el-button>
+      <el-button type="primary" @click="handleSave()">{{ $t('common_save') }}</el-button>
     </div>
   </div>
 </template>

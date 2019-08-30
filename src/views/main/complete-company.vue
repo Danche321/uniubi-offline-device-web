@@ -3,7 +3,7 @@
     <header-bar />
     <div class="unLogin-box">
       <div class="company-box">
-        <p class="title-text">完善公司信息</p>
+        <p class="title-text">{{$t('main_complete_company_title')}}</p>
         <el-form
           ref="form"
           :model="form"
@@ -11,7 +11,7 @@
           :rules="rules"
           label-position="top"
         >
-          <el-form-item label="LOGO" prop="file">
+          <el-form-item :label="$t('main_complete_company_logo_label')" prop="file">
             <el-upload
               class="avatar-uploader"
               action=""
@@ -28,7 +28,7 @@
                 <img
                   :src="`${baseUrl}/file/image/${logoUrl}`"
                   class="avatar"
-                  alt="logo"
+                  :alt="$t('main_complete_company_logo_alt')"
                 />
                 <transition>
                   <div v-show="showIcon" class="block-hover">
@@ -49,27 +49,27 @@
                 <i class="el-icon-plus"></i>
               </div>
               <div class="upload__tip">
-                <p>图片大小不得超过2M</p>
-                <p>文件格式支持jpg、jpeg、png</p>
+                <p>{{$t('main_complete_company_logo_upload_tip1')}}</p>
+                <p>{{$t('main_complete_company_logo_upload_tip2')}}</p>
               </div>
             </el-upload>
           </el-form-item>
           <el-form-item
-            label="企业名称"
+            :label="$t('main_complete_company_orgName_label')"
             prop="orgName"
             class="f-form-item--half mr20"
           >
             <el-input v-model.trim="form.orgName"></el-input>
           </el-form-item>
           <el-form-item
-            label="企业简称"
+            :label="$t('main_complete_company_orgAbbreviation_label')"
             prop="orgAbbreviation"
             class="f-form-item--half"
           >
             <el-input v-model.trim="form.orgAbbreviation"></el-input>
           </el-form-item>
           <el-form-item
-            label="行业类型"
+            :label="$t('main_complete_company_industryType_label')"
             prop="industryType"
             class="f-form-item--half mr20"
           >
@@ -80,15 +80,15 @@
               @change="handleChange"
               popper-class="industry-option"
               v-model="industryTypeRealValue"
-              placeholder="请选择"
+              :placeholder="$t('common_placeholder')"
               separator=">"
               clearable
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="规模" prop="empNumber" class="f-form-item--half">
+          <el-form-item :label="$t('main_complete_company_iempNumber_label')" prop="empNumber" class="f-form-item--half">
             <el-select
               v-model="form.empNumber"
-              placeholder="请选择"
+              :placeholder="$t('common_placeholder')"
               style="width: 100%"
               clearable
               v-leftClear
@@ -103,23 +103,23 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            label="联系电话"
+            :label="$t('main_complete_company_contactWay_label')"
             prop="contactWay"
             class="f-form-item--half mr20"
           >
             <el-input v-model.trim="form.contactWay"></el-input>
           </el-form-item>
           <el-form-item
-            label="官网地址"
+            :label="$t('main_complete_company_orgUrl_label')"
             prop="orgUrl"
             class="f-form-item--half"
           >
             <el-input v-model.trim="form.orgUrl"></el-input>
           </el-form-item>
-          <el-form-item label="标语" prop="slogan">
+          <el-form-item :label="$t('main_complete_company_slogan_label')" prop="slogan">
             <el-input v-model.trim="form.slogan"></el-input>
           </el-form-item>
-          <el-form-item label="简介" prop="introduction">
+          <el-form-item :label="$t('main_complete_company_introduction_label')" prop="introduction">
             <el-input
               type="textarea"
               rows="3"
@@ -129,7 +129,7 @@
           </el-form-item>
           <div class="ac mt30">
             <el-button type="primary" @click="handleSubmit" class="btn-submit"
-              >保存</el-button
+              >{{$t('main_complete_company_submit_text')}}</el-button
             >
           </div>
         </el-form>
@@ -151,6 +151,7 @@ import headerBar from '@/components/header-login/HeaderLogin'
 import { uploadImg, createCompany } from '@/api/main'
 import { nameRule, telPhoneNumRule, urlRule } from '@/libs/rules'
 import industryType from '@/static/json/industryType'
+
 export default {
   name: 'complete-company',
   components: {
@@ -172,7 +173,7 @@ export default {
       logoUrl: '',
       rules: {
         orgName: [
-          { required: true, message: '请输入企业名称', trigger: 'blur' },
+          { required: true, message: this.$t('main_complete_company_rules_orgName'), trigger: 'blur' },
           { validator: nameRule, trigger: 'blur' }
         ],
         contactWay: [{ validator: telPhoneNumRule, trigger: 'blur' }],
@@ -182,12 +183,12 @@ export default {
       select: {
         industryType,
         empNumber: [
-          { key: 0, label: '1~50 人' },
-          { key: 1, label: '51~100 人' },
-          { key: 2, label: '101~200 人' },
-          { key: 3, label: '201~500 人' },
-          { key: 4, label: '501~1000 人' },
-          { key: 5, label: '1000 人以上' }
+          { key: 0, label: this.$t('main_complete_company_select_empNumber_0') },
+          { key: 1, label: this.$t('main_complete_company_select_empNumber_1') },
+          { key: 2, label: this.$t('main_complete_company_select_empNumber_2') },
+          { key: 3, label: this.$t('main_complete_company_select_empNumber_3') },
+          { key: 4, label: this.$t('main_complete_company_select_empNumber_4') },
+          { key: 5, label: this.$t('main_complete_company_select_empNumber_5') }
         ]
       },
       showIcon: false,
@@ -220,7 +221,7 @@ export default {
               this.$store.commit('setUserInfo', JSON.stringify(companyInfo))
               this.$store.commit('updateIsActive', 1)
               localStorage.setItem('isActive', 1)
-              this.$message.success('创建成功！')
+              this.$message.success(this.$t('main_complete_company_handleSubmit_success'))
               this.$router.push('/home')
             }
           })
@@ -243,10 +244,10 @@ export default {
       )
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!fileType) {
-        this.$message.error('文件格式不正确，请重新选择！')
+        this.$message.error(this.$t('main_complete_company_beforeUpload_error_1'))
       }
       if (!isLt2M) {
-        this.$message.error('上传照片大小不能超过 2MB!')
+        this.$message.error(this.$t('main_complete_company_beforeUpload_error_2'))
       }
       return fileType && isLt2M
     },

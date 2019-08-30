@@ -1,17 +1,17 @@
 <template>
   <el-form ref="form" :model="form" class="from" :rules="rules">
-    <el-form-item label="新密码" prop="password1">
+    <el-form-item :label="$t('main_lost_password_password_password1_label')" prop="password1">
       <el-input v-model.trim="form.password1" :type="showPass1 ? 'text' : 'password'">
         <i slot="suffix" class="iconfont" :class="showPass1 ? 'icon-hide' : 'icon-hide'" @click.stop="showPass1 = !showPass1"></i>
       </el-input>
-      <p>提示：密码由6-18位数字/字母/符号两种及以上任意组合组成</p>
+      <p>{{$t('main_lost_password_password_password1_tip')}}</p>
     </el-form-item>
-    <el-form-item label="重复密码" prop="password2">
+    <el-form-item :label="$t('main_lost_password_password_password1_label')" prop="password2">
       <el-input v-model.trim="form.password2" :type="showPass2 ? 'text' : 'password'" @keyup.enter.native="nextStep">
         <i slot="suffix" class="iconfont" :class="showPass2 ? 'icon-hide' : 'icon-hide'" @click.stop="showPass2 = !showPass2"></i>
       </el-input>
     </el-form-item>
-    <el-button type="primary" @click="nextStep" class="btn-next">下一步</el-button>
+    <el-button type="primary" @click="nextStep" class="btn-next">{{$t('main_lost_password_password_button_text')}}</el-button>
   </el-form>
 </template>
 

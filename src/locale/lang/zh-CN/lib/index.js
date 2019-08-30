@@ -1,0 +1,18 @@
+export default {
+  lib_nameRule_1: '请输入1-32位字符',
+  lib_nameRule_2: '仅限汉字/字母/数字/空格',
+  lib_telPhoneNumRule_1: '仅限数字/横杠',
+  lib_telPhoneNumRule_2: '请输入正确手机号/座机号',
+  lib_passwordAgainRule_1: '请再次输入密码',
+  lib_passwordAgainRule_2: '两次输入密码不一致!',
+  lib_passwordRule_1: '请输入密码',
+  lib_passwordRule_2: '请输入6-18位数字/字母/符号任意两种及以上组合的密码',
+  lib_urlRule_1: '格式不正确',
+  lib_constant_secretList_1_text: '您所在的第一家公司是？',
+  lib_constant_secretList_2_text: '您的理想职业是？',
+  lib_constant_secretList_3_text: '您最熟悉的好友名字是？',
+  lib_constant_recognitionType_1_text: '人脸识别',
+  lib_constant_recognitionType_2_text: '刷卡识别',
+  lib_constant_recognitionType_3_text: '人卡合一',
+  lib_constant_recognitionType_4_text: '认证对比',
+}

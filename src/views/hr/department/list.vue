@@ -7,7 +7,7 @@
       :inline="true"
       @keyup.enter.native="handleFilter()"
       @submit.native.prevent>
-      <el-form-item label="部门">
+      <el-form-item :label="$t('department_list_form_search')">
         <el-input
           v-model="filterText"
           @blur="filterText = filterText.trim()"
@@ -16,14 +16,14 @@
         </el-input>
       </el-form-item>
       <el-form-item class="btn__search">
-        <el-button icon="iconfont icon-search" @click="handleFilter()">查询</el-button>
+        <el-button icon="iconfont icon-search" @click="handleFilter()">{{ $t('department_list_form_button') }}</el-button>
       </el-form-item>
     </el-form>
 
     <div class="list__header">
-      <div class="ml5">部门</div>
-      <div>部门负责人</div>
-      <div>操作</div>
+      <div class="ml5">{{ $t('department_list_list_header1') }}</div>
+      <div>{{ $t('department_list_list_header2') }}</div>
+      <div>{{ $t('department_list_list_header3') }}</div>
     </div>
 
     <div class="list__body">
@@ -42,52 +42,54 @@
               {{ data.depName }}
             </div>
             <div>
-              {{ data.managers && data.managers.map(ele => ele.empName).join('，') }}
+              {{ data.managers && data.managers.map(ele => ele.empName).join('，') || '--' }}
             </div>
             <div class="table__icon--btn">
               <el-tooltip
-                content="上移"
+                :content="$t('department_list_list_upwards')"
                 placement="top"
                 :enterable="false"
                 :open-delay="500">
                 <i
                   class="iconfont icon-upwards"
-                  :class="{'icon--disabled': !node.previousSibling}"
-                  @click="$emit('move', node, !node.previousSibling, 'up')">
+                  :class="{'icon--disabled': !node.previousSibling || node.data.special === 1}"
+                  @click="$emit('move', node, !node.previousSibling || node.data.special === 1, 'up')">
                 </i>
               </el-tooltip>
               <el-tooltip
-                content="下移"
+                :content="$t('department_list_list_down')"
                 placement="top"
                 :enterable="false"
                 :open-delay="500">
                 <i
                   class="iconfont icon-down"
-                  :class="{'icon--disabled': !node.nextSibling}"
-                  @click="$emit('move', node, !node.nextSibling, 'down')">
+                  :class="{'icon--disabled': !node.nextSibling || node.nextSibling.data !== 1}"
+                  @click="$emit('move', node, !node.nextSibling || node.nextSibling.data !== 1, 'down')">
                 </i>
               </el-tooltip>
               <el-tooltip
-                content="编辑"
+                :content="$t('department_list_list_edit')"
                 placement="top"
                 :enterable="false"
                 :open-delay="500">
                 <i
                   class="iconfont icon-edit"
-                  @click="$router.push({
+                  :class="{'icon--disabled': node.data.special === 1}"
+                  @click="node.data.special !== 1 && $router.push({
                     name: 'depInfo',
                     query: {id: data.id}
                   })">
                 </i>
               </el-tooltip>
               <el-tooltip
-                content="删除"
+                :content="$t('department_list_list_delete')"
                 placement="top"
                 :enterable="false"
                 :open-delay="500">
                 <i
                   class="iconfont icon-delete"
-                  @click="$emit('delete', node)">
+                  :class="{'icon--disabled': node.data.special === 1}"
+                  @click="node.data.special !== 1 && $emit('delete', node)">
                 </i>
               </el-tooltip>
             </div>

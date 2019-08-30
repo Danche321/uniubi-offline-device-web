@@ -1,37 +1,37 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">客户端设置</span>
+      <span class="page__header--title">{{$t('main_client_setting_title')}}</span>
     </div>
     <el-tabs v-model="activeName" class="page__box">
-      <el-tab-pane label="客户端信息" name="client">
+      <el-tab-pane :label="$t('main_client_client_label')" name="client">
           <section class="client">
-              <p>人员数量：{{clientInfo.personNum}}</p>
-              <p>照片数量：{{clientInfo.photoNum}}</p>
-              <p>识别记录数量：{{clientInfo.recordNum}}</p>
+              <p>{{$t('main_client_client_personNum_label')}}{{clientInfo.personNum}}</p>
+              <p>{{$t('main_client_client_photoNum_label')}}{{clientInfo.photoNum}}</p>
+              <p>{{$t('main_client_client_recordNum_label')}}{{clientInfo.recordNum}}</p>
           </section>
           <section class="version-current">
-              <p>当前版本：{{clientInfo.serverVersion}}</p>
+              <p>{{$t('main_client_client_serverVersion_label')}}{{clientInfo.serverVersion}}</p>
           </section>
           <section class="version-arithmetic f-clear">
-              <p class="fl">算法版本号：</p>
+              <p class="fl">{{$t('main_client_client_version_arithmetic')}}</p>
               <ul class="fl version-list">
                   <li v-for="(item, index) in clientInfo.arithmeticVersionList" :key="index">{{item}}</li>
               </ul>
           </section>
       </el-tab-pane>
-      <el-tab-pane label="操作参数" name="params">
+      <el-tab-pane :label="$t('main_client_params_label')" name="params">
           <div class="params__tip">
-              <span class="params__tip__text">人员、照片信息授权到设备时，是否需要设备存储注册照</span>
-              <el-tooltip content="注册照会占用设备较多的存储空间" placement="right">
+              <span class="params__tip__text">{{$t('main_client_params_tip_text')}}</span>
+              <el-tooltip :content="$t('main_client_params_tip_content')" placement="right">
                   <i class="iconfont icon-remind"></i>
               </el-tooltip>
           </div>
           <el-radio-group v-model="storeImage" class="params__radio">
-              <el-radio :label="true">是</el-radio>
-              <el-radio :label="false">否</el-radio>
+              <el-radio :label="true">{{$t('main_client_params_storeImage_true')}}</el-radio>
+              <el-radio :label="false">{{$t('main_client_params_storeImage_false')}}</el-radio>
           </el-radio-group>
-          <el-button type="primary" @click="handleSave">保存</el-button>
+          <el-button type="primary" @click="handleSave">{{$t('main_client_params_submit_text')}}</el-button>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -79,7 +79,7 @@ export default {
       }
       setIsStore(params).then(res => {
         if (res.success) {
-          this.$message.success('保存成功')
+          this.$message.success(this,$t('main_client_handleSave_success'))
         }
       })
     }

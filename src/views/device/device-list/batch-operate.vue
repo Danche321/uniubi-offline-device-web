@@ -2,18 +2,18 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>批量操作
+        <i class="iconfont icon-retreat"></i>{{ $t('batchOperate_page_title') }}
       </span>
     </div>
 
     <div class="page__content">
       <div class="page__content--left">
-        <p>选择设备</p>
+        <p>{{ $t('batchOperate_left_title') }}</p>
         <el-scrollbar class="scroll--y">
           <div class="pr10">
             <el-input
               class="mb5"
-              placeholder="搜索"
+              :placeholder="$t('batchOperate_left_search')"
               @input="filterTextChange()"
               v-model="filterText"
               prefix-icon="el-icon-search"
@@ -33,7 +33,7 @@
                 <div class="name">
                   {{ data.deviceName }}
                   <el-tooltip
-                    content="离线"
+                    :content="$t('batchOperate_left_tree_name_tooltip')"
                     placement="right"
                     :enterable="false"
                     :open-delay="500">
@@ -43,7 +43,7 @@
                     </i>
                   </el-tooltip>
                   <el-tooltip
-                    content="禁用"
+                    :content="$t('batchOperate_left_tree_disable_tooltip')"
                     placement="right"
                     :enterable="false"
                     :open-delay="500">
@@ -53,7 +53,7 @@
                     </i>
                   </el-tooltip>
                   <el-tooltip
-                    content="密码错误"
+                    :content="$t('batchOperate_left_tree_password_error_tooltip')"
                     placement="right"
                     :enterable="false"
                     :open-delay="500">
@@ -71,7 +71,7 @@
       </div>
 
       <div class="page__content--center">
-        <p>已选设备
+        <p>{{ $t('batchOperate_center_title') }}
           <span class="f-blue">
             {{ checkList.length }}/50<!-- {{ allDeviceNum }} -->
           </span>
@@ -90,26 +90,27 @@
       </div>
 
       <div class="page__content--right">
-        <p class="pl10">操作选项</p>
+        <p class="pl10">{{ $t('batchOperate_right_title') }}</p>
         <el-scrollbar class="scroll--y">
           <el-radio-group class="pr10 pl10" v-model="operateType">
-            <el-radio :label="1">重启</el-radio>
-            <el-radio :label="2">重置</el-radio>
-            <el-radio :label="3">禁用</el-radio>
-            <el-radio :label="4">启用</el-radio>
-            <el-radio :label="10">设备校时</el-radio>
-            <el-radio :label="5">设备配置</el-radio>
-            <el-radio :label="6">网络配置</el-radio>
-            <el-radio :label="7">固件升级</el-radio>
-            <el-radio :label="8">修改密码</el-radio>
-            <el-radio :label="9">批量删除</el-radio>
+            <el-radio :label="1" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label1') }}</el-radio>
+            <el-radio :label="2" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label2') }}</el-radio>
+            <el-radio :label="3" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label3') }}</el-radio>
+            <el-radio :label="4" :disabled="this.checkList[0] && !this.checkList[0].expType">{{ $t('batchOperate_right_radio_label4') }}</el-radio>
+            <el-radio :label="10" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label5') }}</el-radio>
+            <el-radio :label="5" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label6') }}</el-radio>
+            <el-radio :label="6" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label7') }}</el-radio>
+            <el-radio :label="7" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label8') }}</el-radio>
+            <el-radio :label="8" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label9') }}</el-radio>
+            <el-radio :label="9" :disabled="this.checkList[0] && this.checkList[0].expType === 2">{{ $t('batchOperate_right_radio_label10') }}</el-radio>
           </el-radio-group>
+          <p class="tip">{{ $t('batchOperate_right_tip') }}</p>
         </el-scrollbar>
       </div>
 
       <div class="w100 ac mt30 pt20">
-        <el-button @click="$router.go(-1)">取消</el-button>
-        <el-button type="primary" @click="handleOperate()">操作</el-button>
+        <el-button @click="$router.go(-1)">{{ $t('batchOperate_right_cancel') }}</el-button>
+        <el-button type="primary" @click="handleOperate()">{{ $t('batchOperate_right_operate') }}</el-button>
       </div>
     </div>
 
@@ -118,21 +119,21 @@
       class="reset__dialog"
       width="400px">
       <div class="pl30 pr30">
-        <p class="reset__dialog--title">设备重置</p>
+        <p class="reset__dialog--title">{{ $t('batchOperate_dialog_reset_title') }}</p>
         <p>
           <el-radio v-model="resetType" :label="true">
-            清空数据但保留设备配置
+            {{ $t('batchOperate_dialog_reset_radio1') }}
           </el-radio>
         </p>
         <p>
           <el-radio v-model="resetType" :label="false">
-            恢复出厂设置
+             {{ $t('batchOperate_dialog_reset_radio2') }}
           </el-radio>
         </p>
-        <p class="reset__tip">提示：需重新设置设备密码</p>
+        <p class="reset__tip">{{ $t('batchOperate_dialog_reset_tip') }}</p>
         <div class="ac pt30">
-          <el-button @click="dialog.resetVisible = false">取消</el-button>
-          <el-button type="primary" @click="deviceReset()">重置</el-button>
+          <el-button @click="dialog.resetVisible = false">{{ $t('batchOperate_dialog_reset_cancel_button') }}</el-button>
+          <el-button type="primary" @click="deviceReset()">{{ $t('batchOperate_dialog_reset_reset_button') }}</el-button>
         </div>
       </div>
     </el-dialog>
@@ -142,20 +143,20 @@
       class="reset__dialog"
       width="400px">
       <div class="pl30 pr30">
-        <p class="reset__dialog--title">删除设备</p>
+        <p class="reset__dialog--title">{{ $t('batchOperate_dialog_delete_title') }}</p>
         <p>
           <el-radio v-model="deleteType" :label="true">
-            同时删除系统和设备上的数据
+            {{ $t('batchOperate_dialog_delete_radio1') }}
           </el-radio>
         </p>
         <p>
           <el-radio v-model="deleteType" :label="false">
-            删除系统数据，保留设备上的数据
+            {{ $t('batchOperate_dialog_delete_radio2') }}
           </el-radio>
         </p>
         <div class="ac pt30">
-          <el-button @click="dialog.deleteVisible = false">取消</el-button>
-          <el-button type="primary" @click="deviceBatchDel()">删除</el-button>
+          <el-button @click="dialog.deleteVisible = false">{{ $t('batchOperate_dialog_delete_cancel_button') }}</el-button>
+          <el-button type="primary" @click="deviceBatchDel()">{{ $t('batchOperate_dialog_delete_delete_button') }}</el-button>
         </div>
       </div>
     </el-dialog>
@@ -166,9 +167,9 @@
       width="860px">
       <div>
         <el-table class="table__fail" :data="failList" :height="300">
-          <el-table-column prop="deviceName" label="设备名称" min-width="80"></el-table-column>
-          <el-table-column prop="deviceKey" label="设备序列号" min-width="80"></el-table-column>
-          <el-table-column prop="reason" label="失败原因" min-width="200">
+          <el-table-column prop="deviceName" :label="$t('batchOperate_dialog_fail_table_deviceName')" min-width="80"></el-table-column>
+          <el-table-column prop="deviceKey" :label="$t('batchOperate_dialog_fail_table_deviceKey')" min-width="80"></el-table-column>
+          <el-table-column prop="reason" :label="$t('batchOperate_dialog_fail_table_reason')" min-width="200">
             <template slot-scope="scope">
               <span class="f-red">{{ scope.row.reason }}</span>
             </template>
@@ -178,7 +179,7 @@
     </el-dialog>
 
     <el-dialog
-      title="修改密码"
+      :title="$t('batchOperate_dialog_psw_title')"
       :visible.sync="dialog.pswVisible"
       width="400px">
       <div v-if="dialog.pswVisible">
@@ -190,7 +191,7 @@
           :hide-required-asterisk="true"
           label-position="top">
           <div class="none"><input type="password"></div>
-          <el-form-item label="输入Admin密码" prop="adminPass">
+          <el-form-item :label="$t('batchOperate_dialog_psw_form_adminPass')" prop="adminPass">
             <el-input
               v-model="pswForm.adminPass"
               placeholder=""
@@ -198,7 +199,7 @@
               show-password>
             </el-input>
           </el-form-item>
-          <el-form-item label="新密码" prop="newPass">
+          <el-form-item :label="$t('batchOperate_dialog_psw_form_newPass')" prop="newPass">
             <el-input
               v-model="pswForm.newPass"
               placeholder=""
@@ -206,7 +207,7 @@
               show-password>
             </el-input>
           </el-form-item>
-          <el-form-item label="重复密码" prop="confirmPass">
+          <el-form-item :label="$t('batchOperate_dialog_psw_form_confirmPass')" prop="confirmPass">
             <el-input
               v-model="pswForm.confirmPass"
               placeholder=""
@@ -215,8 +216,8 @@
             </el-input>
           </el-form-item>
           <div class="ac pt10">
-            <el-button @click="dialog.pswVisible = false">取消</el-button>
-            <el-button type="primary" @click="deviceSetPsw()">修改</el-button>
+            <el-button @click="dialog.pswVisible = false">{{ $t('batchOperate_dialog_psw_form_cancel_button') }}</el-button>
+            <el-button type="primary" @click="deviceSetPsw()">{{ $t('batchOperate_dialog_psw_form_update_button') }}</el-button>
           </div>
         </el-form>
       </div>
@@ -259,7 +260,7 @@ export default {
           { validator: rules.passwordRule, trigger: 'blur' }
         ],
         newPass: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: this.$t('batchOperate_pswFormRules_newPass_required'), trigger: 'blur' }
         ],
         confirmPass: [
           { validator: psw2Validate, trigger: 'blur' }
@@ -269,7 +270,7 @@ export default {
         children: 'children',
         label: 'deviceName',
         disabled: (data) => {
-          return !!data.expType
+          return data.expType === 1 || data.expType === 3
         }
       },
       dataTree: [],
@@ -281,19 +282,19 @@ export default {
     failTitle () {
       switch (this.operateType) {
         case 1:
-          return '重启失败设备'
+          return this.$t('batchOperate_computed_failTitle1')
         case 2:
-          return '重置失败设备'
+          return this.$t('batchOperate_computed_failTitle2')
         case 3:
-          return '禁用失败设备'
+          return this.$t('batchOperate_computed_failTitle3')
         case 4:
-          return '启用失败设备'
+          return this.$t('batchOperate_computed_failTitle4')
         case 8:
-          return '修改密码失败设备'
+          return this.$t('batchOperate_computed_failTitle8')
         case 9:
-          return '删除失败设备'
+          return this.$t('batchOperate_computed_failTitle9')
         default:
-          return '重启失败设备'
+          return this.$t('batchOperate_computed_failTitle1')
       }
     }
   },
@@ -313,14 +314,14 @@ export default {
             return
           }
           const deviceGroupIds = Array.from(new Set(list.map(ele => ele.deviceGroupId)))
-          let tree = [{ deviceName: '全部', id: 'all', children: [] }]
+          let tree = [{ deviceName: this.$t('batchOperate_methode_getdevicelist_all'), id: 'all', children: [] }]
           deviceGroupIds.forEach(id => {
             if (id) {
               const devices = list.filter(ele => ele.deviceGroupId === id)
               tree[0].children.push({ deviceName: devices[0].deviceGroup, id: `group-${id}`, children: devices })
             } else {
               const devices = list.filter(ele => !ele.deviceGroupId)
-              tree[0].children.push({ deviceName: '未分组', id: 'noGroup', children: devices })
+              tree[0].children.push({ deviceName: this.$t('batchOperate_methode_getdevicelist_noGroup'), id: 'noGroup', children: devices })
             }
           })
           this.allDeviceNum = list.length
@@ -333,7 +334,18 @@ export default {
       return data.deviceName.indexOf(value) !== -1
     },
     handleCheckChange (data, check) {
+      if (this.checkList.length > 50 && check) {
+        this.$message.warning(this.$t('batchOperate_methode_handleCheckChange_warning'))
+        return
+      }
       if (check) {
+        if ((this.checkList[0] && this.checkList[0].expType === 2 && !data.expType) ||
+            (this.checkList[0] && !this.checkList[0].expType && data.expType === 2)) {
+          this.$nextTick(() => {
+            this.$refs.tree.setChecked(data.id, false)
+          })
+          return
+        }
         if (data.deviceKey && this.checkList.every(ele => ele.id !== data.id)) {
           this.checkList.push(data)
         }
@@ -357,11 +369,11 @@ export default {
     },
     handleOperate () {
       if (!this.checkList.length) {
-        this.$message.warning('请先选择设备！')
+        this.$message.warning(this.$t('batchOperate_methode_handleOperate_warning1'))
         return
       }
       if (!this.operateType) {
-        this.$message.warning('请先选择操作选项！')
+        this.$message.warning(this.$t('batchOperate_methode_handleOperate_warning2'))
         return
       }
       switch (this.operateType) {
@@ -407,8 +419,8 @@ export default {
       }
     },
     deviceReStart () {
-      this.$confirm('设备将会终止当前任务进入重启，是否确认进入重启', '设备重启', {
-        confirmButtonText: '重启',
+      this.$confirm(this.$t('batchOperate_methode_deviceReStart_confirm1'), this.$t('batchOperate_methode_deviceReStart_confirm2'), {
+        confirmButtonText: this.$t('batchOperate_methode_deviceReStart_confirm4'),
         center: true
       }).then(() => {
         const params = {
@@ -421,7 +433,7 @@ export default {
             if (this.failList.length) {
               this.dialog.failVisible = true
             } else {
-              this.$message.success('设备重启成功！')
+              this.$message.success(this.$t('batchOperate_methode_deviceReStart_confirm3'))
             }
           }
         })
@@ -429,11 +441,11 @@ export default {
     },
     deviceDisabled () {
       this.$confirm(`
-        <p>设备禁用后，将无法使用</p>
-        <p>禁用后，您可以点击启用重新使用设备</p>`, '设备禁用', {
+        <p>${this.$t('batchOperate_methode_deviceDisabled_confirm1')}</p>
+        <p>${this.$t('batchOperate_methode_deviceDisabled_confirm2')}</p>`, this.$t('batchOperate_methode_deviceDisabled_confirm3'), {
         customClass: 'delete__box--confirm',
         dangerouslyUseHTMLString: true,
-        confirmButtonText: '禁用',
+        confirmButtonText: this.$t('batchOperate_methode_deviceDisabled_confirm4'),
         center: true
       }).then(() => {
         const params = {
@@ -446,15 +458,15 @@ export default {
             if (this.failList.length) {
               this.dialog.failVisible = true
             } else {
-              this.$message.success('设备禁用成功！')
+              this.$message.success(this.$t('batchOperate_methode_deviceDisabled_confirm5'))
             }
           }
         })
       }, () => {})
     },
     deviceEnable () {
-      this.$confirm('设备启用后，将会正常运行', '设备启用', {
-        confirmButtonText: '启用',
+      this.$confirm(this.$t('batchOperate_methode_deviceEnable_confirm1'), this.$t('batchOperate_methode_deviceEnable_confirm2'), {
+        confirmButtonText: this.$t('batchOperate_methode_deviceEnable_confirm3'),
         center: true
       }).then(() => {
         const params = {
@@ -467,7 +479,7 @@ export default {
             if (this.failList.length) {
               this.dialog.failVisible = true
             } else {
-              this.$message.success('设备启用成功！')
+              this.$message.success(this.$t('batchOperate_methode_deviceEnable_confirm4'))
             }
           }
         })
@@ -475,7 +487,7 @@ export default {
     },
     deviceReset () {
       if (this.resetType === '') {
-        this.$message.warning('请选择重置方式！')
+        this.$message.warning(this.$t('batchOperate_methode_deviceReset_warning'))
         return
       }
       const params = {
@@ -490,7 +502,7 @@ export default {
           if (this.failList.length) {
             this.dialog.failVisible = true
           } else {
-            this.$message.success('设备重置成功！')
+            this.$message.success(this.$t('batchOperate_methode_deviceReset_success'))
           }
         }
       })
@@ -518,7 +530,7 @@ export default {
               if (this.failList.length) {
                 this.dialog.failVisible = true
               } else {
-                this.$message.success('设备修改密码成功！')
+                this.$message.success(this.$t('batchOperate_methode_deviceSetPsw_success'))
               }
             }
           })
@@ -527,11 +539,11 @@ export default {
     },
     deviceBatchDel () {
       if (this.deleteType === '') {
-        this.$message.warning('请选择删除方式！')
+        this.$message.warning(this.$t('batchOperate_methode_deviceBatchDel_warning'))
         return
       }
       const params = {
-        deviceKeyList: JSON.stringify(this.checkList.map(ele => ele.deviceKey)),
+        deviceKeyList: this.checkList.map(ele => ele.deviceKey),
         clearDevice: this.deleteType
       }
       api.deleteDevice(params).then(res => {
@@ -541,7 +553,7 @@ export default {
           if (this.failList.length) {
             this.dialog.failVisible = true
           } else {
-            this.$message.success('设备删除成功！')
+            this.$message.success(this.$t('batchOperate_methode_deviceBatchDel_success'))
           }
         }
       })
@@ -554,6 +566,16 @@ export default {
           }
         })
       })
+    }
+  },
+  watch: {
+    'checkList.length' (val) {
+      if (this.checkList[0] && this.checkList[0].expType === 2 && this.operateType !== 4) {
+        this.operateType = ''
+      }
+      if (this.checkList[0] && !this.checkList[0].expType && this.operateType === 4) {
+        this.operateType = ''
+      }
     }
   }
 }
@@ -587,6 +609,11 @@ export default {
     .scroll--y{
       border: none;
       padding: 0;
+    }
+    .tip{
+      color: #909399;
+      font-size: 12px;
+      margin: 20px 0 0 12px;
     }
   }
 }

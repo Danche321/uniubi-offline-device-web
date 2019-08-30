@@ -7,10 +7,10 @@
                     {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                    <el-dropdown-item @click.native="logout">{{$t('components_header_login_logout_text')}}</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
-            <el-button v-else type="primary" class="box--unLogin__btn" @click="$router.push('/login')">登录</el-button>
+            <el-button v-else type="primary" class="box--unLogin__btn" @click="$router.push('/login')">{{$t('components_header_login_login_text')}}</el-button>
         </div>
     </div>
 </template>
@@ -20,19 +20,19 @@ export default {
   name: 'HeaderLogin',
   data () {
     return {
-      version: '客户端系统V1.0',
+      version: this.$t('components_header_login_version'),
       userName: this.$store.state.userInfo && JSON.parse(this.$store.state.userInfo).username,
       hasLogin: this.$store.state.userInfo
     }
   },
   methods: {
     logout () {
-      this.$confirm('是否确认退出登录?', '退出登录？', {
+      this.$confirm(this.$t('components_header_login_logout_confirm_text'), this.$t('components_header_login_logout_confirm_certain'), {
         customClass: 'delete-message',
         center: true
       }).then(() => {
         this.$store.dispatch('handleLogout').then(() => {
-          this.$message.success('退出成功！')
+          this.$message.success(this.$t('components_header_login_logout_confirm_success'))
           this.$router.push('/login')
         })
       })

@@ -1,4 +1,5 @@
 import Main from '@/components/main'
+import i18n from '@/locale'
 
 export default [
   {
@@ -14,7 +15,7 @@ export default [
     name: 'login',
     component: () => import('@/views/main/login.vue'),
     meta: {
-      title: '登录',
+      title: i18n.t('router_main_login'),
       hideInMenu: true,
       noLogin: true
     }
@@ -24,7 +25,7 @@ export default [
     name: 'newPassword',
     component: () => import('@/views/main/new-password/index.vue'),
     meta: {
-      title: '设置新密码',
+      title: i18n.t('router_main_newPassword'),
       hideInMenu: true
     }
   },
@@ -33,7 +34,7 @@ export default [
     name: 'lostPassword',
     component: () => import('@/views/main/lost-password/index.vue'),
     meta: {
-      title: '找回密码',
+      title: i18n.t('router_main_lostPassword'),
       hideInMenu: true,
       noLogin: true
     }
@@ -43,7 +44,7 @@ export default [
     name: 'completeCompany',
     component: () => import('@/views/main/complete-company.vue'),
     meta: {
-      title: '完善公司信息',
+      title: i18n.t('router_main_completeCompany'),
       hideInMenu: true
     }
   },
@@ -51,7 +52,7 @@ export default [
     path: '/reset-password',
     component: Main,
     meta: {
-      title: '修改密码',
+      title: i18n.t('router_main_resetPassword'),
       hideInMenu: true
     },
     children: [
@@ -66,7 +67,7 @@ export default [
     path: '/company',
     component: Main,
     meta: {
-      title: '公司信息',
+      title: i18n.t('router_main_company'),
       hideInMenu: true
     },
     children: [
@@ -81,7 +82,7 @@ export default [
     path: '/client-setting',
     component: Main,
     meta: {
-      title: '客户端设置',
+      title: i18n.t('router_main_clientSetting'),
       hideInMenu: true
     },
     children: [
@@ -98,7 +99,7 @@ export default [
     redirect: '/home/index',
     component: Main,
     meta: {
-      title: '首页',
+      title: i18n.t('router_main_home'),
       icon: 'icon-Nav_Home'
     },
     children: [
@@ -107,7 +108,7 @@ export default [
         name: 'index',
         component: () => import('@/views/home/home.vue'),
         meta: {
-          title: '首页'
+          title: i18n.t('router_main_index')
         }
       }
     ]

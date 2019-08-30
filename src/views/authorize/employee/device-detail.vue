@@ -1,17 +1,17 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title" @click="$router.back()"><i class="iconfont icon-retreat"></i>授权详情</span>
+      <span class="page__header--title" @click="$router.back()"><i class="iconfont icon-retreat"></i>{{$t('authorize_deviceDetail_title_text')}}</span>
     </div>
 
     <div class="page__content">
       <div class="content__header">
-        <p class="content__title">设备信息</p>
+        <p class="content__title">{{$t('authorize_deviceDetail_deviceInfo_title')}}</p>
         <div class="header__info">
-          <span>设备名称：{{ $route.query.deviceName }}</span>
-          <span class="ml30">序列号：{{ $route.query.deviceKey }}</span>
+          <span>{{$t('authorize_deviceDetail_deviceInfo_deviceName_label')}}{{ $route.query.deviceName }}</span>
+          <span class="ml30">{{$t('authorize_deviceDetail_deviceInfo_deviceKey_label')}}{{ $route.query.deviceKey }}</span>
         </div>
-        <p class="content__title mt30 mb10">授权人员信息</p>
+        <p class="content__title mt30 mb10">{{$t('authorize_deviceDetail_personInfo_title')}}</p>
       </div>
       <el-form
         ref="filterForm"
@@ -19,13 +19,13 @@
         label-position="top"
         :inline="true"
       >
-        <el-form-item label="人员">
+        <el-form-item :label="$t('authorize_deviceDetail_personInfo_search_emp_label')">
           <emp-tree-select
             v-leftClear
             v-model="searchParams.empId"
           ></emp-tree-select>
         </el-form-item>
-        <el-form-item label="员工编号">
+        <el-form-item :label="$t('authorize_deviceDetail_personInfo_search_empNo_label')">
           <el-input
             v-model="searchParams.empNo"
             maxlength="32"
@@ -34,40 +34,40 @@
         </el-form-item>
 
         <el-form-item class="btn__search">
-          <el-button icon="iconfont icon-search" @click="getEmpList(1)">查询</el-button>
+          <el-button icon="iconfont icon-search" @click="getEmpList(1)">{{$t('common_search')}}</el-button>
         </el-form-item>
       </el-form>
       <el-tabs v-model="activeTab" @tab-click="getEmpList(1)">
-        <el-tab-pane :label="`授权成功(${tabNums.finishNum})`" name="1"></el-tab-pane>
-        <el-tab-pane :label="`人员已存在(${tabNums.expPersonNum})`" name="2"></el-tab-pane>
-        <el-tab-pane :label="`照片失败(${tabNums.expFaceNum})`" name="3"></el-tab-pane>
+        <el-tab-pane :label="`${$t('authorize_deviceDetail_personInfo_tabs_finish_label')}(${tabNums.finishNum})`" name="1"></el-tab-pane>
+        <el-tab-pane :label="`${$t('authorize_deviceDetail_personInfo_tabs_expPerson_label')}(${tabNums.expPersonNum})`" name="2"></el-tab-pane>
+        <el-tab-pane :label="`${$t('authorize_deviceDetail_personInfo_tabs_expFace_label')}(${tabNums.expFaceNum})`" name="3"></el-tab-pane>
       </el-tabs>
       <el-table :data="listData" height="100%">
         <el-table-column
           v-if="activeTab!=='2'"
           prop="faceId"
-          label="照片"
+          :label="$t('authorize_deviceDetail_personInfo_table_header_faces_label')"
           min-width="80"
         >
           <template slot-scope="scope">
-            <img v-for="(item, index) in scope.row.faceIds" :key="index" class="m-avatar40 mr10" :src="`${baseUrl}/file/face/${item}`" alt="照片">
+            <img v-for="(item, index) in scope.row.faceIds" :key="index" class="m-avatar40 mr10" :src="`${baseUrl}/file/face/${item}`" :alt="$t('authorize_deviceDetail_personInfo_table_header_faces_label')">
           </template>
         </el-table-column>
         <el-table-column
           prop="empName"
-          label="姓名"
+          :label="$t('authorize_deviceDetail_personInfo_table_header_empName_label')"
           min-width="80"
         ></el-table-column>
         <el-table-column
           prop="empNo"
-          label="员工编号"
+          :label="$t('authorize_deviceDetail_personInfo_table_header_empNo_label')"
           min-width="80"
           :show-overflow-tooltip="true"
         ></el-table-column>
         <el-table-column
           v-if="activeTab === 'third'"
           prop="failedReason"
-          label="失败原因"
+          :label="$t('authorize_deviceDetail_personInfo_table_header_failedReason_label')"
           min-width="80"
         >
           <template slot-scope="scope">

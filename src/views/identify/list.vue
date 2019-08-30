@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">识别记录</span>
+      <span class="page__header--title">{{$t('identify_list_title_text')}}</span>
       <el-dropdown>
         <span class="el-dropdown-link">
-          导出<i class="el-icon-arrow-down el-icon--right"></i>
+          {{$t('identify_list_title_export_button')}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item v-for="(item, index) in exportTypes" :key="index" @click.native="handleExport(item.type)">{{item.text}}</el-dropdown-item>
@@ -26,58 +26,58 @@
           :inline="true"
           :model="searchParams"
         >
-          <el-form-item label="设备组">
+          <el-form-item :label="$t('identify_list_search_deviceGroupId_label')">
             <el-select v-model="searchParams.deviceGroupId" filterable clearable v-leftClear>
               <el-option v-for="item in deviceGroupList" :key="item.id" :value="item.id" :label="item.groupName"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="设备名称">
+          <el-form-item :label="$t('identify_list_search_deviceName_label')">
             <el-input
               v-model.trim="searchParams.deviceName"
               maxlength="32"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="时间">
+          <el-form-item :label="$t('identify_list_search_time_label')">
             <date-picker-range
               :startTime.sync="searchParams.startTime"
               :endTime.sync="searchParams.endTime"
             ></date-picker-range>
           </el-form-item>
-          <el-form-item label="比对结果">
+          <el-form-item :label="$t('identify_list_search_identifyType_label')">
             <el-select v-model="searchParams.identifyType" clearable v-leftClear>
               <el-option v-for="item in identityTypes" :key="item.type" :value="item.type" :label="item.text"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="部门">
+          <el-form-item :label="$t('identify_list_search_departmentId_label')">
             <dep-tree-select v-leftClear v-model="searchParams.departmentId"></dep-tree-select>
           </el-form-item>
-          <el-form-item label="人员">
+          <el-form-item :label="$t('identify_list_search_empId_label')">
             <emp-tree-select v-leftClear v-model="searchParams.empId"></emp-tree-select>
           </el-form-item>
-          <el-form-item label="员工编号">
+          <el-form-item :label="$t('identify_list_search_empNo_label')">
             <el-input
               v-model.trim="searchParams.empNo"
               maxlength="32"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="识别模式">
+          <el-form-item :label="$t('identify_list_search_recognitionType_label')">
             <el-select v-model="searchParams.recognitionType" clearable v-leftClear>
               <el-option v-for="item in recognitionType" :key="item.type" :value="item.type" :label="item.text"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="准入时间判断">
+          <el-form-item :label="$t('identify_list_search_passTimeType_label')">
             <el-select v-model="searchParams.passTimeType" clearable v-leftClear>
               <el-option v-for="item in passTimeTypes" :key="item.type" :value="item.type" :label="item.text"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="活体判断">
+          <el-form-item :label="$t('identify_list_search_aliveBody_label')">
             <el-select v-model="searchParams.aliveBody" clearable v-leftClear>
               <el-option v-for="item in aliveBodyType" :key="item.type" :value="item.type" :label="item.text"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="有效期判断">
+          <el-form-item :label="$t('identify_list_search_permissionTimeType_label')">
             <el-select v-model="searchParams.permissionTimeType" clearable v-leftClear>
               <el-option v-for="item in permissionTimeTypes" :key="item.type" :value="item.type" :label="item.text"></el-option>
             </el-select>
@@ -89,12 +89,12 @@
           >
             <el-form-item class="btn__search">
               <el-button icon="iconfont icon-search" @click="handleQuery('firstPage')"
-                >查询</el-button
+                >{{$t('common_search')}}</el-button
               >
             </el-form-item>
             <el-form-item class="btn__expand">
               <span @click="filterOption.showMore = !filterOption.showMore" v-if="filterOption.showExpandBtn">
-                {{ filterOption.showMore ? "收起" : "展开" }}
+                {{ filterOption.showMore ? $t('identify_list_search_close_text') : $t('identify_list_search_open_text') }}
                 <i
                   class="iconfont"
                   :class="{
@@ -110,46 +110,46 @@
 
       <el-table :data="listData" height="100%" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="46" fixed></el-table-column>
-        <el-table-column prop="employeeVO.name" label="姓名" width="100" fixed></el-table-column>
-        <el-table-column prop="faces" width="100" label="抓拍照片">
+        <el-table-column prop="employeeVO.name" :label="$t('identify_list_table_header_name_label')" width="100" fixed></el-table-column>
+        <el-table-column prop="faces" width="100" :label="$t('identify_list_table_header_photoId_label')">
           <template slot-scope="scope">
-            <img v-if="scope.row.photoId" class="m-avatar40" :src="`${baseUrl}/file/image/${scope.row.photoId}`" alt="头像" />
+            <img v-if="scope.row.photoId" class="m-avatar40" :src="`${baseUrl}/file/image/${scope.row.photoId}`" :alt="$t('identify_list_table_header_photoId_img_alt')" />
             <span v-else>-</span>
           </template>
         </el-table-column>
-        <el-table-column width="200" label="部门" :show-overflow-tooltip="true">
+        <el-table-column width="200" :label="$t('identify_list_table_header_depName_label')" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <span>{{scope.row.employeeVO&&scope.row.employeeVO.empDepVOS.map(item => item.depName).join('、')}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="120" prop="employeeVO.empNo" label="人员编号" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column width="120" prop="deviceBO.deviceGroup" label="设备组" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column width="120" prop="deviceBO.deviceName" label="设备名称" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column width="200" prop="deviceBO.deviceKey" label="设备序列号" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column width="200" prop="recognitionTime" label="识别时间"></el-table-column>
-        <el-table-column width="120" prop="recognitionType" label="识别模式">
+        <el-table-column width="120" prop="employeeVO.empNo" :label="$t('identify_list_table_header_empNo_label')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column width="120" prop="deviceBO.deviceGroup" :label="$t('identify_list_table_header_deviceGroup_label')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column width="120" prop="deviceBO.deviceName" :label="$t('identify_list_table_header_deviceName_label')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column width="200" prop="deviceBO.deviceKey" :label="$t('identify_list_table_header_deviceKey_label')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column width="200" prop="recognitionTime" :label="$t('identify_list_table_header_recognitionTime_label')"></el-table-column>
+        <el-table-column width="120" prop="recognitionType" :label="$t('identify_list_table_header_recognitionType_label')">
           <template slot-scope="scope">
-            <span>{{scope.row.recognitionType|filterIdentifyType}}</span>
+            <span>{{scope.row.recognitionType|filterIdentifyType($t('identify_list_recognitionType_value_face'), $t('identify_list_recognitionType_value_card'), $t('identify_list_recognitionType_value_all'), $t('identify_list_recognitionType_value_idCard'))}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="80" prop="identifyType" label="比对结果">
+        <el-table-column width="80" prop="identifyType" :label="$t('identify_list_table_header_identifyType_label')">
           <template slot-scope="scope">
-            <span :class="scope.row.identifyType===1?'m-radio-success':'m-radio-failed'">{{scope.row.identifyType===1?'成功':'失败'}}</span>
+            <span :class="scope.row.identifyType===1?'m-radio-success':'m-radio-failed'">{{scope.row.identifyType===1?$t('identify_list_identifyType_value_success'):$t('identify_list_identifyType_value_fail')}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="140" label="活体">
+        <el-table-column width="140" :label="$t('identify_list_table_header_aliveBody_label')">
           <template slot-scope="scope">
-            <span>{{scope.row.aliveBody|filterAlive}}</span>
+            <span>{{scope.row.aliveBody|filterAlive($t('identify_list_aliveBody_value_true'), $t('identify_list_aliveBody_value_false'), $t('identify_list_aliveBody_value_no'))}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="120" prop="passTimeType" label="准入时间">
+        <el-table-column width="120" prop="passTimeType" :label="$t('identify_list_table_header_passTimeType_label')">
           <template slot-scope="scope">
-            <span :class="{'f-red': scope.row.passTimeType===2}">{{scope.row.passTimeType|filterPassTimeType}}</span>
+            <span :class="{'f-red': scope.row.passTimeType===2}">{{scope.row.passTimeType|filterPassTimeType($t('identify_list_passTimeTypes_value_true'), $t('identify_list_passTimeTypes_value_false'), $t('identify_list_passTimeTypes_value_no'))}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="120" prop="permissionTimeType" label="有效期">
+        <el-table-column width="120" prop="permissionTimeType" :label="$t('identify_list_table_header_permissionTimeType_label')">
           <template slot-scope="scope">
-            <span :class="{'f-red': scope.row.permissionTimeType===2}">{{scope.row.permissionTimeType===1?'有效期内':'未在有效期'}}</span>
+            <span :class="{'f-red': scope.row.permissionTimeType===2}">{{scope.row.permissionTimeType===1?$t('identify_list_permissionTimeType_value_true'):$t('identify_list_permissionTimeType_value_false')}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -203,48 +203,48 @@ export default {
       },
       listData: [],
       exportTypes: [
-        { text: '选中', type: 1 },
-        { text: '搜索结果', type: 2 },
-        { text: '全部', type: 3 }
+        { text: this.$t('identify_list_title_exportTypes_choose'), type: 1 },
+        { text: this.$t('identify_list_title_exportTypes_result'), type: 2 },
+        { text: this.$t('identify_list_title_exportTypes_all'), type: 3 }
       ],
       exportParams: null,
       checkList: [],
       deviceGroupList: [], // 设备组
       recognitionType: [ // 识别模式
-        { type: 1, text: '人脸识别' },
-        { type: 2, text: '刷卡识别' },
-        { type: 3, text: '人卡合一' },
-        { type: 4, text: '认证对比' }
+        { type: 1, text: this.$t('identify_list_recognitionType_value_face') },
+        { type: 2, text: this.$t('identify_list_recognitionType_value_card') },
+        { type: 3, text: this.$t('identify_list_recognitionType_value_all') },
+        { type: 4, text: this.$t('identify_list_recognitionType_value_idCard') }
       ],
       passTimeTypes: [ // 准入时间判断
-        { type: 1, text: '准入时间内' },
-        { type: 2, text: '未在准入时间内' },
-        { type: 3, text: '未设置' }
+        { type: 1, text: this.$t('identify_list_passTimeTypes_value_true') },
+        { type: 2, text: this.$t('identify_list_passTimeTypes_value_false') },
+        { type: 3, text: this.$t('identify_list_passTimeTypes_value_no') }
       ],
       aliveBodyType: [ // 活体判断
-        { type: 1, text: '活体' },
-        { type: 2, text: '非活体' }
+        { type: 1, text: this.$t('identify_list_aliveBody_value_true') },
+        { type: 2, text: this.$t('identify_list_aliveBody_value_false') }
       ],
       permissionTimeTypes: [ // 有效期判断
-        { type: 1, text: '有效期内' },
-        { type: 2, text: '未在有效期内' },
-        { type: 3, text: '未设置' }
+        { type: 1, text: this.$t('identify_list_permissionTimeType_value_true') },
+        { type: 2, text: this.$t('identify_list_permissionTimeType_value_false') },
+        { type: 3, text: this.$t('identify_list_permissionTimeType_value_no') }
       ],
       identityTypes: [ // 比对结果
-        { type: 1, text: '比对成功' },
-        { type: 2, text: '比对失败' }
+        { type: 1, text: this.$t('identify_list_identifyType_result_value_success') },
+        { type: 2, text: this.$t('identify_list_identifyType_result_value_fail') }
       ]
     }
   },
   filters: {
-    filterAlive (type) {
+    filterAlive (type, valueTrue, valueFalse, valueNo) {
       switch (type) {
         case 1:
-          return '活体'
+          return valueTrue
         case 2:
-          return '非活体'
+          return valueFalse
         case 3:
-          return '未进行活体判断'
+          return valueNo
       }
     },
     filterIcon (status) {
@@ -257,26 +257,26 @@ export default {
           return 'icon-failure'
       }
     },
-    filterPassTimeType (type) {
+    filterPassTimeType (type, valueTrue, valueFalse, valueNo) {
       switch (type) {
         case 1:
-          return '准入时间内'
+          return valueTrue
         case 2:
-          return '未在准入时间'
+          return valueFalse
         case 3:
-          return '未设置'
+          return valueNo
       }
     },
-    filterIdentifyType (type) {
+    filterIdentifyType (type, face, card, all, idCard) {
       switch (type) {
         case 1:
-          return '人脸识别'
+          return face
         case 2:
-          return '刷卡识别'
+          return card
         case 3:
-          return '人卡合一'
+          return all
         case 4:
-          return '人证对比'
+          return idCard
         default:
           return '-'
       }
@@ -320,14 +320,14 @@ export default {
       let params
       if (type === 1) { // 选中
         if (!this.checkList.length) {
-          return this.$message.error('请选择要导出的数据')
+          return this.$message.error(this.$t('identify_list_export_error_empty'))
         } else {
           const checkIds = this.checkList.map(item => item.id)
           params = { recognitionIdList: checkIds }
         }
       } else if (type === 2) { // 搜索结果
         if (!this.listData.length) {
-          return this.$message.error('没有可导出的数据')
+          return this.$message.error(this.$t('identify_list_export_error_no'))
         } else {
           params = Object.assign({}, this.searchParams, { pageNum: -1 })
         }

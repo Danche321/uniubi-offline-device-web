@@ -2,37 +2,65 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>查看详情
+        <i class="iconfont icon-retreat"></i>{{ $t('export_detail_page_title') }}
       </span>
     </div>
 
     <div class="page__content">
       <div class="w100">
         <p class="tip">
-          已成功上传{{ pageSuccessParams.total }}人，上传失败{{ pageFailParams.total }}人
+          {{ $t('export_detail_tip_text_1') }}{{ pageSuccessParams.total }}{{ $t('export_detail_tip_text_3') }}，{{ $t('export_detail_tip_text_2') }}{{ pageFailParams.total }}{{ $t('export_detail_tip_text_3') }}
         </p>
         <div class="mt10">
           <el-button class="btn--blue" @click="importFailExcel()">
-            导出失败的记录
+            {{ $t('export_detail_top_btn') }}
           </el-button>
-          <span class="ml10">下载记录重新编辑，可再次上传</span>
+          <span class="ml10">{{ $t('export_detail_tip_text_4') }}</span>
           <span class="fr mt10">{{ $route.query.time }}</span>
         </div>
       </div>
 
       <el-tabs v-model="activeTab" @tab-click="handleTabChange">
-        <el-tab-pane label="上传成功记录" name="success">
+        <el-tab-pane :label="$t('export_detail_tab1')" name="success">
           <el-table :data="empSuccessList" height="100%">
-            <el-table-column prop="name" label="姓名" min-width="90"></el-table-column>
-            <el-table-column prop="workNo" label="工号" min-width="120"></el-table-column>
-            <el-table-column prop="phone" label="手机号" min-width="120"></el-table-column>
-            <el-table-column prop="empNo" label="员工编号" min-width="140" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="cardNo" label="卡号" min-width="130"></el-table-column>
-            <el-table-column prop="role" label="职称" min-width="80"></el-table-column>
-            <el-table-column prop="depName" label="部门" min-width="85" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="entryTime" label="入职时间" min-width="100">
+            <el-table-column prop="name" :label="$t('export_detail_table_label1')" min-width="90">
+              <template slot-scope="{ row }">
+                {{ row.name || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="workNo" :label="$t('export_detail_table_label2')" min-width="120">
+              <template slot-scope="{ row }">
+                {{ row.workNo || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="phone" :label="$t('export_detail_table_label3')" min-width="120">
+              <template slot-scope="{ row }">
+                {{ row.phone || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="empNo" :label="$t('export_detail_table_label4')" min-width="140" :show-overflow-tooltip="true">
+              <template slot-scope="{ row }">
+                {{ row.empNo || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="cardNo" :label="$t('export_detail_table_label5')" min-width="130">
+              <template slot-scope="{ row }">
+                {{ row.cardNo || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="role" :label="$t('export_detail_table_label6')" min-width="80">
+              <template slot-scope="{ row }">
+                {{ row.role || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="depName" :label="$t('export_detail_table_label7')" min-width="85" :show-overflow-tooltip="true">
+              <template slot-scope="{ row }">
+                {{ row.depName || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="entryTime" :label="$t('export_detail_table_label8')" min-width="100">
               <template slot-scope="scope">
-                {{ scope.row.entryTime && scope.row.entryTime.split(' ')[0] }}
+                {{ scope.row.entryTime && scope.row.entryTime.split(' ')[0] || '--' }}
               </template>
             </el-table-column>
           </el-table>
@@ -42,23 +70,51 @@
           </m-pagination>
         </el-tab-pane>
 
-        <el-tab-pane label="上传失败记录" name="fail">
+        <el-tab-pane :label="$t('export_detail_tab2')" name="fail">
           <el-table :data="empFailList" height="100%">
-            <el-table-column prop="name" label="姓名" min-width="90"></el-table-column>
-            <el-table-column prop="workNo" label="工号" min-width="120"></el-table-column>
-            <el-table-column prop="phone" label="手机号" min-width="120"></el-table-column>
-            <el-table-column prop="empNo" label="员工编号" min-width="140" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="cardNo" label="卡号" min-width="130"></el-table-column>
-            <el-table-column prop="role" label="职称" min-width="80"></el-table-column>
-            <el-table-column prop="depName" label="部门" min-width="85" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="entryTime" label="入职时间" min-width="100">
+            <el-table-column prop="name" :label="$t('export_detail_table_label1')" min-width="90">
+              <template slot-scope="{ row }">
+                {{ row.name || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="workNo" :label="$t('export_detail_table_label2')" min-width="120">
+              <template slot-scope="{ row }">
+                {{ row.workNo || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="phone" :label="$t('export_detail_table_label3')" min-width="120">
+              <template slot-scope="{ row }">
+                {{ row.phone || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="empNo" :label="$t('export_detail_table_label4')" min-width="140" :show-overflow-tooltip="true">
+              <template slot-scope="{ row }">
+                {{ row.empNo || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="cardNo" :label="$t('export_detail_table_label5')" min-width="130">
+              <template slot-scope="{ row }">
+                {{ row.cardNo || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="role" :label="$t('export_detail_table_label6')" min-width="80">
+              <template slot-scope="{ row }">
+                {{ row.role || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="depName" :label="$t('export_detail_table_label7')" min-width="85" :show-overflow-tooltip="true">
+              <template slot-scope="{ row }">
+                {{ row.depName || '--' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="entryTime" :label="$t('export_detail_table_label8')" min-width="100">
               <template slot-scope="scope">
-                {{ scope.row.entryTime && scope.row.entryTime.split(' ')[0] }}
+                {{ scope.row.entryTime && scope.row.entryTime.split(' ')[0] || '--' }}
               </template>
             </el-table-column>
             <el-table-column
               prop="reason"
-              label="错误原因"
+              :label="$t('export_detail_table_label9')"
               min-width="90"
               :show-overflow-tooltip="true">
               <template slot-scope="scope">
@@ -66,15 +122,17 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="操作"
+              :label="$t('export_detail_table_label10')"
               min-width="50"
               class-name="table__icon--btn">
               <template slot-scope="scope">
                 <el-button
+                  v-if="scope.row.updateStatus === 0"
                   type="text"
                   @click="handleReCreate(scope.row)">
-                  修改
+                  {{ $t('export_detail_table_btn1') }}
                 </el-button>
+                <span v-else class="gary-light">{{ $t('export_detail_table_btn2') }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -198,5 +256,8 @@ export default {
 .photo{
   width: 40px;
   height: 40px;
+}
+.gary-light{
+  color: #b1b0b0;
 }
 </style>

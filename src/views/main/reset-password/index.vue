@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">修改密码</span>
+      <span class="page__header--title">{{$t('main_reset_password_title')}}</span>
     </div>
     <el-tabs v-model="activeName" @tab-click="handleClick" class="reset__box">
-      <el-tab-pane label="修改密码" name="password">
+      <el-tab-pane :label="$t('main_reset_password_password_label')" name="password">
         <password ref="password" />
       </el-tab-pane>
-      <el-tab-pane label="修改密保" name="secret">
+      <el-tab-pane :label="$t('main_reset_password_secret_label')" name="secret">
         <secret ref="secret" />
       </el-tab-pane>
     </el-tabs>

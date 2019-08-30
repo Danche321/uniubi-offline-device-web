@@ -2,22 +2,24 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>详情
+        <i class="iconfont icon-retreat"></i>{{ $t('cut_emp_page_title') }}
       </span>
       <div class="page__header--btn">
-        <el-button type="primary" size="small" @click="getDelEmpInfo()">刷新</el-button>
+        <el-button type="primary" size="small" @click="getDelEmpInfo()">
+          {{ $t('cut_emp_header_btn1') }}
+        </el-button>
       </div>
     </div>
 
     <div class="page__content">
       <div class="content__header">
-        <p class="content__title">人员信息</p>
+        <p class="content__title">{{ $t('cut_emp_page_sub_title1') }}</p>
         <div class="emp__info">
-          <span>姓名：{{ empInfo.name }}</span>
-          <span class="ml30">员工编号：{{ empInfo.empNo }}</span>
-          <span class="ml30">卡号：{{ empInfo.cardNo }}</span>
+          <span>{{ $t('cut_emp_info_label1') }}{{ empInfo.name }}</span>
+          <span class="ml30">{{ $t('cut_emp_info_label2') }}{{ empInfo.empNo }}</span>
+          <span class="ml30">{{ $t('cut_emp_info_label3') }}{{ empInfo.cardNo }}</span>
         </div>
-        <p class="content__title mt30 mb10">设备信息</p>
+        <p class="content__title mt30 mb10">{{ $t('cut_emp_page_sub_title2') }}</p>
       </div>
 
       <expand-form
@@ -32,7 +34,7 @@
           :inline="true"
           :model="searchParams"
           @keyup.enter.native="getDelEmpInfo('firstPage')">
-          <el-form-item label="设备组">
+          <el-form-item :label="$t('cut_emp_search_label1')">
             <el-select
               v-model="searchParams.deviceGroupId"
               placeholder=""
@@ -46,7 +48,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="设备名称">
+          <el-form-item :label="$t('cut_emp_search_label2')">
             <el-input
               v-model="searchParams.deviceName"
               @blur="searchParams.deviceName = searchParams.deviceName.trim()"
@@ -54,7 +56,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="设备序列号">
+          <el-form-item :label="$t('cut_emp_search_label3')">
             <el-input
               v-model="searchParams.deviceKey"
               @blur="searchParams.deviceKey = searchParams.deviceKey.trim()"
@@ -62,7 +64,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="识别模式">
+          <el-form-item :label="$t('cut_emp_search_label4')">
             <el-select
               v-model="searchParams.recognitionMode"
               placeholder=""
@@ -84,13 +86,13 @@
             :class="{'filter--reduce': !filterOption.showMore}"
             :style="{'left': `${filterOption.leftNum}px`}">
             <el-form-item class="btn__search">
-              <el-button icon="iconfont icon-search" @click="getDelEmpInfo('firstPage')">查询</el-button>
+              <el-button icon="iconfont icon-search" @click="getDelEmpInfo('firstPage')">{{ $t('common_search') }}</el-button>
             </el-form-item>
             <el-form-item class="btn__expand">
               <span
                 @click="filterOption.showMore = !filterOption.showMore"
                 v-if="filterOption.showExpandBtn">
-                {{ filterOption.showMore ? '收起' : '展开' }}
+                {{ filterOption.showMore ? $t('common_pack') : $t('common_expand') }}
                 <i
                   class="iconfont"
                   :class="{
@@ -105,12 +107,12 @@
       </expand-form>
 
       <el-table :data="deviceList" height="100%">
-        <el-table-column prop="deviceName" label="设备名称" min-width="120"></el-table-column>
-        <el-table-column prop="deviceKey" label="设备序列号" min-width="160"></el-table-column>
-        <el-table-column prop="deviceGroup" label="设备组" min-width="120"></el-table-column>
-        <el-table-column prop="recognitionModeZh" label="识别模式" min-width="120" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="createTime" label="操作时间" min-width="120"></el-table-column>
-        <el-table-column label="状态" min-width="80">
+        <el-table-column prop="deviceName" :label="$t('cut_emp_table_label1')" min-width="120"></el-table-column>
+        <el-table-column prop="deviceKey" :label="$t('cut_emp_table_label2')" min-width="160"></el-table-column>
+        <el-table-column prop="deviceGroup" :label="$t('cut_emp_table_label3')" min-width="120"></el-table-column>
+        <el-table-column prop="recognitionModeZh" :label="$t('cut_emp_table_label4')" min-width="120" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="createTime" :label="$t('cut_emp_table_label5')" min-width="120"></el-table-column>
+        <el-table-column :label="$t('cut_emp_table_label6')" min-width="80">
           <template slot-scope="scope">
             <span
               class="point mr5"
@@ -122,10 +124,10 @@
             <span>{{ filter(scope.row.status, select.status) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="100" class-name="table__icon--btn">
+        <el-table-column :label="$t('cut_emp_table_label7')" min-width="100" class-name="table__icon--btn">
           <template slot-scope="scope">
             <el-tooltip
-              content="刷新"
+              :content="$t('cut_emp_header_btn1')"
               placement="top"
               :enterable="false"
               :open-delay="500">
@@ -178,16 +180,16 @@ export default {
       },
       select: {
         status: [
-          { value: 0, label: '离线' },
-          { value: 1, label: '在线' },
-          { value: 2, label: '禁用' },
-          { value: 3, label: '密码错误' }
+          { value: 0, label: this.$t('cut_emp_select_status_label1') },
+          { value: 1, label: this.$t('cut_emp_select_status_label2') },
+          { value: 2, label: this.$t('cut_emp_select_status_label3') },
+          { value: 3, label: this.$t('cut_emp_select_status_label4') }
         ],
         recognitionMode: [
-          { value: 1, label: '人脸识别' },
-          { value: 2, label: '刷卡识别' },
-          { value: 3, label: '人卡合一' },
-          { value: 4, label: '认证比对' }
+          { value: 1, label: this.$t('cut_emp_select_mode_label1') },
+          { value: 2, label: this.$t('cut_emp_select_mode_label2') },
+          { value: 3, label: this.$t('cut_emp_select_mode_label3') },
+          { value: 4, label: this.$t('cut_emp_select_mode_label4') }
         ],
         deviceGroup: []
       }
@@ -222,7 +224,7 @@ export default {
       refreshDevice(deviceKey).then(res => {
         if (res.success) {
           this.deviceList.splice(index, 1, res.data)
-          this.$message.success('设备刷新成功！')
+          this.$message.success(this.$t('cut_emp_success1'))
         }
       })
     },

@@ -1,11 +1,11 @@
 <template>
     <el-form ref="form" :model="form" class="form-box" :rules="rules">
-        <p class="top-tip">请回答密保问题</p>
+        <p class="top-tip">{{$t('main_reset_password_secret_tip')}}</p>
         <el-form-item :label="secretQuestion" prop="oldPasswordQuestionAnswer">
             <el-input v-model.trim="form.oldPasswordQuestionAnswer" clearable></el-input>
         </el-form-item>
-        <el-form-item label="请选择密保问题" prop="newPasswordQuestionType">
-            <el-select v-model="form.newPasswordQuestionType" placeholder="请选择" style="width: 100%" clearable v-leftClear>
+        <el-form-item :label="$t('main_reset_password_secret_newPasswordQuestionType_label')" prop="newPasswordQuestionType">
+            <el-select v-model="form.newPasswordQuestionType" :placeholder="$t('common_placeholder')" style="width: 100%" clearable v-leftClear>
                 <el-option
                         v-for="item in secretList"
                         :key="item.type"
@@ -17,9 +17,9 @@
         </el-form-item>
         <el-form-item prop="newPasswordQuestionAnswer">
             <el-input v-model.trim="form.newPasswordQuestionAnswer" clearable></el-input>
-            <p class="sub-tip">提示：请妥善保存新的密保问题</p>
+            <p class="sub-tip">{{$t('main_reset_password_secret_newPasswordQuestionAnswer_tip')}}</p>
         </el-form-item>
-        <el-button type="primary" @click="handleSubmit" class="btn-login mt10">修改</el-button>
+        <el-button type="primary" @click="handleSubmit" class="btn-login mt10">{{$t('main_reset_password_secret_submit_text')}}</el-button>
     </el-form>
 </template>
 
@@ -40,9 +40,9 @@ export default {
         newPasswordQuestionAnswer: ''
       },
       rules: {
-        oldPasswordQuestionAnswer: [{ required: true, message: '请回答密保问题', trigger: ['blur', 'change'] }],
-        newPasswordQuestionType: [{ required: true, message: '请选择新密保问题', trigger: 'change' }],
-        newPasswordQuestionAnswer: [{ required: true, message: '请设置新密保答案', trigger: ['blur', 'change'] }]
+        oldPasswordQuestionAnswer: [{ required: true, message: this.$t('main_reset_password_secret_rules_oldPasswordQuestionAnswer'), trigger: ['blur', 'change'] }],
+        newPasswordQuestionType: [{ required: true, message: this.$t('main_reset_password_secret_rules_newPasswordQuestionType'), trigger: 'change' }],
+        newPasswordQuestionAnswer: [{ required: true, message: this.$t('main_reset_password_secret_rules_newPasswordQuestionAnswer'), trigger: ['blur', 'change'] }]
       }
     }
   },
@@ -64,7 +64,7 @@ export default {
         if (valid) {
           updateSecret(this.form).then(res => {
             if (res.success) {
-              this.$message.success('修改成功')
+              this.$message.success(this.$t('main_reset_password_secret_handleSubmit_success'))
               this.$refs.form.resetFields()
             }
           })

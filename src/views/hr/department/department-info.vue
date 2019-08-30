@@ -2,7 +2,10 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>{{ isAdd ? '添加' : '编辑' }}部门
+        <i class="iconfont icon-retreat"></i>
+        {{ isAdd ?
+        $t('department_info_page_title1')
+        : $t('department_info_page_title2') }} {{ $t('department_info_page_title3') }}
       </span>
     </div>
 
@@ -13,21 +16,22 @@
         ref="depForm"
         label-position="top"
         class="page__content--filter">
-        <el-form-item label="部门名称" prop="depName">
+        <el-form-item :label="$t('department_info_form_depName')" prop="depName">
           <el-input
             v-model="depForm.depName"
             @blur="depForm.depName = depForm.depName.trim()"
             clearable>
           </el-input>
         </el-form-item>
-        <el-form-item label="上级部门">
+        <el-form-item :label="$t('department_info_form_parentDepName')">
           <dep-tree-select
             ref="dep"
+            :hasSpecialDep="true"
             v-model="depForm.parentDepId"
             :disabled="parentDepId === '-1'">
           </dep-tree-select>
         </el-form-item>
-        <el-form-item label="部门负责人（非必填）">
+        <el-form-item :label="$t('department_info_form_managers')">
           <emp-tree-select
             v-if="depForm.id && !isAdd"
             ref="emp"
@@ -44,12 +48,12 @@
           </emp-tree-select>
         </el-form-item>
         <div>
-          <el-button @click="$router.go(-1)">取消</el-button>
+          <el-button @click="$router.go(-1)">{{ $t('department_info_form_button_cancel')}}</el-button>
           <el-button
             class="ml20"
             type="primary"
             @click="handleSaveDepartment">
-            {{ isAdd ? '添加' : '保存' }}
+            {{ isAdd ? $t('department_info_form_button_add') : $t('department_info_form_button_save') }}
           </el-button>
         </div>
       </el-form>
@@ -75,7 +79,7 @@ export default {
       },
       formRules: {
         depName: [
-          { required: true, message: '请输入部门名称', trigger: 'blur' },
+          { required: true, message: this.$t('department_info_form_depName_required'), trigger: 'blur' },
           { validator: nameRule, trigger: 'blur' }
         ]
         // parentDepId: [
@@ -100,7 +104,7 @@ export default {
           if (this.parentDepId === '-1') this.depForm.parentDepId = '-1'
           api[apiType](this.depForm).then(res => {
             if (res.success) {
-              this.$message.success(`${this.isAdd ? '新增' : '编辑'}成功！`)
+              this.$message.success(`${this.isAdd ? this.$t('department_info_form_save_message1') : this.$t('department_info_form_save_message2')}${this.$t('department_info_form_save_message3')}`)
               this.$router.push({
                 name: 'department'
               })

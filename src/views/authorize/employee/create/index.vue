@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title" @click="handleBack"><i class="iconfont icon-retreat"></i>新增授权</span>
+      <span class="page__header--title" @click="handleBack"><i class="iconfont icon-retreat"></i>{{$t('authorize_create_title_text')}}</span>
     </div>
     <keep-alive>
       <component

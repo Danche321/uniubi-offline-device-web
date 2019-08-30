@@ -1,33 +1,33 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">员工列表</span>
+      <span class="page__header--title">{{ $t('employee_list_page_title') }}</span>
       <div class="page__header--btn">
         <el-button
           class="mr30"
           type="text"
           @click="handleImportExcel()">
-          导入
+          {{ $t('common_import') }}
         </el-button>
 
         <el-dropdown class="mr30" trigger="click">
           <span class="el-dropdown-link">
-            导出<i class="el-icon-arrow-down el-icon--right"></i>
+            {{ $t('common_export') }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="handleExportExcel('check')">选中</el-dropdown-item>
-            <el-dropdown-item @click.native="handleExportExcel('search')">搜索结果</el-dropdown-item>
-            <el-dropdown-item @click.native="handleExportExcel('all')">全部</el-dropdown-item>
+            <el-dropdown-item @click.native="handleExportExcel('check')">{{ $t('employee_list_export_type1') }}</el-dropdown-item>
+            <el-dropdown-item @click.native="handleExportExcel('search')">{{ $t('employee_list_export_type2') }}</el-dropdown-item>
+            <el-dropdown-item @click.native="handleExportExcel('all')">{{ $t('employee_list_export_type3') }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
         <el-dropdown class="mr30" trigger="click">
           <span class="el-dropdown-link">
-            批量操作<i class="el-icon-arrow-down el-icon--right"></i>
+            {{ $t('employee_list_header_btn1') }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="handleDepDialogShow()">调整部门</el-dropdown-item>
-            <el-dropdown-item @click.native="handleBatchDelete()">删除</el-dropdown-item>
+            <el-dropdown-item @click.native="handleDepDialogShow()">{{ $t('employee_list_header_btn1_1') }}</el-dropdown-item>
+            <el-dropdown-item @click.native="handleBatchDelete()">{{ $t('common_delete') }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -35,7 +35,7 @@
           type="primary"
           size="small"
           @click="$router.push({name: 'empInfo'})">
-          添加员工
+          {{ $t('employee_list_header_btn2') }}
         </el-button>
       </div>
     </div>
@@ -53,13 +53,13 @@
           :inline="true"
           :model="searchParams"
           @keyup.enter.native="handleQuery('firstPage')">
-          <el-form-item label="部门">
+          <el-form-item :label="$t('employee_list_search_label1')">
             <dep-tree-select ref="dep" v-model="searchParams.depId" type="1"></dep-tree-select>
           </el-form-item>
-          <el-form-item label="人员">
+          <el-form-item :label="$t('employee_list_search_label2')">
             <emp-tree-select v-model="searchParams.empId" type="1"></emp-tree-select>
           </el-form-item>
-          <el-form-item label="手机号">
+          <el-form-item :label="$t('employee_list_search_label3')">
             <el-input
               v-model="searchParams.phone"
               @blur="searchParams.phone = searchParams.phone.trim()"
@@ -67,7 +67,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="职称">
+          <el-form-item :label="$t('employee_list_search_label4')">
             <el-select
               v-model="searchParams.roleId"
               placeholder=""
@@ -82,7 +82,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="员工编号">
+          <el-form-item :label="$t('employee_list_search_label5')">
             <el-input
               v-model="searchParams.empNo"
               @blur="searchParams.empNo = searchParams.empNo.trim()"
@@ -90,7 +90,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="卡号">
+          <el-form-item :label="$t('employee_list_search_label6')">
             <el-input
               v-model="searchParams.cardNo"
               @blur="searchParams.cardNo = searchParams.cardNo.trim()"
@@ -98,7 +98,7 @@
               clearable>
             </el-input>
           </el-form-item>
-          <el-form-item label="入职时间">
+          <el-form-item :label="$t('employee_list_search_label7')">
             <date-picker-range
               :startTime.sync="searchParams.begTime"
               :endTime.sync="searchParams.endTime"
@@ -114,14 +114,14 @@
               <el-button
                 icon="iconfont icon-search"
                 @click="handleQuery('firstPage')">
-                查询
+                {{ $t('common_search') }}
               </el-button>
             </el-form-item>
             <el-form-item class="btn__expand">
               <span
                 @click="filterOption.showMore = !filterOption.showMore"
                 v-if="filterOption.showExpandBtn">
-                {{ filterOption.showMore ? '收起' : '展开' }}
+                {{ filterOption.showMore ? $t('common_pack') : $t('common_expand') }}
                 <i
                   class="iconfont"
                   :class="{'icon-drop_down': !filterOption.showMore, 'icon-Collapse': filterOption.showMore}">
@@ -134,32 +134,59 @@
 
       <el-table :data="employeeList" height="100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="照片" min-width="170">
+        <el-table-column :label="$t('employee_list_table_column1')" min-width="170">
           <template slot-scope="scope">
             <img
               v-for="item in scope.row.photoIds"
               :key="item" class="photo"
-              :src="`${baseUrl}/file/image/${item}`"
-              alt="照片" />
+              :src="`${baseUrl}/file/image/${item}`" />
             <span class="photo" v-for="item in (3 - scope.row.photoIds.length)" :key="item"></span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" min-width="90"></el-table-column>
-        <el-table-column prop="workNo" label="工号" min-width="120"></el-table-column>
-        <el-table-column prop="phone" label="手机号" min-width="120"></el-table-column>
-        <el-table-column prop="empNo" label="员工编号" min-width="140" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="cardNo" label="卡号" min-width="130"></el-table-column>
-        <el-table-column prop="empRoleVO.roleName" label="职称" min-width="80"></el-table-column>
-        <el-table-column prop="empDeps" label="部门" min-width="85" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="entryTime" label="入职时间" min-width="100">
-          <template slot-scope="scope">
-            {{ scope.row.entryTime && scope.row.entryTime.split(' ')[0] }}
+        <el-table-column prop="name" :label="$t('employee_list_table_column2')" min-width="90">
+          <template slot-scope="{ row }">
+            {{ row.name || '--' }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="80" class-name="table__icon--btn">
+        <el-table-column prop="workNo" :label="$t('employee_list_table_column3')" min-width="120">
+          <template slot-scope="{ row }">
+            {{ row.workNo || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" :label="$t('employee_list_table_column4')" min-width="120">
+          <template slot-scope="{ row }">
+            {{ row.phone || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="empNo" :label="$t('employee_list_table_column5')" min-width="140" :show-overflow-tooltip="true">
+          <template slot-scope="{ row }">
+            {{ row.empNo || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="cardNo" :label="$t('employee_list_table_column6')" min-width="130">
+          <template slot-scope="{ row }">
+            {{ row.cardNo || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="empRoleVO.roleName" :label="$t('employee_list_table_column7')" min-width="80">
+          <template slot-scope="{ row }">
+            {{ row.roleName || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="empDeps" :label="$t('employee_list_table_column8')" min-width="85" :show-overflow-tooltip="true">
+          <template slot-scope="{ row }">
+            {{ row.empDeps || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="entryTime" :label="$t('employee_list_table_column9')" min-width="100">
+          <template slot-scope="scope">
+            {{ scope.row.entryTime && scope.row.entryTime.split(' ')[0] || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('employee_list_table_column10')" min-width="80" class-name="table__icon--btn">
           <template slot-scope="scope">
             <el-tooltip
-              content="编辑"
+              :content="$t('common_edit')"
               placement="top"
               :enterable="false"
               :open-delay="500">
@@ -172,7 +199,7 @@
               </i>
             </el-tooltip>
             <el-tooltip
-              content="删除"
+              :content="$t('common_delete')"
               placement="top"
               :enterable="false"
               :open-delay="500">
@@ -192,20 +219,20 @@
             class="btn--blue"
             size="small"
             @click="$router.push({name: 'history'})">
-            历史上传记录
+            {{ $t('employee_list_footer_btn1') }}
           </el-button>
           <el-button
             class="btn--blue"
             size="small"
             @click="$router.push({name: 'taskList'})">
-            任务列表
+            {{ $t('employee_list_footer_btn2') }}
           </el-button>
         </div>
       </m-pagination>
     </div>
 
     <el-dialog
-      title="调整部门"
+      :title="$t('employee_list_dep_dialog_title')"
       :visible.sync="dialog.depVisible"
       width="400px">
       <div class="pr20 pl20 dialog__dep" v-if="dialog.depVisible">
@@ -215,7 +242,7 @@
           ref="depForm"
           :hide-required-asterisk="true"
           label-position="top">
-          <el-form-item label="调整后的部门" prop="departments">
+          <el-form-item :label="$t('employee_list_dep_dialog_form_label1')" prop="departments">
             <dep-tree-select
               ref="dep"
               v-model="depForm.departments"
@@ -223,19 +250,19 @@
             </dep-tree-select>
           </el-form-item>
           <div class="ac pt10">
-            <el-button @click="dialog.depVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleBatchAdjust">确定</el-button>
+            <el-button @click="dialog.depVisible = false">{{ $t('common_cancel') }}</el-button>
+            <el-button type="primary" @click="handleBatchAdjust">{{ $t('common_confirm') }}</el-button>
           </div>
         </el-form>
       </div>
     </el-dialog>
 
     <el-dialog
-      title="导入"
+      :title="$t('common_import')"
       :visible.sync="dialog.importVisible"
       width="480px">
       <div>
-        <p><span class="f-blue pointer" @click="handleEmpTemp()">下载模板</span></p>
+        <p><span class="f-blue pointer" @click="handleEmpTemp()">{{ $t('employee_list_import_dialog_download_temp') }}</span></p>
         <el-upload
           class="upload__box"
           :before-upload="fileCheck"
@@ -245,25 +272,25 @@
             <i class="iconfont icon-file"></i>{{ file.fileName }}
           </p>
           <i v-else class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处或<em>文件上传</em></div>
+          <div class="el-upload__text">{{ $t('employee_list_import_dialog_tip1') }}<em>{{ $t('employee_list_import_dialog_tip2') }}</em></div>
           <div class="el-upload__tip" slot="tip">
-            <p>[只支持xls，xlsx]、文件大小不超过5M</p>
-            <p class="mt20">若人员编号重复，选择报错还是自动替换更新？</p>
+            <p>{{ $t('employee_list_import_dialog_tip3') }}</p>
+            <p class="mt20">{{ $t('employee_list_import_dialog_tip4') }}</p>
             <div class="mt5">
-              <el-radio v-model="file.coverEmpNo" label="0">报错</el-radio>
-              <el-radio v-model="file.coverEmpNo" label="1">更新</el-radio>
+              <el-radio v-model="file.coverEmpNo" label="0">{{ $t('employee_list_import_dialog_radio1') }}</el-radio>
+              <el-radio v-model="file.coverEmpNo" label="1">{{ $t('employee_list_import_dialog_radio2') }}</el-radio>
             </div>
           </div>
         </el-upload>
         <div class="ac pt20">
-          <el-button @click="dialog.importVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleUploadFile">导入</el-button>
+          <el-button @click="dialog.importVisible = false">{{ $t('common_cancel') }}</el-button>
+          <el-button type="primary" @click="handleUploadFile">{{ $t('common_import') }}</el-button>
         </div>
       </div>
     </el-dialog>
 
     <el-dialog
-      title="导入"
+      :title="$t('common_import')"
       :show-close="false"
       :close-on-click-modal="false"
       :visible.sync="dialog.progressVisible"
@@ -273,20 +300,6 @@
           <el-progress :text-inside="true" :stroke-width="6" :percentage="exportInfo.progressNum"></el-progress>
           <p class="f-blue ac mt5">{{ exportInfo.progressNum }}%</p>
         </div>
-        <!-- <div v-else>
-          <div class="ac">已成功上传{{ exportInfo.susNum }}人，上传失败{{ exportInfo.failNum }}人</div>
-          <div class="ac mt20">
-            <el-button @click="dialog.progressVisible = false; handleQuery('firstPage')">确定</el-button>
-            <el-button
-              type="primary"
-              @click="$router.push({
-                name: 'exportDetail',
-                query: {id: exportInfo.id, time: exportInfo.createTime}
-              })">
-              查看详情
-            </el-button>
-          </div>
-        </div> -->
       </div>
     </el-dialog>
   </div>
@@ -325,7 +338,7 @@ export default {
       },
       depFormRules: {
         departments: [
-          { required: true, message: '请选择部门', trigger: 'change' }
+          { required: true, message: this.$t('employee_list_dep_rule_msg'), trigger: 'change' }
         ]
       },
       exportInfo: {
@@ -394,11 +407,11 @@ export default {
     },
     handleExportExcel (type) {
       if (type === 'check' && !this.checkList.length) {
-        this.$message.warning('请选择需要导出的员工！')
+        this.$message.warning(this.$t('employee_list_warning1'))
         return
       }
-      this.$confirm('批量导出选中的人员信息，系统将自动为您生成excel文件', '导出', {
-        confirmButtonText: '导出',
+      this.$confirm(this.$t('employee_list_confirm1'), this.$t('common_export'), {
+        confirmButtonText: this.$t('common_export'),
         center: true
       }).then(() => {
         if (type === 'check') {
@@ -428,7 +441,7 @@ export default {
           api.batchDep(params).then(res => {
             if (res.success) {
               this.dialog.depVisible = false
-              this.$message.success('批量调整部门成功！')
+              this.$message.success(this.$t('employee_list_success1'))
               this.handleQuery()
             }
           })
@@ -437,20 +450,20 @@ export default {
     },
     handleDepDialogShow () {
       if (!this.checkList.length) {
-        this.$message.warning('请先在员工列表中勾选员工！')
+        this.$message.warning(this.$t('employee_list_warning2'))
         return
       }
       this.dialog.depVisible = true
     },
     handleDelete ({ id }) {
-      this.$confirm('删除后员工信息将不可恢复', '删除人员', {
+      this.$confirm(this.$t('employee_list_confirm2'), this.$t('employee_list_confirm_title1'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '删除',
+        confirmButtonText: this.$t('common_delete'),
         center: true
       }).then(() => {
         api.delEmp(id).then(res => {
           if (res.success) {
-            this.$message.success('删除成功！')
+            this.$message.success(this.$t('employee_list_success2'))
             this.handleQuery()
           }
         })
@@ -458,13 +471,13 @@ export default {
     },
     handleBatchDelete () {
       if (!this.checkList.length) {
-        this.$message.warning('请先在员工列表中勾选员工！')
+        this.$message.warning(this.$t('employee_list_warning2'))
         return
       }
 
-      this.$confirm('删除后员工信息将不可恢复', '删除人员', {
+      this.$confirm(this.$t('employee_list_confirm2'), this.$t('employee_list_confirm_title1'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '删除',
+        confirmButtonText: this.$t('common_delete'),
         center: true
       }).then(() => {
         const params = {
@@ -472,7 +485,7 @@ export default {
         }
         api.delEmpList(params).then(res => {
           if (res.success) {
-            this.$message.success('删除成功！')
+            this.$message.success(this.$t('employee_list_success2'))
             this.handleQuery()
           }
         })
@@ -493,11 +506,11 @@ export default {
       const fileType = fileNameSplit[fileNameSplit.length - 1]
       const fileSize = file.size
       if (!fileTypeList.includes(fileType)) {
-        this.$message.error('文件格式不正确，请重新选择')
+        this.$message.error(this.$t('employee_list_error1'))
         return false
       }
       if (fileSize > fileMaxSize * 1024 * 1024) {
-        this.$message.error('文件过大，请重新选择')
+        this.$message.error(this.$t('employee_list_error2'))
         return false
       }
       this.file.file = file
@@ -506,7 +519,7 @@ export default {
     },
     handleUploadFile () {
       if (!this.file.fileName) {
-        this.$message.warning('请选择要导入的文件！')
+        this.$message.warning(this.$t('employee_list_warning3'))
         return
       }
       var formFile = new FormData()
@@ -535,9 +548,9 @@ export default {
             setTimeout(() => {
               this.dialog.progressVisible = false
               this.exportInfo = { executing, failNum, susNum, id, createTime, progressNum: 100 }
-              this.$confirm(`已成功上传${this.exportInfo.susNum}人，上传失败${this.exportInfo.failNum}人`, '导入成功', {
-                cancelButtonText: '确定',
-                confirmButtonText: '查看详情',
+              this.$confirm(`${this.$t('employee_list_confirm3_1')}${this.exportInfo.susNum}${this.$t('employee_list_confirm3_3')}，${this.$t('employee_list_confirm3_2')}${this.exportInfo.failNum}${this.$t('employee_list_confirm3_3')}`, this.$t('employee_list_confirm_title2'), {
+                cancelButtonText: this.$t('common_confirm'),
+                confirmButtonText: this.$t('employee_list_confirm_btn1'),
                 center: true
               }).then(() => {
                 this.$router.push({

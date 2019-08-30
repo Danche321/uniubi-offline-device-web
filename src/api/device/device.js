@@ -142,7 +142,8 @@ export const upgradeFile = data => {
     method: 'post',
     headers: {
       'Content-Type': 'multipart/form-data'
-    }
+    },
+    data
   })
 }
 

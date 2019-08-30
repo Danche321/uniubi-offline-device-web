@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>固件升级
+        <i class="iconfont icon-retreat"></i>{{$t('device_upgrade.title')}}
       </span>
     </div>
 
@@ -17,7 +17,7 @@
             :hide-required-asterisk="true"
             label-position="right"
             label-width="100px">
-            <el-form-item label="上传固件：" prop="fileName">
+            <el-form-item :label="$t('device_upgrade.uploadLabel')" prop="fileName">
               <el-input
                 class="file__name"
                 v-model="fileForm.fileName"
@@ -37,13 +37,13 @@
                 :show-file-list="false"
                 :before-upload="fileCheck"
                 :http-request="handleUpload">
-                <el-button>选择</el-button>
+                <el-button>{{$t('device_upgrade.select')}}</el-button>
               </el-upload>
             </el-form-item>
 
             <div class="ml100 pt20">
-              <el-button @click="$router.go(-1)">取消</el-button>
-              <el-button type="primary" @click="handleUpgrade()">升级</el-button>
+              <el-button @click="$router.go(-1)">{{$t('common_cancel')}}</el-button>
+              <el-button type="primary" @click="handleUpgrade()">{{$t('device_upgrade.upgrade')}}</el-button>
             </div>
           </el-form>
         </div>
@@ -51,14 +51,14 @@
     </div>
 
     <el-dialog
-      title="校时失败设备"
+      :title="$t('device_upgrade.dialog.title')"
       :visible.sync="dialog.failVisible"
       width="860px">
       <div>
         <el-table class="table__fail" :data="failList" :height="300">
-          <el-table-column prop="deviceName" label="设备名称" min-width="100"></el-table-column>
-          <el-table-column prop="deviceKey" label="设备序列号" min-width="80"></el-table-column>
-          <el-table-column prop="reason" label="失败原因" min-width="200">
+          <el-table-column prop="deviceName" :label="$t('device_upgrade.dialog.deviceName')" min-width="100"></el-table-column>
+          <el-table-column prop="deviceKey" :label="$t('device_upgrade.dialog.deviceKey')" min-width="80"></el-table-column>
+          <el-table-column prop="reason" :label="$t('device_upgrade.dialog.failReason')" min-width="200">
             <template slot-scope="scope">
               <span class="f-red">{{ scope.row.reason }}</span>
             </template>
@@ -87,7 +87,7 @@ export default {
       },
       fileFormRules: {
         fileName: [
-          { required: true, message: '还未上传固件', trigger: 'blur' }
+          { required: true, message: this.$t('device_upgrade.message.requiredFirmware'), trigger: 'blur' }
         ]
       }
     }
@@ -109,7 +109,7 @@ export default {
               if (this.failList.length) {
                 this.dialog.failVisible = true
               } else {
-                this.$message.success('固件升级成功！')
+                this.$message.success(this.$t('device_upgrade.message.upgradeSuccess'))
                 this.$router.go(-1)
               }
             }
@@ -118,16 +118,13 @@ export default {
       })
     },
     fileCheck (file) {
-      const fileTypeList = ['image/jpeg', 'image/png', 'image/jpg'] // 支持的文件格式
-      const fileMaxSize = 2 // 文件大小限制 单位MB
-      const fileType = file.type
-      const fileSize = file.size
-      if (!fileTypeList.includes(fileType)) {
-        this.$message.error('文件格式不正确，请重新选择')
+      if (file && file.name.substr(file.name.lastIndexOf('.')) !== '.zip') {
+        this.$message({ message: this.$t('device_upgrade.message.fileNoSupport'), type: 'error' })
+        this.firmwareName = ''
         return false
       }
-      if (fileSize > fileMaxSize * 1024 * 1024) {
-        this.$message.error('文件过大，请重新选择')
+      if (!/^NB/.test(file.name) || file.name.split('_').length !== 5) {
+        this.$message({ message: this.$t('device_upgrade.message.packageError'), type: 'error' })
         return false
       }
       return true
@@ -135,7 +132,7 @@ export default {
     handleUpload (file) {
       var formFile = new FormData()
       formFile.append('file', file.file)
-      api.upgradeFile().then(res => {
+      api.upgradeFile(formFile).then(res => {
         if (res.success) {
           this.fileForm = {
             fileName: file.file.name,

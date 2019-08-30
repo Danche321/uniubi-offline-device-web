@@ -1,365 +1,367 @@
+import i18n from '@/locale'
+
 export default [
   {
     value: '1',
-    label: 'IT 服务',
+    label: i18n.t('static_json_industryType_1_label'),
     children: [
       {
         value: '1_1',
-        label: '计算机软件/硬件/信息服务'
+        label: i18n.t('static_json_industryType_1_1_label')
       },
       {
         value: '1_2',
-        label: '互联网和相关服务'
+        label: i18n.t('static_json_industryType_1_2_label')
       },
       {
         value: '1_3',
-        label: '其他'
+        label: i18n.t('static_json_industryType_1_3_label')
       }
     ]
   },
   {
     value: '2',
-    label: '制造业',
+    label: i18n.t('static_json_industryType_2_label'),
     children: [
       {
         value: '2_1',
-        label: '机械/电子'
+        label: i18n.t('static_json_industryType_2_1_label')
       },
       {
         value: '2_2',
-        label: '重工制造'
+        label: i18n.t('static_json_industryType_2_2_label')
       },
       {
         value: '2_3',
-        label: '汽车'
+        label: i18n.t('static_json_industryType_2_3_label')
       },
       {
         value: '2_4',
-        label: '其他'
+        label: i18n.t('static_json_industryType_2_4_label')
       }
     ]
   },
   {
     value: '3',
-    label: '批发/零售',
+    label: i18n.t('static_json_industryType_3_label'),
     children: [
       {
         value: '3_1',
-        label: '服装'
+        label: i18n.t('static_json_industryType_3_1_label')
       },
       {
         value: '3_2',
-        label: '超市/便利店/百货商场'
+        label: i18n.t('static_json_industryType_3_2_label')
       },
       {
         value: '3_3',
-        label: '食品/饮料'
+        label: i18n.t('static_json_industryType_3_3_label')
       },
       {
         value: '3_4',
-        label: '家具/家纺'
+        label: i18n.t('static_json_industryType_3_4_label')
       },
       {
         value: '3_5',
-        label: '日用品/化妆品'
+        label: i18n.t('static_json_industryType_3_5_label')
       },
       {
         value: '3_6',
-        label: '家电/数码'
+        label: i18n.t('static_json_industryType_3_6_label')
       },
       {
         value: '3_7',
-        label: '烟酒'
+        label: i18n.t('static_json_industryType_3_7_label')
       },
       {
         value: '3_8',
-        label: '文教/工美/体育/娱乐用品'
+        label: i18n.t('static_json_industryType_3_8_label')
       },
       {
         value: '3_9',
-        label: '批发'
+        label: i18n.t('static_json_industryType_3_9_label')
       },
       {
         value: '3_10',
-        label: '其他'
+        label: i18n.t('static_json_industryType_3_10_label')
       }
     ]
   },
   {
     value: '4',
-    label: '生活服务',
+    label: i18n.t('static_json_industryType_4_label'),
     children: [
       {
         value: '4_1',
-        label: '酒店/住宿'
+        label: i18n.t('static_json_industryType_4_1_label')
       },
       {
         value: '4_2',
-        label: '餐饮'
+        label: i18n.t('static_json_industryType_4_2_label')
       },
       {
         value: '4_3',
-        label: '租赁和商务服务'
+        label: i18n.t('static_json_industryType_4_3_label')
       },
       {
         value: '4_4',
-        label: '其他'
+        label: i18n.t('static_json_industryType_4_4_label')
       }
     ]
   },
   {
     value: '5',
-    label: '文化/体育/娱乐业',
+    label: i18n.t('static_json_industryType_5_label'),
     children: [
       {
         value: '5_1',
-        label: '新闻传媒'
+        label: i18n.t('static_json_industryType_5_1_label')
       },
       {
         value: '5_2',
-        label: '文化/体育'
+        label: i18n.t('static_json_industryType_5_2_label')
       },
       {
         value: '5_3',
-        label: '娱乐/旅游'
+        label: i18n.t('static_json_industryType_5_3_label')
       },
       {
         value: '5_4',
-        label: '其他'
+        label: i18n.t('static_json_industryType_5_4_label')
       }
     ]
   },
   {
     value: '6',
-    label: '建筑/房地产',
+    label: i18n.t('static_json_industryType_6_label'),
     children: [
       {
         value: '6_1',
-        label: '房地产'
+        label: i18n.t('static_json_industryType_6_1_label')
       },
       {
         value: '6_2',
-        label: '建筑业'
+        label: i18n.t('static_json_industryType_6_2_label')
       },
       {
         value: '6_3',
-        label: '建材装修'
+        label: i18n.t('static_json_industryType_6_3_label')
       },
       {
         value: '6_4',
-        label: '其他'
+        label: i18n.t('static_json_industryType_6_4_label')
       }
     ]
   },
   {
     value: '7',
-    label: '教育',
+    label: i18n.t('static_json_industryType_7_label'),
     children: [
       {
         value: '7_1',
-        label: '学前教育'
+        label: i18n.t('static_json_industryType_7_1_label')
       },
       {
         value: '7_2',
-        label: '初中等教育'
+        label: i18n.t('static_json_industryType_7_2_label')
       },
       {
         value: '7_3',
-        label: '高等教育'
+        label: i18n.t('static_json_industryType_7_3_label')
       },
       {
         value: '7_4',
-        label: '培训机构'
+        label: i18n.t('static_json_industryType_7_4_label')
       },
       {
         value: '7_5',
-        label: '其他'
+        label: i18n.t('static_json_industryType_7_5_label')
       }
     ]
   },
   {
     value: '8',
-    label: '运输/物流/仓储',
+    label: i18n.t('static_json_industryType_8_label'),
     children: [
       {
         value: '8_1',
-        label: '道路/铁路运输'
+        label: i18n.t('static_json_industryType_8_1_label')
       },
       {
         value: '8_2',
-        label: '航空运输'
+        label: i18n.t('static_json_industryType_8_2_label')
       },
       {
         value: '8_3',
-        label: '水上运输'
+        label: i18n.t('static_json_industryType_8_3_label')
       },
       {
         value: '8_4',
-        label: '物流/仓储'
+        label: i18n.t('static_json_industryType_8_4_label')
       },
       {
         value: '8_5',
-        label: '邮政/快递'
+        label: i18n.t('static_json_industryType_8_5_label')
       },
       {
         value: '8_6',
-        label: '其他'
+        label: i18n.t('static_json_industryType_8_6_label')
       }
     ]
   },
   {
     value: '9',
-    label: '医疗',
+    label: i18n.t('static_json_industryType_9_label'),
     children: [
       {
         value: '9_1',
-        label: '医院/医疗'
+        label: i18n.t('static_json_industryType_9_1_label')
       },
       {
         value: '9_2',
-        label: '医药制造'
+        label: i18n.t('static_json_industryType_9_2_label')
       },
       {
         value: '9_3',
-        label: '医药流通'
+        label: i18n.t('static_json_industryType_9_3_label')
       },
       {
         value: '9_4',
-        label: '医疗器械'
+        label: i18n.t('static_json_industryType_9_4_label')
       },
       {
         value: '9_5',
-        label: '其他'
+        label: i18n.t('static_json_industryType_9_5_label')
       }
     ]
   },
   {
     value: '10',
-    label: '政府',
+    label: i18n.t('static_json_industryType_10_label'),
     children: [
       {
         value: '10_1',
-        label: '党政机关'
+        label: i18n.t('static_json_industryType_10_1_label')
       },
       {
         value: '10_2',
-        label: '国家权力/行政机构'
+        label: i18n.t('static_json_industryType_10_2_label')
       },
       {
         value: '10_3',
-        label: '检察院/法院/公安'
+        label: i18n.t('static_json_industryType_10_3_label')
       },
       {
         value: '10_4',
-        label: '民政/人社/交通/卫生'
+        label: i18n.t('static_json_industryType_10_4_label')
       },
       {
         value: '10_5',
-        label: '发改委/经信委/商务局/统计局'
+        label: i18n.t('static_json_industryType_10_5_label')
       },
       {
         value: '10_6',
-        label: '国土/规划'
+        label: i18n.t('static_json_industryType_10_6_label')
       },
       {
         value: '10_7',
-        label: '税务/海关/工商/环保/物价/药品'
+        label: i18n.t('static_json_industryType_10_7_label')
       },
       {
         value: '10_8',
-        label: '政协/民主党派'
+        label: i18n.t('static_json_industryType_10_8_label')
       },
       {
         value: '10_9',
-        label: '其他'
+        label: i18n.t('static_json_industryType_10_9_label')
       }
     ]
   },
   {
     value: '11',
-    label: '金融',
+    label: i18n.t('static_json_industryType_11_label'),
     children: [
       {
         value: '11_1',
-        label: '保险'
+        label: i18n.t('static_json_industryType_11_1_label')
       },
       {
         value: '11_2',
-        label: '银行'
+        label: i18n.t('static_json_industryType_11_2_label')
       },
       {
         value: '11_3',
-        label: '证券/投资/基金'
+        label: i18n.t('static_json_industryType_11_3_label')
       },
       {
         value: '11_4',
-        label: '其他'
+        label: i18n.t('static_json_industryType_11_4_label')
       }
     ]
   },
   {
     value: '12',
-    label: '能源/采矿',
+    label: i18n.t('static_json_industryType_12_label'),
     children: [
       {
         value: '12_1',
-        label: '钢铁'
+        label: i18n.t('static_json_industryType_12_1_label')
       },
       {
         value: '12_2',
-        label: '有色金属'
+        label: i18n.t('static_json_industryType_12_2_label')
       },
       {
         value: '12_3',
-        label: '煤炭'
+        label: i18n.t('static_json_industryType_12_3_label')
       },
       {
         value: '12_4',
-        label: '石油/天然气'
+        label: i18n.t('static_json_industryType_12_4_label')
       },
       {
         value: '12_5',
-        label: '其他'
+        label: i18n.t('static_json_industryType_12_5_label')
       }
     ]
   },
   {
     value: '13',
-    label: '农林牧渔',
+    label: i18n.t('static_json_industryType_13_label'),
     children: [
       {
         value: '13_1',
-        label: '农林牧渔'
+        label: i18n.t('static_json_industryType_13_1_label')
       }
     ]
   },
   {
     value: '14',
-    label: '其他',
+    label: i18n.t('static_json_industryType_14_label'),
     children: [
       {
         value: '14_1',
-        label: '科学研究和技术服务业'
+        label: i18n.t('static_json_industryType_14_1_label')
       },
       {
         value: '14_2',
-        label: '水利和环境管理'
+        label: i18n.t('static_json_industryType_14_2_label')
       },
       {
         value: '14_3',
-        label: '社会组织'
+        label: i18n.t('static_json_industryType_14_3_label')
       },
       {
         value: '14_4',
-        label: '电力/热力/燃气/水供应业'
+        label: i18n.t('static_json_industryType_14_4_label')
       },
       {
         value: '14_5',
-        label: '国际组织'
+        label: i18n.t('static_json_industryType_14_5_label')
       },
       {
         value: '14_6',
-        label: '其他'
+        label: i18n.t('static_json_industryType_14_6_label')
       }
     ]
   }

@@ -2,7 +2,8 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="handleCancleSave()">
-        <i class="iconfont icon-retreat"></i>{{ isAdd ? '添加' : '编辑' }}员工
+        <i class="iconfont icon-retreat"></i>
+        {{ isAdd ? $t('emp_info_page_add_title') : $t('emp_info_page_edit_title') }}
       </span>
     </div>
 
@@ -16,42 +17,42 @@
             :inline="true"
             :model="empForm"
             :rules="empFormRules">
-            <p class="form__title">基本信息</p>
-            <el-form-item label="姓名" prop="name">
+            <p class="form__title">{{ $t('emp_info_page_sub_title1') }}</p>
+            <el-form-item :label="$t('emp_info_form_label1')" prop="name">
               <el-input v-model="empForm.name" @blur="empForm.name = empForm.name.trim()" clearable></el-input>
             </el-form-item>
-            <el-form-item label="性别" class="gender">
-              <el-radio v-model="empForm.gender" :label="1">男</el-radio>
-              <el-radio v-model="empForm.gender" :label="2">女</el-radio>
+            <el-form-item :label="$t('emp_info_form_label2')" class="gender">
+              <el-radio v-model="empForm.gender" :label="1">{{ $t('emp_info_gender_label1') }}</el-radio>
+              <el-radio v-model="empForm.gender" :label="2">{{ $t('emp_info_gender_label2') }}</el-radio>
             </el-form-item>
-            <el-form-item label="手机号" prop="phone">
+            <el-form-item :label="$t('emp_info_form_label3')" prop="phone">
               <el-input v-model="empForm.phone" clearable></el-input>
             </el-form-item>
-            <el-form-item label="邮箱" prop="mail">
+            <el-form-item :label="$t('emp_info_form_label4')" prop="mail">
               <el-input v-model="empForm.mail" clearable></el-input>
             </el-form-item>
-            <el-form-item label="工号" prop="workNo">
+            <el-form-item :label="$t('emp_info_form_label5')" prop="workNo">
               <el-input v-model="empForm.workNo" clearable></el-input>
             </el-form-item>
-            <el-form-item label="花名" prop="stageName">
+            <el-form-item :label="$t('emp_info_form_label6')" prop="stageName">
               <el-input v-model="empForm.stageName" @blur="empForm.stageName = empForm.stageName.trim()" clearable></el-input>
             </el-form-item>
-            <el-form-item label="员工编号" prop="empNo">
+            <el-form-item :label="$t('emp_info_form_label7')" prop="empNo">
               <uniubi-input
-                focus-message="提示：员工编号不可重复，生成后不可修改"
+                :focus-message="$t('emp_info_empNo_tip')"
                 v-model="empForm.empNo"
                 :readonly="!isAdd"
                 clearable>
               </uniubi-input>
             </el-form-item>
-            <el-form-item label="卡号" v-if="!isAdd" prop="cardNo">
+            <el-form-item :label="$t('emp_info_form_label8')" v-if="!isAdd" prop="cardNo">
               <div class="lable__tip" @click="handleDeviceDialogShow('card')">
-                设备读取卡号
+                {{ $t('emp_info_cardNo_label_btn') }}
                 <el-popover
                   placement="right"
                   width="200"
                   trigger="hover"
-                  content="设备读取卡号，点击进入，然后选择相应设备，将卡片置于对应设备读卡区域，就会自动读取录入卡号。">
+                  :content="$t('emp_info_cardNo_popover')">
                   <i class="iconfont icon-remind" slot="reference"></i>
                 </el-popover>
               </div>
@@ -59,7 +60,7 @@
             </el-form-item>
 
             <div class="photo" v-if="!isAdd">
-              <el-form-item label="注册照（确保照片是正脸，且足够清晰，最多3张同一人员注册照）">
+              <el-form-item :label="$t('emp_info_form_label9')">
                 <ul class="el-upload-list el-upload-list--picture-card">
                   <li
                     class="el-upload-list__item is-success"
@@ -77,8 +78,7 @@
                     </span>
                     <img
                       class="photo"
-                      :src="`${baseUrl}/file/image/${item}`"
-                      alt="照片" />
+                      :src="`${baseUrl}/file/image/${item}`" />
                   </li>
                   <li class="el-upload-list__item upload__li">
                     <el-upload
@@ -96,20 +96,20 @@
                   class="el-upload__tip"
                   @click="handleDeviceDialogShow('photograph')"
                   v-if="empForm.photoIds.length < 3">
-                  设备录用照片
+                  {{ $t('emp_info_photo_label_btn') }}
                   <el-popover
                     placement="right"
                     width="200"
                     trigger="hover"
-                    content="设备拍照录入，只要点击设备拍照，然后选择相应设备，到设备上拍照，就会自动添加照片。">
+                    :content="$t('emp_info_photo_popover')">
                     <i class="iconfont icon-remind" slot="reference"></i>
                   </el-popover>
                 </div>
               </el-form-item>
             </div>
 
-            <p class="form__title">职业信息</p>
-            <el-form-item label="部门" prop="depIds">
+            <p class="form__title">{{ $t('emp_info_page_sub_title2') }}</p>
+            <el-form-item :label="$t('emp_info_form_label10')" prop="depIds">
               <dep-tree-select
                 ref="dep"
                 v-model="empForm.depIds"
@@ -117,7 +117,7 @@
                 type="2">
               </dep-tree-select>
             </el-form-item>
-            <el-form-item label="职称" prop="roleId">
+            <el-form-item :label="$t('emp_info_form_label11')" prop="roleId">
               <el-select
                 v-model="empForm.roleId"
                 placeholder=""
@@ -132,10 +132,10 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="入职时间">
+            <el-form-item :label="$t('emp_info_form_label12')">
               <el-date-picker v-model="empForm.entryTime" type="date"></el-date-picker>
             </el-form-item>
-            <el-form-item label="员工类型">
+            <el-form-item :label="$t('emp_info_form_label13')">
               <el-select
                 v-model="empForm.empType"
                 placeholder=""
@@ -149,17 +149,17 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="办公地址" prop="workPlace">
+            <el-form-item :label="$t('emp_info_form_label14')" prop="workPlace">
               <el-input v-model="empForm.workPlace" @blur="empForm.workPlace = empForm.workPlace.trim()" clearable></el-input>
             </el-form-item>
-            <el-form-item label="座机" prop="tel">
+            <el-form-item :label="$t('emp_info_form_label15')" prop="tel">
               <el-input v-model="empForm.tel" clearable></el-input>
             </el-form-item>
           </el-form>
           <div class="footer__btn">
-            <el-button @click="handleCancleSave()">取消</el-button>
+            <el-button @click="handleCancleSave()">{{ $t('common_cancel') }}</el-button>
             <el-button type="primary" @click="handleSaveInfo()">
-              {{ isAdd ? '添加' : '保存' }}
+              {{ isAdd ? $t('common_add') : $t('common_save') }}
             </el-button>
           </div>
         </div>
@@ -167,7 +167,7 @@
     </div>
 
     <el-dialog
-      title="添加注册照/卡号"
+      :title="$t('emp_info_photo_dialog_title')"
       :visible.sync="dialog.regPicVisible"
       @closed="handleCloseDialog"
       width="520px">
@@ -177,14 +177,14 @@
           :rules="empFormRules"
           label-position="top"
           :model="empForm">
-          <el-form-item label="卡号" prop="cardNo">
+          <el-form-item :label="$t('emp_info_form_label8')" prop="cardNo">
             <div class="lable__tip" @click="handleDeviceDialogShow('card')">
-              设备读取卡号
+              {{ $t('emp_info_cardNo_label_btn') }}
               <el-popover
                 placement="right"
                 width="200"
                 trigger="hover"
-                content="设备读取卡号，点击进入，然后选择相应设备，将卡片置于对应设备读卡区域，就会自动读取录入卡号。">
+                :content="$t('emp_info_cardNo_popover')">
                 <i class="iconfont icon-remind" slot="reference"></i>
               </el-popover>
             </div>
@@ -192,7 +192,7 @@
           </el-form-item>
 
           <div class="photo">
-            <el-form-item label="注册照（确保照片是正脸，且足够清晰，最多3张同一人员注册照）">
+            <el-form-item :label="$t('emp_info_form_label9')">
               <ul class="el-upload-list el-upload-list--picture-card">
                 <li
                   class="el-upload-list__item is-success"
@@ -202,7 +202,7 @@
                     <i class="iconfont icon-search" @click="handlePictureCardPreview(item)"></i>
                     <i class="iconfont icon-delete ml10" @click="handleRemovePic(index)"></i>
                   </span>
-                  <img class="photo" :src="`${baseUrl}/file/image/${item}`" alt="照片">
+                  <img class="photo" :src="`${baseUrl}/file/image/${item}`" />
                 </li>
                 <li class="el-upload-list__item upload__li">
                   <el-upload
@@ -220,36 +220,36 @@
                 class="el-upload__tip"
                 @click="handleDeviceDialogShow('photograph')"
                 v-if="empForm.photoIds.length < 3">
-                设备录用照片
+                {{ $t('emp_info_photo_label_btn') }}
                 <el-popover
                   placement="right"
                   width="200"
                   trigger="hover"
-                  content="设备拍照录入，只要点击设备拍照，然后选择相应设备，到设备上拍照，就会自动添加照片。">
+                  :content="$t('emp_info_photo_popover')">
                   <i class="iconfont icon-remind" slot="reference"></i>
                 </el-popover>
               </div>
             </el-form-item>
 
             <div class="dialog__tip">
-              <p>注册照片示例（男生版）</p>
+              <p>{{ $t('emp_info_photo_dialog_tip1') }}</p>
               <img :src="require('@/assets/images/photo.jpg')" alt="拍照">
-              <p>照片要求：小于400K；面部区域像素不低于128*128；</p>
-              <p>人脸大小占整张照片的1/3以上</p>
-              <p>确保所有注册照为同一人，否则无法注册成功</p>
+              <p>{{ $t('emp_info_photo_dialog_tip2') }}</p>
+              <p>{{ $t('emp_info_photo_dialog_tip3') }}</p>
+              <p>{{ $t('emp_info_photo_dialog_tip4') }}</p>
             </div>
           </div>
         </el-form>
 
         <div class="ac pt20">
-          <el-button @click="dialog.regPicVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleSaveInfo()">添加</el-button>
+          <el-button @click="dialog.regPicVisible = false">{{ $t('common_cancel') }}</el-button>
+          <el-button type="primary" @click="handleSaveInfo()">{{ $t('common_add') }}</el-button>
         </div>
       </div>
     </el-dialog>
 
     <el-dialog
-      title="请选择设备"
+      :title="$t('emp_info_device_dialog_title')"
       :visible.sync="dialog.deviceVisible"
       width="860px">
       <div>
@@ -259,13 +259,13 @@
           label-position="top"
           :inline="true"
           :model="searchParams">
-          <el-form-item label="设备名称">
+          <el-form-item :label="$t('emp_info_device_dialog_search_label1')">
             <el-input
               v-model="searchParams.deviceName"
               maxlength="32"
               clearable></el-input>
           </el-form-item>
-          <el-form-item label="设备序列号">
+          <el-form-item :label="$t('emp_info_device_dialog_search_label2')">
             <el-input
               v-model="searchParams.deviceKey"
               maxlength="32"
@@ -273,33 +273,36 @@
           </el-form-item>
 
           <el-form-item class="btn__search">
-            <el-button icon="iconfont icon-search" @click="handleDeviceQuery('firstPage')">查询</el-button>
+            <el-button icon="iconfont icon-search" @click="handleDeviceQuery('firstPage')">{{ $t('common_search') }}</el-button>
           </el-form-item>
         </el-form>
 
         <el-table :data="deviceList" height="400px">
-          <el-table-column prop="deviceKey" label="设备序列号" min-width="80"></el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" min-width="80"></el-table-column>
-          <el-table-column prop="status" label="状态" min-width="80">
+          <el-table-column prop="deviceKey" :label="$t('emp_info_device_dialog_table_label1')" min-width="80"></el-table-column>
+          <el-table-column prop="deviceName" :label="$t('emp_info_device_dialog_table_label2')" min-width="80"></el-table-column>
+          <el-table-column prop="status" :label="$t('emp_info_device_dialog_table_label3')" min-width="80">
             <template slot-scope="scope">
-              <span
-                class="point mr5"
-                :class="{
-                  blue: scope.row.status === 1,
-                  gray: scope.row.status !== 1
-                }">
-              </span>
-              <span>{{ filter(scope.row.status, select.status) }}</span>
+              <div class="fl mr5 point">
+                <span
+                  :class="{
+                    blue: scope.row.status === 1,
+                    gray: scope.row.status !== 1
+                  }">
+                </span>
+              </div>
+              <span class="fl">{{ filter(scope.row.status, select.status) }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="name"
-            label="操作"
+            :label="$t('emp_info_device_dialog_table_label4')"
             min-width="100"
             class-name="table__icon--btn">
             <template slot-scope="scope">
               <el-button type="text" @click="handleStartTask(scope.row)" v-if="!scope.row.expType">
-                {{ dialog.deviceType === 'photograph' ? '拍照' : '读卡' }}
+                {{ dialog.deviceType === 'photograph'
+                ? $t('emp_info_device_dialog_table_btn1')
+                : $t('emp_info_device_dialog_table_btn2') }}
               </el-button>
             </template>
           </el-table-column>
@@ -309,31 +312,34 @@
           :handleQueryFun="handleDeviceQuery"
           :pageParams="pageParams">
           <div>
-            只展示具备{{ dialog.deviceType === 'photograph' ? '拍照注册' : '读取卡号' }}功能的设备
+            {{ dialog.deviceType === 'photograph'
+            ? $t('emp_info_device_dialog_table_tip1')
+            : $t('emp_info_device_dialog_table_tip2') }}
           </div>
         </m-pagination>
       </div>
     </el-dialog>
 
     <el-dialog
-      :title="dialog.deviceType === 'photograph' ? '设备拍照注册' : '设备读取卡号'"
+      :title="dialog.deviceType === 'photograph'
+      ? $t('emp_info_photo_task_dialog_title')
+      : $t('emp_info_card_task_dialog_title')"
       :visible.sync="dialog.tipVisible"
       width="560px">
       <div>
         <img
           class="w100"
-          :src="require(`@/assets/images/${dialog.deviceType}.jpg`)"
-          alt="拍照">
+          :src="require(`@/assets/images/${dialog.deviceType}.jpg`)">
         <p class="ac mt20">
-          <span v-if="dialog.deviceType === 'photograph'">进入拍照模式，请站立在设备面前</span>
-          <span v-else>请将IC/身份证放在刷卡区域内</span>
+          <span v-if="dialog.deviceType === 'photograph'">{{ $t('emp_info_task_dialog_tip1') }}</span>
+          <span v-else>{{ $t('emp_info_task_dialog_tip2') }}</span>
           <span class="ml10 f-blue">{{ time }}s</span>
         </p>
       </div>
     </el-dialog>
 
     <el-dialog :visible.sync="dialog.imgVisible" class="img__dialog" width="500px">
-      <img class="photo w100" :src="`${baseUrl}/file/image/${dialogImageUrl}`" alt="照片">
+      <img class="photo w100" :src="`${baseUrl}/file/image/${dialogImageUrl}`">
     </el-dialog>
   </div>
 </template>
@@ -355,6 +361,7 @@ export default {
       dialogImageUrl: '',
       searchParams: {
         status: 1,
+        cardSupport: true,
         deviceName: '',
         deviceKey: ''
       },
@@ -377,7 +384,7 @@ export default {
       },
       empFormRules: {
         name: [
-          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { required: true, message: this.$t('emp_info_name_rule_msg'), trigger: 'blur' },
           { validator: rule.nameRule, trigger: 'blur' }
         ],
         phone: [
@@ -399,7 +406,7 @@ export default {
           { validator: rule.numAndLetterRule, trigger: 'blur' }
         ],
         depIds: [
-          { required: true, message: '请选择部门', trigger: 'change' }
+          { required: true, message: this.$t('emp_info_dep_rule_msg'), trigger: 'change' }
         ],
         workPlace: [
           { validator: rule.addressRule, trigger: 'blur' }
@@ -421,13 +428,13 @@ export default {
       deviceList: [],
       select: {
         status: [
-          { value: 0, label: '离线' },
-          { value: 1, label: '在线' }
+          { value: 0, label: this.$t('emp_info_select_status_label1') },
+          { value: 1, label: this.$t('emp_info_select_status_label2') }
         ],
         type: [
-          { value: 1, label: '正式员工' },
-          { value: 2, label: '临时工' },
-          { value: 3, label: '实习生' }
+          { value: 1, label: this.$t('emp_info_select_type_label1') },
+          { value: 2, label: this.$t('emp_info_select_type_label2') },
+          { value: 3, label: this.$t('emp_info_select_type_label3') }
         ],
         roles: []
       },
@@ -463,14 +470,14 @@ export default {
           api[apiType](params).then(res => {
             if (res.success) {
               if (!this.isAdd || this.empForm.id) {
-                this.$message.success(`${this.isAdd ? '添加完成！' : '编辑员工成功！'}`)
+                this.$message.success(`${this.isAdd ? this.$t('emp_info_success1') : this.$t('emp_info_success2')}`)
                 this.dialog.regPicVisible = false
                 this.$router.go(-1)
               } else {
-                this.$confirm('下次也可以在员工编辑中补充', '添加人员成功，是否立即补充卡号、注册照信息', {
+                this.$confirm(this.$t('emp_info_confirm1'), this.$t('emp_info_confirm12'), {
                   customClass: 'tip__confirm',
-                  cancelButtonText: '下次再说',
-                  confirmButtonText: '立即补充',
+                  cancelButtonText: this.$t('emp_info_confirm_btn1'),
+                  confirmButtonText: this.$t('emp_info_confirm_btn2'),
                   center: true
                 }).then(() => {
                   this.dialog.regPicVisible = true
@@ -508,10 +515,12 @@ export default {
         userInfo.empType = checkedType[0].value
       }
       if (userInfo.gender) {
-        userInfo.gender = userInfo.gender === '男' ? 1 : userInfo.gender === '女' ? 2 : ''
+        userInfo.gender = userInfo.gender === this.$t('emp_info_gender_label1') ? 1 : userInfo.gender === this.$t('emp_info_gender_label2') ? 2 : ''
       }
       this.empForm = {
         ...userInfo,
+        id: '',
+        recordDetailId: userInfo.id,
         roleId: '',
         photoIds: [],
         depIds: []
@@ -519,8 +528,8 @@ export default {
     },
     handleCancleSave () {
       if (this.empInfoChange) {
-        this.$confirm('是否保存已修改信息', '保存', {
-          confirmButtonText: '保存',
+        this.$confirm(this.$t('emp_info_confirm3'), this.$t('common_save'), {
+          confirmButtonText: this.$t('common_save'),
           distinguishCancelAndClose: true,
           center: true
         }).then(() => {
@@ -545,11 +554,11 @@ export default {
       const fileType = file.type
       const fileSize = file.size
       if (!fileTypeList.includes(fileType)) {
-        this.$message.error('文件格式不正确，请重新选择')
+        this.$message.error(this.$t('emp_info_error1'))
         return false
       }
       if (fileSize > fileMaxSize * 1024 * 1024) {
-        this.$message.error('文件过大，请重新选择')
+        this.$message.error(this.$t('emp_info_error2'))
         return false
       }
       return true
@@ -607,18 +616,18 @@ export default {
               this.empForm.photoIds.push(photoId)
               this.$confirm(`
                 <p><img style="width: 50%;" src="${this.baseUrl}/file/image/${photoId}" /></p>
-                <p>照片合格</p>`, '结果', {
+                <p>${this.$t('emp_info_confirm_text1')}</p>`, this.$t('emp_info_confirm_text2'), {
                 dangerouslyUseHTMLString: true,
                 distinguishCancelAndClose: true,
-                cancelButtonText: '再拍一张',
-                confirmButtonText: '保存',
+                cancelButtonText: this.$t('emp_info_confirm_btn3'),
+                confirmButtonText: this.$t('common_save'),
                 center: true
               }).then(() => {}, (type) => {
                 if (type === 'cancel') {
                   if (this.empForm.photoIds.length < 3) {
                     this.handleStartTask({ deviceKey })
                   } else {
-                    this.$message.warning('注册照最多3张！')
+                    this.$message.warning(this.$t('emp_info_warning1'))
                   }
                 }
               })
@@ -631,9 +640,9 @@ export default {
         } else {
           this.dialog.tipVisible = false
           const { deviceKey } = data
-          this.$confirm(msg, '结果', {
-            confirmButtonText: `${this.dialog.deviceType === 'card' ? '重新读取' : '重新拍摄'}`,
-            cancelButtonText: '确定',
+          this.$confirm(msg, this.$t('emp_info_confirm_text2'), {
+            confirmButtonText: `${this.dialog.deviceType === 'card' ? this.$t('emp_info_confirm_btn4') : this.$t('emp_info_confirm_btn5')}`,
+            cancelButtonText: this.$t('common_confirm'),
             center: true
           }).then(() => {
             this.handleStartTask({ deviceKey })
@@ -644,6 +653,7 @@ export default {
     handleDeviceDialogShow (type) {
       this.searchParams = {
         status: 1,
+        cardSupport: true,
         deviceName: '',
         deviceKey: ''
       }
@@ -679,6 +689,9 @@ export default {
         this.time--
         if (this.time >= 1) {
           this.timeout()
+        } else if (this.time === 0) {
+          this.dialog.tipVisible = false
+          this.$message.warning(`${this.dialog.deviceType === 'photograph' ? this.$t('emp_info_error_text1') : this.$t('emp_info_error_text2')}`)
         }
       }, 1000)
     },
@@ -828,16 +841,19 @@ export default {
   }
 }
 .point{
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: transparent;
-  &.blue{
-    background: #208ef2;
-  }
-  &.gray{
-    background: #c0c4cc;
+  line-height: 20px;
+  span{
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: transparent;
+    &.blue{
+      background: #208ef2;
+    }
+    &.gray{
+      background: #c0c4cc;
+    }
   }
 }
 </style>

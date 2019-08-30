@@ -23,13 +23,14 @@ module.exports = {
     proxy: {
       '/api': {
         // target: 'http://192.168.1.171:7301/mock/5d1ad62258260982ec16f910/offline',
-        target: 'http://192.168.12.110:9091', // 阿秋
+        // target: 'http://192.168.12.110:9091', // 阿秋
         // target: 'http://192.168.60.148:9091', // 草莓
+        target: 'http://192.168.12.31:9091', // 测试
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
         }
-       },
+      },
     }
   }
 }

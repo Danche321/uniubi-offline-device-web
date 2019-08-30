@@ -1,12 +1,12 @@
 import Main from '@/components/main'
-
+import i18n from '@/locale'
 export default [{
   path: '/authorize',
   name: 'authorize',
   redirect: '/authorize/authList',
   component: Main,
   meta: {
-    title: '授权管理',
+    title: i18n.t('router_authorize_authorize'),
     icon: 'icon-Nav_warrant'
   },
   children: [
@@ -15,7 +15,7 @@ export default [{
       name: 'authList',
       component: () => import('@/views/authorize/employee/list.vue'),
       meta: {
-        title: '员工授权'
+        title: i18n.t('router_authorize_authList')
       }
     },
     {
@@ -23,7 +23,7 @@ export default [{
       name: 'authCreate',
       component: () => import('@/views/authorize/employee/create/index.vue'),
       meta: {
-        title: '新增授权',
+        title: i18n.t('router_authorize_authCreate'),
         hideInMenu: true
       }
     },
@@ -32,7 +32,7 @@ export default [{
       name: 'authDetail',
       component: () => import('@/views/authorize/employee/detail.vue'),
       meta: {
-        title: '授权详情',
+        title: i18n.t('router_authorize_authDetail'),
         hideInMenu: true
       }
     },
@@ -41,7 +41,7 @@ export default [{
       name: 'authHistory',
       component: () => import('@/views/authorize/employee/history.vue'),
       meta: {
-        title: '历史授权记录',
+        title: i18n.t('router_authorize_authHistory'),
         hideInMenu: true
       }
     },
@@ -50,7 +50,7 @@ export default [{
       name: 'deviceDetail',
       component: () => import('@/views/authorize/employee/device-detail.vue'),
       meta: {
-        title: '设备人员详情',
+        title: i18n.t('router_authorize_deviceDetail'),
         hideInMenu: true
       }
     }

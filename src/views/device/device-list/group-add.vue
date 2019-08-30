@@ -3,16 +3,16 @@
     <div class="page__header">
       <span class="page__header--title" @click="$router.back()"
         ><i class="iconfont icon-retreat"></i
-        >{{ groupId ? "编辑" : "添加" }}设备组</span
+        >{{ groupId ? $t('group_add.editTitle') : $t('group_add.addTitle') }}</span
       >
     </div>
     <div class="page__content">
       <div class="page__content--form">
         <el-form ref="form" :model="form" class="from" :rules="rules">
-          <el-form-item label="名称" prop="groupName">
+          <el-form-item :label="$t('group_add.form.name')" prop="groupName">
             <el-input v-model="form.groupName"></el-input>
           </el-form-item>
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="$t('group_add.form.remark')" prop="remark">
             <el-input
               type="textarea"
               rows="3"
@@ -23,13 +23,13 @@
         </el-form>
       </div>
       <div class="page__content--device">
-        <p>设备</p>
+        <p>{{$t('group_add.form.device')}}</p>
         <div class="page__content--device__body f-flex-spaceStart-alignStart">
           <el-scrollbar class="scroll--y">
             <div class="pr10">
               <el-input
                 class="mb5"
-                placeholder="搜索"
+                :placeholder="$t('group_add.form.search')"
                 @input="filterTextChange()"
                 v-model="filterText"
                 prefix-icon="el-icon-search"
@@ -53,7 +53,7 @@
                   <div class="name">
                     {{ data.deviceName }}
                     <el-tooltip
-                      content="离线"
+                      :content="$t('group_add.form.offLine')"
                       placement="right"
                       :enterable="false"
                       :open-delay="500"
@@ -64,7 +64,7 @@
                       </i>
                     </el-tooltip>
                     <el-tooltip
-                      content="禁用"
+                      :content="$t('group_add.form.disabled')"
                       placement="right"
                       :enterable="false"
                       :open-delay="500"
@@ -99,9 +99,9 @@
       </div>
 
       <div class="w100 al mt30 page__content--bottom">
-        <el-button @click="$router.back()">取消</el-button>
+        <el-button @click="$router.back()">{{$t('common_cancel')}}</el-button>
         <el-button type="primary" @click="handleAdd()">{{
-          groupId ? "保存" : "添加"
+          groupId ? $t('common_save') : $t('common_add')
         }}</el-button>
       </div>
     </div>
@@ -131,7 +131,7 @@ export default {
       },
       rules: {
         groupName: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
+          { required: true, message: this.$t('group_add.message.requiredName'), trigger: 'blur' },
           { validator: nameRule, trigger: 'blur' }
         ]
       }
@@ -165,14 +165,14 @@ export default {
             // 编辑
             api['updateDeviceGroup'](this.groupId, params).then(res => {
               if (res.success) {
-                this.$message.success('修改成功')
+                this.$message.success(this.$t('group_add.message.updateSuccess'))
                 this.$router.back()
               }
             })
           } else {
             api['createDeviceGroup'](params).then(res => {
               if (res.success) {
-                this.$message.success('添加成功')
+                this.$message.success(this.$t('group_add.message.addSuccess'))
                 this.$router.back()
               }
             })
@@ -190,7 +190,7 @@ export default {
           const deviceGroupIds = Array.from(
             new Set(list.map(ele => ele.deviceGroupId))
           )
-          let tree = [{ deviceName: '全部', id: 'all', children: [] }]
+          let tree = [{ deviceName: this.$t('group_add.all'), id: 'all', children: [] }]
           deviceGroupIds.forEach(id => {
             if (id) {
               const devices = list.filter(ele => ele.deviceGroupId === id)
@@ -203,7 +203,7 @@ export default {
               const devices = list.filter(ele => !ele.deviceGroupId)
               devices.forEach(ele => (ele.disabled = true))
               tree[0].children.push({
-                deviceName: '未分组',
+                deviceName: this.$t('group_add.outGroup'),
                 id: 'noGroup',
                 children: devices
               })

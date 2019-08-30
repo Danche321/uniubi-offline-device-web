@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title pointer" @click="$router.go(-1)">
-        <i class="iconfont icon-retreat"></i>网络配置
+        <i class="iconfont icon-retreat"></i>{{$t('device_wifi.title')}}
       </span>
     </div>
 
@@ -16,24 +16,24 @@
             ref="wifiForm"
             :hide-required-asterisk="true"
             label-position="top">
-            <el-form-item label="WI-FI名称" prop="wifiName">
+            <el-form-item :label="$t('device_wifi.form.name')" prop="wifiName">
               <el-input v-model="wifiForm.wifiName" clearable></el-input>
             </el-form-item>
-            <el-form-item label="WI-FI密码" prop="wifiPass">
+            <el-form-item :label="$t('device_wifi.form.password')" prop="wifiPass">
               <el-input v-model="wifiForm.wifiPass" clearable></el-input>
             </el-form-item>
             <el-form-item prop="confirmPass">
-              <span class="mr20">IP类型:</span>
+              <span class="mr20">{{$t('device_wifi.form.ipType.label')}}:</span>
               <el-radio v-model="wifiForm.dhcp" :label="true">DHCP</el-radio>
-              <el-radio v-model="wifiForm.dhcp" :label="false">固定IP</el-radio>
+              <el-radio v-model="wifiForm.dhcp" :label="false">{{$t('device_wifi.form.ipType.value')}}</el-radio>
             </el-form-item>
             <div class="ip__config" v-if="wifiForm.dhcp">
-              <p class="auto__ip">自动获取IP</p>
+              <p class="auto__ip">{{$t('device_wifi.form.getIpAuto')}}</p>
             </div>
             <div class="ip__config" v-else>
-              <p>固定设置</p>
+              <p>{{$t('device_wifi.form.fixSet')}}</p>
               <el-form-item prop="ip">
-                <span class="ip__label">IP地址</span>
+                <span class="ip__label">{{$t('device_wifi.form.website')}}</span>
                 <div class="ip__input">
                   <ip-input
                     v-model="wifiForm.ip"
@@ -44,7 +44,7 @@
               </el-form-item>
 
               <el-form-item prop="gateway">
-                <span class="ip__label">网关</span>
+                <span class="ip__label">{{$t('device_wifi.form.gateway')}}</span>
                 <div class="ip__input">
                   <ip-input
                     v-model="wifiForm.gateway"
@@ -70,21 +70,21 @@
                 class="w100"
                 type="primary"
                 @click="handleLinkWifi()">
-                连接
+                {{$t('device_wifi.form.btnConnect')}}
               </el-button>
             </div>
           </el-form>
           <div
             class="wired"
             @click="dialog.wiredVisible = true">
-            <i class="iconfont icon-cable"></i>有线配置
+            <i class="iconfont icon-cable"></i>{{$t('device_wifi.form.btnWiredSet')}}
           </div>
         </div>
       </el-scrollbar>
     </div>
 
     <el-dialog
-      title="有线配置"
+      :title="$t('device_wifi.dialogWire.title')"
       :visible.sync="dialog.wiredVisible"
       width="400px">
       <div>
@@ -96,17 +96,17 @@
           :hide-required-asterisk="true"
           label-position="top">
           <el-form-item prop="confirmPass">
-            <span class="mr20">IP类型:</span>
+            <span class="mr20">$t('device_wifi.dialogWire.IpType'):</span>
             <el-radio v-model="wiredForm.dhcp" :label="true">DHCP</el-radio>
-            <el-radio v-model="wiredForm.dhcp" :label="false">固定IP</el-radio>
+            <el-radio v-model="wiredForm.dhcp" :label="false">{{$t('device_wifi.dialogWire.fixIp')}}</el-radio>
           </el-form-item>
           <div class="ip__config" v-if="wiredForm.dhcp">
-            <p class="auto__ip">自动获取IP</p>
+            <p class="auto__ip">{{$t('device_wifi.dialogWire.getIpAuto')}}</p>
           </div>
           <div class="ip__config" v-else>
-            <p>固定设置</p>
+            <p>{{$t('device_wifi.dialogWire.fixSet')}}</p>
             <el-form-item prop="ip">
-              <span class="ip__label">IP地址</span>
+              <span class="ip__label">{{$t('device_wifi.dialogWire.website')}}</span>
               <div class="ip__input">
                 <ip-input
                   v-model="wiredForm.ip"
@@ -117,7 +117,7 @@
             </el-form-item>
 
             <el-form-item prop="gateway">
-              <span class="ip__label">网关</span>
+              <span class="ip__label">{{$t('device_wifi.dialogWire.gateway')}}</span>
               <div class="ip__input">
                 <ip-input
                   v-model="wiredForm.gateway"
@@ -138,24 +138,24 @@
               </div>
             </el-form-item>
           </div>
-          <div class="tip pt10">配置保存成功后，设备连上网线即生效</div>
+          <div class="tip pt10">{{$t('device_wifi.dialogWire.tip')}}</div>
           <div class="ac pt30">
-            <el-button @click="dialog.wiredVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleLinkWired()">保存</el-button>
+            <el-button @click="dialog.wiredVisible = false">{{$t('common_cancel')}}</el-button>
+            <el-button type="primary" @click="handleLinkWired()">{{$t('common_save')}}</el-button>
           </div>
         </el-form>
       </div>
     </el-dialog>
 
     <el-dialog
-      title="网络配置失败设备"
+      :title="$t('device_wifi.dialogFail.title')"
       :visible.sync="dialog.failVisible"
       width="860px">
       <div>
         <el-table class="table__fail" :data="failList" :height="300">
-          <el-table-column prop="deviceName" label="设备名称" min-width="100"></el-table-column>
-          <el-table-column prop="deviceKey" label="设备序列号" min-width="80"></el-table-column>
-          <el-table-column prop="reason" label="失败原因" min-width="200">
+          <el-table-column prop="deviceName" :label="$t('device_wifi.dialogFail.deviceName')" min-width="100"></el-table-column>
+          <el-table-column prop="deviceKey" :label="$t('device_wifi.dialogFail.deviceKey')" min-width="80"></el-table-column>
+          <el-table-column prop="reason" :label="$t('device_wifi.dialogFail.failReason')" min-width="200">
             <template slot-scope="scope">
               <span class="f-red">{{ scope.row.reason }}</span>
             </template>
@@ -191,25 +191,25 @@ export default {
       },
       formRules: {
         wifiName: [
-          { required: true, message: '请输入WI-FI名称', trigger: 'blur' }
+          { required: true, message: this.$t('device_wifi.message.requiredName'), trigger: 'blur' }
         ],
         wifiPass: [
-          { required: true, message: '请输入WI-FI密码', trigger: 'blur' }
+          { required: true, message: this.$t('device_wifi.message.requiredPassword'), trigger: 'blur' }
         ],
         ip: [
-          { required: true, message: '请输入IP地址', trigger: 'blur' },
+          { required: true, message: this.$t('device_wifi.message.requiredIp'), trigger: 'blur' },
           { validator: ipRule, trigger: 'blur' }
         ],
         dns: [
-          { required: true, message: '请输入DNS', trigger: 'blur' },
+          { required: true, message: this.$t('device_wifi.message.requiredDNS'), trigger: 'blur' },
           { validator: ipRule, trigger: 'blur' }
         ],
         dNS: [
-          { required: true, message: '请输入DNS', trigger: 'blur' },
+          { required: true, message: this.$t('device_wifi.message.requiredDNS'), trigger: 'blur' },
           { validator: ipRule, trigger: 'blur' }
         ],
         gateway: [
-          { required: true, message: '请输入网关', trigger: 'blur' },
+          { required: true, message: this.$t('device_wifi.message.requiredGateway'), trigger: 'blur' },
           { validator: ipRule, trigger: 'blur' }
         ]
       },
@@ -241,7 +241,7 @@ export default {
               if (this.failList.length) {
                 this.dialog.failVisible = true
               } else {
-                this.$message.success('设备网络配置成功！')
+                this.$message.success(this.$t('device_wifi.setSuccessMsg'))
                 this.$router.go(-1)
               }
             }
@@ -262,7 +262,7 @@ export default {
               if (this.failList.length) {
                 this.dialog.failVisible = true
               } else {
-                this.$message.success('设备网络保存成功！')
+                this.$message.success(this.$t('device_wifi.saveSuccessMsg'))
                 this.$router.go(-1)
               }
             }

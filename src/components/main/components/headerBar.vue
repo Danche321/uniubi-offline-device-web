@@ -11,8 +11,8 @@
             <i class="iconfont icon-Setting f-pointer"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="$router.push('/company')"><i class="iconfont icon-company"></i>公司信息</el-dropdown-item>
-            <el-dropdown-item @click.native="$router.push('/client-setting')"><i class="iconfont icon-Client"></i>客户端设置</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/company')"><i class="iconfont icon-company"></i>{{ $t('header_company_info') }}</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/client-setting')"><i class="iconfont icon-Client"></i>{{ $t('header_clice_set') }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <i class="icon-split"></i>
@@ -23,8 +23,8 @@
           </span>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="$router.push('/reset-password')"><i class="iconfont icon-change_Password"></i>修改密码</el-dropdown-item>
-            <el-dropdown-item @click.native="logout"><i class="iconfont icon-quit"></i>退出登录</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/reset-password')"><i class="iconfont icon-change_Password"></i>{{ $t('header_reset_password') }}</el-dropdown-item>
+            <el-dropdown-item @click.native="logout"><i class="iconfont icon-quit"></i>{{ $t('header_logout') }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -37,7 +37,7 @@ export default {
   name: 'headerBar',
   data () {
     return {
-      version: '客户端系统V1.0'
+      version: this.$t('header_version')
     }
   },
   computed: {
@@ -53,12 +53,12 @@ export default {
   },
   methods: {
     logout () {
-      this.$confirm('是否确认退出登录?', '退出登录？', {
+      this.$confirm(this.$t('header_confirm_text'), this.$t('header_confirm_title'), {
         customClass: 'delete-message',
         center: true
       }).then(() => {
         this.$store.dispatch('handleLogout').then(() => {
-          this.$message.success('退出成功！')
+          this.$message.success(this.$t('header_confirm_success_msg'))
           this.$router.push('/login')
         })
       })

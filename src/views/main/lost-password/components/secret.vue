@@ -1,10 +1,10 @@
 <template>
   <el-form ref="form" :model="form" class="from" :rules="rules" @submit.native.prevent="nextStep">
-    <p class="tip">请回答密保问题</p>
+    <p class="tip">{{$t('main_lost_password_secret_tip')}}</p>
     <el-form-item :label="question" prop="question">
       <el-input v-model.trim="form.question" clearable></el-input>
     </el-form-item>
-    <el-button type="primary" @click="nextStep" class="btn-next">下一步</el-button>
+    <el-button type="primary" @click="nextStep" class="btn-next">{{$t('main_lost_password_secret_button_text')}}</el-button>
   </el-form>
 </template>
 
@@ -20,7 +20,7 @@ export default {
         question: ''
       },
       rules: {
-        question: [{ required: true, message: '请输入答案', trigger: 'blur' }]
+        question: [{ required: true, message: this.$t('main_lost_password_secret_rules_question'), trigger: 'blur' }]
       }
     }
   },

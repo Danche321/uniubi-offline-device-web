@@ -3,7 +3,7 @@
     <div class="tree">
       <el-input
         class="filter-input"
-        placeholder="请输入部门名称进行查询"
+        :placeholder="$t('department_tree_tree_input')"
         v-model="filterText"
         maxlength="32"
         @input="handleFilter()"
@@ -63,9 +63,10 @@
       <div>
         <span class="department-name fl">{{ depInfo.depName }}</span>
         <span class="fl mb10">
-          部门负责人：{{ depInfo.depManagers && depInfo.depManagers.map(ele => ele.empName).join('、') }}
+          {{ $t('department_tree_list_depManagers') }}
+          {{ depInfo.depManagers && depInfo.depManagers.map(ele => ele.empName).join('、') }}
           <span v-if="!depInfo.depManagers.length">--</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;总人数：{{ pageParams.total }}
+          &nbsp;&nbsp;&nbsp;&nbsp;{{ $t('department_tree_list_depManagers_count') }}{{ pageParams.total }}
         </span>
         <div class="list-icon fr" v-if="rootDepId !== depInfo.id">
           <i class="fr iconfont icon-delete" @click="handleDelete()"></i>
@@ -79,11 +80,31 @@
         </div>
       </div>
       <el-table :data="employeeList" class="filter-table" height="100%">
-        <el-table-column prop="name" label="姓名" min-width="120"></el-table-column>
-        <el-table-column prop="empRoleVO.roleName" label="职称" min-width="100"></el-table-column>
-        <el-table-column prop="workNo" label="工号" min-width="60"></el-table-column>
-        <el-table-column prop="phone" label="手机号" min-width="120"></el-table-column>
-        <el-table-column prop="mail" label="邮箱" min-width="150" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="name" :label="$t('department_tree_table_name')" min-width="120"></el-table-column>
+        <el-table-column prop="empRoleVO.roleName" :label="$('department_tree_table_roleName')" min-width="100">
+          <template slot-scope="{ row }">
+              {{ row.roleName || '--' }}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column prop="workNo" :label="$('department_tree_table_workNo')" min-width="60">
+          <template slot-scope="{ row }">
+              {{ row.workNo || '--' }}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column prop="phone" :label="$t('department_tree_table_phone')" min-width="120">
+          <template slot-scope="{ row }">
+              {{ row.phone || '--' }}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column prop="mail" :label="$('department_tree_table_mail')" min-width="150" :show-overflow-tooltip="true">
+          <template slot-scope="{ row }">
+              {{ row.mail || '--' }}
+            </template>
+          </el-table-column>
+        </el-table-column>
       </el-table>
       <m-pagination
         :handleQueryFun="handleQuery"
@@ -157,7 +178,7 @@ export default {
     // 人员列表分页
     handleQuery () {
       const params = {
-        depId: this.depInfo.id,
+        depId: this.depInfo.id === this.rootDepId ? '' : this.depInfo.id,
         ...this.pageParams
       }
       empList(params).then(res => {

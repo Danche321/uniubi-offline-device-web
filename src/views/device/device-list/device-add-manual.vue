@@ -2,16 +2,16 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title" @click="$router.back()"
-        ><i class="iconfont icon-retreat"></i>手动添加</span
+        ><i class="iconfont icon-retreat"></i>{{$t('device_addManual.title')}}</span
       >
     </div>
     <div class="page__content">
       <el-scrollbar class="scroll--y">
         <el-form ref="form" :model="form" :rules="rules" label-position="top">
-          <el-form-item prop="deviceName" label="名称">
+          <el-form-item prop="deviceName" :label="$t('device_addManual.name')">
             <el-input v-model.trim="form.deviceName" clearable></el-input>
           </el-form-item>
-          <el-form-item prop="ip" label="IP地址">
+          <el-form-item prop="ip" :label="$t('device_addManual.ipAddress')">
             <ip-input
               v-model="form.ip"
               color="#000"
@@ -21,7 +21,7 @@
             </ip-input>
           </el-form-item>
           <hr class="mt30 mb20" />
-          <p>检测到设备</p>
+          <p>{{$t('device_addManual.checkDevice')}}</p>
           <p
             class="mt10 mb20 loading-wrap"
             :class="{ 'f-error': checkedStatus === 3 }"
@@ -30,7 +30,7 @@
           >
             {{ checkedStatus | checkedStatusText(form.deviceKey) }}
           </p>
-          <el-form-item prop="groupId" label="分组">
+          <el-form-item prop="groupId" :label="$t('device_addManual.group')">
             <el-select v-model="form.groupId" style="width: 100%">
               <el-option
                 v-for="item in deviceGroupList"
@@ -43,18 +43,18 @@
           <div v-if="checkedStatus === 2 && !isSetPassword">
             <el-form-item prop="newPassword1">
               <div slot="label" style="display: inline-block">
-                <span class="mr20">设置设备密码</span>
+                <span class="mr20">{{$t('device_addManual.setPassword')}}</span>
                 <el-checkbox
                   v-model="useAdminPassword"
                   class="f-blue"
                   @change="handleUseAdmin"
-                  >使用Admin密码</el-checkbox
+                  >{{$t('device_addManual.userAdminPassword')}}</el-checkbox
                 >
               </div>
               <el-input
                 v-model.trim="form.newPassword1"
                 type="password"
-                placeholader="请设置密码"
+                :placeholader="$t('device_addManual.setPasswordTip')"
                 :disabled="useAdminPassword"
                 clearable
               ></el-input>
@@ -63,7 +63,7 @@
               <el-input
                 v-model.trim="form.newPassword2"
                 type="password"
-                placeholader="重复密码"
+                :placeholader="$t('device_addManual.samePassword')"
                 :disabled="useAdminPassword"
                 clearable
               ></el-input>
@@ -72,7 +72,7 @@
           <el-form-item
             v-if="checkedStatus === 2 && isSetPassword"
             prop="oldPassword"
-            label="设备已存在密码，请输入密码"
+            :placeholader="$t('device_addManual.hasPasswordTip')"
           >
             <el-input
               v-model.trim="form.oldPassword"
@@ -81,8 +81,8 @@
             ></el-input>
           </el-form-item>
           <div class="mt30">
-            <el-button @click="handleCancel">取消</el-button>
-            <el-button type="primary" @click="handelSubmit">添加</el-button>
+            <el-button @click="handleCancel">{{$t('common_cancel')}}</el-button>
+            <el-button type="primary" @click="handelSubmit">{{$t('common_add')}}</el-button>
           </div>
         </el-form>
       </el-scrollbar>
@@ -121,17 +121,17 @@ export default {
       },
       rules: {
         deviceName: [
-          { required: true, message: '请输入设备名称', trigger: 'blur' },
+          { required: true, message: this.$t('device_addManual.message.requiredName'), trigger: 'blur' },
           { validator: nameRule, trigger: 'blur' }
         ],
         ip: [
-          { required: true, message: '请输入ip地址', trigger: 'blur' },
+          { required: true, message: this.$t('device_addManual.message.requiredIpAddress'), trigger: 'blur' },
           { validator: ipRule, trigger: 'blur' }
         ],
         newPassword1: [
           {
             required: true,
-            message: '请输入密码',
+            message: this.$t('device_addManual.message.requiredPassword'),
             trigger: ['blur', 'change']
           },
           { validator: passwordRule, trigger: 'blur' }
@@ -139,13 +139,13 @@ export default {
         newPassword2: [
           {
             required: true,
-            message: '请输入确认密码',
+            message: this.$t('device_addManual.message.requiredAgain'),
             trigger: ['blur', 'change']
           },
           { validator: psw2Validate, trigger: 'blur' }
         ],
         oldPassword: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: this.$t('device_addManual.message.requiredPassword'), trigger: 'blur' }
         ]
       },
       checkedStatus: 1, // 1初始值 2检测到设备 3未检测到设备
@@ -163,7 +163,7 @@ export default {
         case 2:
           return deviceKey
         case 3:
-          return '当前IP地址未检测到设备'
+          return this.$t('device_addManual.message.noIp')
       }
     }
   },
@@ -229,7 +229,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           if (!this.form.deviceKey) {
-            return this.$message.error('请先检测设备')
+            return this.$message.error(this.$t('device_addManual.message.requiredDevice'))
           }
           const {
             deviceKey,
@@ -257,7 +257,7 @@ export default {
           }
           createDevice(params).then(res => {
             if (res.success) {
-              this.$message.success('添加成功')
+              this.$message.success(this.$t('device_addManual.message.addSuccess'))
               this.$router.back()
             }
           })

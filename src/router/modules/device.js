@@ -1,12 +1,12 @@
 import Main from '@/components/main'
-
+import i18n from '@/locale'
 export default [{
   path: '/device',
   name: 'device',
   redirect: '/device/deviceList',
   component: Main,
   meta: {
-    title: '设备管理',
+    title: i18n.t('router_device_device'),
     icon: 'icon-Nav_device'
   },
   children: [
@@ -15,7 +15,7 @@ export default [{
       name: 'deviceList',
       component: () => import('@/views/device/device-list/device-list.vue'),
       meta: {
-        title: '设备列表'
+        title: i18n.t('router_device_deviceList')
       }
     },
     {
@@ -23,7 +23,7 @@ export default [{
       name: 'batch',
       component: () => import('@/views/device/device-list/batch-operate.vue'),
       meta: {
-        title: '批量操作',
+        title: i18n.t('router_device_batch'),
         hideInMenu: true
       }
     },
@@ -32,7 +32,7 @@ export default [{
       name: 'config',
       component: () => import('@/views/device/device-list/device-config.vue'),
       meta: {
-        title: '设备配置',
+        title: i18n.t('router_device_config'),
         hideInMenu: true
       }
     },
@@ -41,7 +41,7 @@ export default [{
       name: 'wifi',
       component: () => import('@/views/device/device-list/device-wifi.vue'),
       meta: {
-        title: '网络配置',
+        title: i18n.t('router_device_wifi'),
         hideInMenu: true
       }
     },
@@ -50,7 +50,7 @@ export default [{
       name: 'time',
       component: () => import('@/views/device/device-list/device-time.vue'),
       meta: {
-        title: '设备校时',
+        title: i18n.t('router_device_time'),
         hideInMenu: true
       }
     },
@@ -59,7 +59,7 @@ export default [{
       name: 'upgrade',
       component: () => import('@/views/device/device-list/device-upgrade.vue'),
       meta: {
-        title: '固件升级',
+        title: i18n.t('router_device_upgrade'),
         hideInMenu: true
       }
     },
@@ -68,7 +68,7 @@ export default [{
       name: 'group',
       component: () => import('@/views/device/device-list/group-list.vue'),
       meta: {
-        title: '设备组'
+        title: i18n.t('router_device_group')
       }
     },
     {
@@ -76,7 +76,7 @@ export default [{
       name: 'addManual',
       component: () => import('@/views/device/device-list/device-add-manual.vue'),
       meta: {
-        title: '手动添加设备',
+        title: i18n.t('router_device_addManual'),
         hideInMenu: true
       }
     },
@@ -85,7 +85,7 @@ export default [{
       name: 'addAuto',
       component: () => import('@/views/device/device-list/device-add-auto.vue'),
       meta: {
-        title: '自动添加设备',
+        title: i18n.t('router_device_addAuto'),
         hideInMenu: true
       }
     },
@@ -94,7 +94,7 @@ export default [{
       name: 'deviceCheck',
       component: () => import('@/views/device/device-list/device-check.vue'),
       meta: {
-        title: '检查设备',
+        title: i18n.t('router_device_deviceCheck'),
         hideInMenu: true
       }
     },
@@ -103,7 +103,7 @@ export default [{
       name: 'groupAdd',
       component: () => import('@/views/device/device-list/group-add.vue'),
       meta: {
-        title: '添加组',
+        title: i18n.t('router_device_groupAdd'),
         hideInMenu: true
       }
     }

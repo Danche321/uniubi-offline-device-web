@@ -1,12 +1,12 @@
 <template>
   <div class="page__content">
     <div class="page__content--left">
-      <p>选择设备</p>
+      <p>{{$t('authorize_create_device_select_title')}}</p>
       <el-scrollbar class="scroll--y">
         <div class="pr10">
           <el-input
             class="mb5"
-            placeholder="搜索"
+            :placeholder="$t('authorize_create_device_select_search_input_placeholder')"
             @input="filterTextChange()"
             v-model="filterText"
             prefix-icon="el-icon-search"
@@ -30,7 +30,7 @@
               <div class="name">
                 {{ data.deviceName }}
                 <el-tooltip
-                  content="离线"
+                  :content="$t('authorize_create_device_offline_tooltip')"
                   placement="right"
                   :enterable="false"
                   :open-delay="500"
@@ -41,7 +41,7 @@
                   </i>
                 </el-tooltip>
                 <el-tooltip
-                  content="禁用"
+                  :content="$t('authorize_create_device_disabled_tooltip')"
                   placement="right"
                   :enterable="false"
                   :open-delay="500"
@@ -61,10 +61,10 @@
 
     <div class="page__content--center">
       <p>
-        授权
+        {{$t('authorize_create_device_authorization_title')}}
         <el-tooltip
           effect="dark"
-          content="将人员及注册照发送到设备上，设备即可进行刷脸、刷卡识别等操作。要求设备联网在线且为非禁用状态"
+          :content="$t('authorize_create_device_authorization_tooltip')"
           placement="top"
         >
           <i class="iconfont icon-remind"></i>
@@ -72,7 +72,7 @@
       </p>
       <div class="scroll--y">
         <p class="sub-title">
-          版本兼容<span class="f-blue ml10">{{ compatibleList.length }}</span>
+          {{$t('authorize_create_device_authorization_content_true_header')}}<span class="f-blue ml10">{{ compatibleList.length }}</span>
         </p>
         <el-scrollbar>
           <div
@@ -93,7 +93,7 @@
     <div class="page__content--right">
       <div class="scroll--y">
         <p class="sub-title">
-          版本不兼容<span class="f-blue ml10">{{
+          {{$t('authorize_create_device_authorization_content_false_header')}}<span class="f-blue ml10">{{
             incompatibleList.length
           }}</span>
         </p>
@@ -114,8 +114,8 @@
     </div>
 
     <div class="w100 ac mt30 pt20 page__content--bottom">
-      <el-button @click="$emit('deviceCancel')">上一步</el-button>
-      <el-button type="primary" @click="handleAuth()">授权</el-button>
+      <el-button @click="$emit('deviceCancel')">{{$t('authorize_create_device_authorization_prev')}}</el-button>
+      <el-button type="primary" @click="handleAuth()">{{$t('authorize_create_device_authorization_submit')}}</el-button>
     </div>
 
     <div
@@ -123,7 +123,7 @@
       class="notification f-flex-space-between"
     >
       <span>{{
-        authDialog.status === 1 ? `正在授权${authDialog.percent}` : "授权完成"
+        authDialog.status === 1 ? `${$t('authorize_create_device_authorization_dialog_title')}${authDialog.percent}` : $t('authorize_create_device_authorization_dialog_title_finish')
       }}</span>
       <div>
         <i
@@ -140,11 +140,11 @@
       :show-close="false"
     >
       <div slot="title" class="slot-header">
-        <span>{{ authDialog.status === 1 ? "正在授权" : "授权已完成" }}</span>
+        <span>{{ authDialog.status === 1 ? $t('authorize_create_device_authorization_authDialog_title') : $t('authorize_create_device_authorization_authDialog_title_finish') }}</span>
         <div class="icon-warp">
           <el-tooltip
             effect="dark"
-            content="最小化"
+            :content="$t('authorize_create_device_authorization_authDialog_small_tooltip')"
             placement="top"
             :enterable="false"
           >
@@ -152,7 +152,7 @@
           </el-tooltip>
           <el-tooltip
             effect="dark"
-            content="关闭"
+            :content="$t('authorize_create_device_authorization_authDialog_close_tooltip')"
             placement="top"
             :enterable="false"
           >
@@ -165,12 +165,12 @@
         <i v-else class="iconfont icon-success"></i>
         <div class="progress">
           <p v-if="authDialog.status === 1" class="progress__text">
-            数据较多，时间较长，请耐心等候
+            {{$t('authorize_create_device_authorization_authDialog_manyData')}}
           </p>
           <p v-else class="progress__text">
-            已成功授权{{ authDialog.successNum.device }}台设备，授权{{
+            {{$t('authorize_create_device_authorization_authDialog_finish_device')}}{{ authDialog.successNum.device }}{{$t('authorize_create_device_authorization_authDialog_finish_device_unit')}}{{$t('authorize_create_device_authorization_authDialog_finish_people')}}{{
               authDialog.successNum.employee
-            }}人
+            }}{{$t('authorize_create_device_authorization_authDialog_finish_people_unit')}}
           </p>
           <div class="f-flex-spaceBetween-alignCenter">
             <el-progress
@@ -182,14 +182,14 @@
               v-if="authDialog.status === 1"
               class="btn-cancel"
               @click="handleAuthClose"
-              >取消</el-button
+              >{{$t('authorize_create_device_authorization_authDialog_cancel')}}</el-button
             >
             <el-button
               v-else
               type="primary"
               class="btn-detail"
               @click="$router.push(`/authorize/detail/${operateId}`)"
-              >进入详情</el-button
+              >{{$t('authorize_create_device_authorization_authDialog_next')}}</el-button
             >
           </div>
         </div>
@@ -267,7 +267,7 @@ export default {
           const deviceGroupIds = Array.from(
             new Set(list.map(ele => ele.deviceGroupId))
           )
-          let tree = [{ deviceName: '全部', id: 'all', children: [] }]
+          let tree = [{ deviceName: this.$t('authorize_create_device_select_all'), id: 'all', children: [] }]
           deviceGroupIds.forEach(id => {
             if (id) {
               const devices = list.filter(ele => ele.deviceGroupId === id)
@@ -279,7 +279,7 @@ export default {
             } else {
               const devices = list.filter(ele => !ele.deviceGroupId)
               tree[0].children.push({
-                deviceName: '未分组',
+                deviceName: this.$t('authorize_create_device_select_false'),
                 id: 'noGroup',
                 children: devices
               })
@@ -333,7 +333,7 @@ export default {
     // 授权
     handleAuth () {
       if (!this.checkList.length) {
-        return this.$message.error('请选择设备')
+        return this.$message.error(this.$t('authorize_create_device_authorization_error_empty'))
       }
       const { form, checkedIds } = this.preStepParams
       const params = {
@@ -342,7 +342,7 @@ export default {
         ...{ deviceKeyList: this.checkList.map(item => item.deviceKey) }
       }
       if (form.stopAuthWhenNotCompatibility) {
-        this.$confirm('版本不兼容的设备将不授权', '提示', {
+        this.$confirm(this.$t('authorize_create_device_authorization_error_version_content'), this.$t('authorize_create_device_authorization_error_version_title'), {
           showCancelButton: false,
           center: true
         }).then(() => {
@@ -366,9 +366,9 @@ export default {
     },
     // 关闭授权
     handleAuthClose () {
-      this.$confirm('', '关闭授权页面？', {
+      this.$confirm('', this.$t('authorize_create_device_close_content'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '确定',
+        confirmButtonText: this.$t('common_confirm'),
         center: true
       }).then(
         () => {
@@ -611,40 +611,22 @@ export default {
     }
   }
 }
+.el-tree/deep/ {
+  .el-tree-node__content {
+    height: auto;
+  }
+  .node--key {
+    padding-top: 10px;
+    .key {
+      font-size: 12px;
+      color: #909399;
+    }
+  }
+}
 .icon-Disable,
 .icon-Offline {
   color: #ff002e;
   margin-left: 4px;
   font-size: 18px;
-}
-.el-tree/deep/{
-  .icon-get-into{
-    font-size: 12px;
-  }
-  .el-tree-node__children{
-    overflow: visible;
-  }
-  .el-tree-node__content{
-    height: auto;
-    position: relative;
-    padding: 3px 0;
-  }
-  .el-checkbox{
-    margin-left: 25px;
-    position: absolute;
-    top: 5px;
-  }
-  .name{
-    margin-left: 25px;
-  }
-  .node--key{
-    padding-top: 3px;
-    height: 36px;
-    .key{
-      margin-left: 25px;
-      font-size: 12px;
-      color: #909399;
-    }
-  }
 }
 </style>

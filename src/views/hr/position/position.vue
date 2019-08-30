@@ -2,11 +2,11 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title">
-        职称列表
+        {{ $t('position_page_title') }}
       </span>
       <div class="page__header--btn">
-        <el-button size="small" @click="handleBatchDelete()">批量删除</el-button>
-        <el-button type="primary" size="small" @click="handlePositionDialogShow()">添加职称</el-button>
+        <el-button size="small" @click="handleBatchDelete()">{{ $t('position_header_batchdelete_button') }}</el-button>
+        <el-button type="primary" size="small" @click="handlePositionDialogShow()">{{$t('position_header_addposition_button')}}</el-button>
       </div>
     </div>
 
@@ -18,7 +18,7 @@
         :inline="true"
         :model="searchParams"
         @keyup.enter.native="handleQuery('firstPage')">
-        <el-form-item label="职称">
+        <el-form-item :label="$t('position_form_search_label')">
           <el-input
             v-model="searchParams.name"
             @blur="searchParams.name = searchParams.name.trim()"
@@ -28,7 +28,7 @@
         </el-form-item>
 
         <el-form-item class="btn__search">
-          <el-button icon="iconfont icon-search" @click="handleQuery('firstPage')">查询</el-button>
+          <el-button icon="iconfont icon-search" @click="handleQuery('firstPage')">{{$t('position_form_search_button')}}</el-button>
         </el-form-item>
       </el-form>
 
@@ -40,10 +40,10 @@
                 <el-checkbox :label="item.id">{{ item.roleName }}</el-checkbox>
               </div>
               <div class="position__icon">
-                <el-tooltip content="编辑" :enterable="false" :open-delay="500">
+                <el-tooltip :content="$t('position_form_list_edit')" :enterable="false" :open-delay="500">
                   <i class="iconfont icon-edit" @click="handlePositionDialogShow(item)"></i>
                 </el-tooltip>
-                <el-tooltip content="删除" :enterable="false" :open-delay="500">
+                <el-tooltip :content="$t('position_form_list_delete')" :enterable="false" :open-delay="500">
                   <i class="iconfont icon-delete" @click="handleDelete(item)"></i>
                 </el-tooltip>
               </div>
@@ -58,7 +58,7 @@
     </div>
 
     <el-dialog
-      :title="isAdd ? '添加职称' : '编辑职称'"
+      :title="isAdd ? $t('position_dialog_title_add') : $t('position_dialog_title_edit')"
       :visible.sync="dialog.positionVisible"
       width="400px">
       <div class="pr20 pl20 position__dialog" v-if="dialog.positionVisible">
@@ -68,15 +68,15 @@
           ref="positionForm"
           :hide-required-asterisk="true"
           label-position="top">
-          <el-form-item label="名称" prop="name">
+          <el-form-item :label="$t('position_dialog_form_name')" prop="name">
             <el-input v-model="positionForm.name" placeholder="" clearable></el-input>
           </el-form-item>
           <div class="ac pt10">
-            <el-button @click="dialog.positionVisible = false">取消</el-button>
+            <el-button @click="dialog.positionVisible = false">{{ $t('position_dialog_form_cancel_button') }}</el-button>
             <el-button
               type="primary"
               @click="handleSavePosition">
-              {{  isAdd ? '添加' : '保存'}}
+              {{  isAdd ? $t('position_dialog_form_add_button') : $t('position_dialog_form_save_button')}}
             </el-button>
           </div>
         </el-form>
@@ -100,7 +100,7 @@ export default {
       positionForm: { name: '' },
       positionFormRules: {
         name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
+          { required: true, message: this.$t('position_dialog_form_name_require'), trigger: 'blur' },
           { validator: positionRule, trigger: 'blur' }
         ]
       },
@@ -139,7 +139,7 @@ export default {
 
           api[apiType](this.positionForm).then(res => {
             if (res.success) {
-              this.$message.success(`${this.isAdd ? '添加' : '编辑'}成功！`)
+              this.$message.success(`${this.isAdd ? this.$t('position_dialog_save_message_add') : this.$t('position_dialog_save_message_edit')}${this.$t('position_dialog_save_message_success')}`)
               this.handleQuery()
               this.dialog.positionVisible = false
             }
@@ -148,9 +148,9 @@ export default {
       })
     },
     handleDelete ({ id }) {
-      this.$confirm('删除职称后，相关联的人员职称也一并删除，请谨慎操作', '删除职称', {
+      this.$confirm(this.$t('position_delete_comfirm_text'), this.$t('position_delete_comfirm_title'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '删除',
+        confirmButtonText: this.$t('position_delete_comfirm_button'),
         center: true
       }).then(() => {
         api.delRole(id).then(res => {
@@ -162,16 +162,16 @@ export default {
     },
     handleBatchDelete () {
       if (!this.checkList.length) {
-        this.$confirm('请先在职称列表中勾选职称', '提示', {
+        this.$confirm(this.$t('position_batch_delete_comfirm1_text'), this.$t('position_batch_delete_comfirm1_title'), {
           showCancelButton: false,
           center: true
         }).then(() => {}, () => {})
         return
       }
 
-      this.$confirm('删除职称后，相关联的人员职称也一并删除，请谨慎操作', '删除职称', {
+      this.$confirm(this.$t('position_batch_delete_comfirm2_text'), this.$t('position_batch_delete_comfirm2_title'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '删除',
+        confirmButtonText: this.$t('position_batch_delete_comfirm2_button'),
         center: true
       }).then(() => {
         const params = {

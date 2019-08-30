@@ -1,12 +1,12 @@
 <template>
   <div class="page__content">
     <div class="page__content--left">
-      <p>选择人员</p>
+      <p>{{$t('authorize_create_employee_select_title')}}</p>
       <el-scrollbar class="scroll--y">
         <div class="pr10">
           <el-input
             class="mb5"
-            placeholder="搜索"
+            :placeholder="$t('authorize_create_employee_select_search_input_placeholder')"
             @input="filterTextChange()"
             v-model="filterText"
             prefix-icon="el-icon-search"
@@ -35,7 +35,7 @@
 
     <div class="page__content--center">
       <p>
-        已选人员 <span class="f-black">{{ checkList.length }}</span>
+        {{$t('authorize_create_employee_selected_title')}} <span class="f-black">{{ checkList.length }}</span>
       </p>
       <el-scrollbar class="scroll--y">
         <el-tag
@@ -51,23 +51,23 @@
     </div>
 
     <div class="page__content--right">
-      <p>设置</p>
+      <p>{{$t('authorize_create_employee_setting_title')}}</p>
       <el-scrollbar class="scroll--y">
         <el-form ref="form" :model="form" :rules="rules" label-position="top">
           <el-form-item>
             <span slot="label">
-              权限有效期
+              {{$t('authorize_create_employee_setting_form_period_label')}}
               <el-tooltip
                 effect="dark"
-                content="如：选择2015/01/01-2019/01/01,甲只在这个时间段内被设备识别"
+                :content="$t('authorize_create_employee_setting_form_period_tooltip')"
                 placement="top"
               >
                 <i class="iconfont icon-remind"></i>
               </el-tooltip>
             </span>
             <el-radio-group v-model="form.isPeriod">
-              <el-radio :label="0">不限制</el-radio>
-              <el-radio :label="1">自定义</el-radio>
+              <el-radio :label="0">{{$t('authorize_create_employee_setting_form_period_value_false')}}</el-radio>
+              <el-radio :label="1">{{$t('authorize_create_employee_setting_form_period_value_custom')}}</el-radio>
             </el-radio-group>
             <el-form-item v-if="form.isPeriod === 1" prop="validatePeriodTime">
               <date-picker-range
@@ -82,17 +82,17 @@
           </el-form-item>
           <el-form-item>
             <span slot="label">
-              准入时间
+              {{$t('authorize_create_employee_setting_form_permission_label')}}
               <el-tooltip
-                content="如：0:00-18:00，甲只在一天的这个时间段被设备识别"
+                :content="$t('authorize_create_employee_setting_form_permission_tooltip')"
                 placement="top"
               >
                 <i class="iconfont icon-remind"></i>
               </el-tooltip>
             </span>
             <el-radio-group v-model="form.isPermission">
-              <el-radio :label="0">不限制</el-radio>
-              <el-radio :label="1">自定义</el-radio>
+              <el-radio :label="0">{{$t('authorize_create_employee_setting_form_permission_value_false')}}</el-radio>
+              <el-radio :label="1">{{$t('authorize_create_employee_setting_form_permission_value_custom')}}</el-radio>
             </el-radio-group>
             <el-form-item
               v-if="form.isPermission === 1"
@@ -111,7 +111,7 @@
                   class="f-wd150"
                   value-format="HH:mm"
                   format="HH:mm"
-                  placeholder="开始时间"
+                  :placeholder="$t('authorize_create_employee_setting_form_permission_value_custom_start_placeholder')"
                 ></el-time-picker>
                 -
                 <el-time-picker
@@ -121,7 +121,7 @@
                   class="f-wd150"
                   value-format="HH:mm"
                   format="HH:mm"
-                  placeholder="结束时间"
+                  :placeholder="$t('authorize_create_employee_setting_form_permission_value_custom_end_placeholder')"
                 ></el-time-picker>
                 <i
                   v-if="index > 0"
@@ -133,40 +133,40 @@
                 v-if="form.isPermission===1&&form.permissionTime.permissionTimeEntries.length<3"
                 @click="handleAddPermission"
                 class="btn-add"
-                ><i class="el-icon-plus"></i> 添加时间段</el-button
+                ><i class="el-icon-plus"></i> {{$t('authorize_create_employee_setting_form_permission_value_custom_add_button')}}</el-button
               >
             </el-form-item>
           </el-form-item>
           <el-form-item>
             <span slot="label">
-              设备存储注册照
+              {{$t('authorize_create_employee_setting_form_imgStoreDevice_label')}}
               <el-tooltip
                 effect="dark"
-                content="注册照会占用设备较多的存储空间"
+                :content="$t('authorize_create_employee_setting_form_imgStoreDevice_tooltip')"
                 placement="top"
               >
                 <i class="iconfont icon-remind"></i>
               </el-tooltip>
             </span>
             <el-radio-group v-model="form.imgStoreDevice">
-              <el-radio :label="true">是</el-radio>
-              <el-radio :label="false">否</el-radio>
+              <el-radio :label="true">{{$t('authorize_create_employee_setting_form_imgStoreDevice_value_true')}}</el-radio>
+              <el-radio :label="false">{{$t('authorize_create_employee_setting_form_imgStoreDevice_value_false')}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item>
             <span slot="label">
-              版本不兼容的情况下继续授权
+              {{$t('authorize_create_employee_setting_form_stopAuthWhenNotCompatibility_label')}}
               <el-tooltip
                 effect="dark"
-                content="客户端和设备端版本不兼容的情况下，继续授权耗时将会很久，推荐前往客户端设置更新版本或到设备列表里进行设备固件升级"
+                :content="$t('authorize_create_employee_setting_form_stopAuthWhenNotCompatibility_tooltip')"
                 placement="top"
               >
                 <i class="iconfont icon-remind"></i>
               </el-tooltip>
             </span>
             <el-radio-group v-model="form.stopAuthWhenNotCompatibility">
-              <el-radio :label="false">是</el-radio>
-              <el-radio :label="true">否</el-radio>
+              <el-radio :label="false">{{$t('authorize_create_employee_setting_form_stopAuthWhenNotCompatibility_value_true')}}</el-radio>
+              <el-radio :label="true">{{$t('authorize_create_employee_setting_form_stopAuthWhenNotCompatibility_value_false')}}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -174,8 +174,8 @@
     </div>
 
     <div class="w100 ac mt30 pt20 page__content--bottom">
-      <el-button @click="$router.back()">取消</el-button>
-      <el-button type="primary" @click="handleNext()">下一步</el-button>
+      <el-button @click="$router.back()">{{$t('authorize_create_employee_setting_cancel')}}</el-button>
+      <el-button type="primary" @click="handleNext()">{{$t('authorize_create_employee_setting_next')}}</el-button>
     </div>
   </div>
 </template>
@@ -290,13 +290,13 @@ export default {
             permissionEndTime
           } = this.form.permissionTime
           if (!permissionStartTime && !permissionEndTime) {
-            callback(new Error('请选择权限有效期'))
+            callback(new Error(this.$t('authorize_create_employee_setting_form_period_error_empty')))
           }
           if (!permissionStartTime) {
-            callback(new Error('请选择开始日期'))
+            callback(new Error(this.$t('authorize_create_employee_setting_form_period_error_start_empty')))
           }
           if (!permissionEndTime) {
-            callback(new Error('请选择结束日期'))
+            callback(new Error(this.$t('authorize_create_employee_setting_form_period_error_end_empty')))
           }
           callback()
         },
@@ -305,14 +305,14 @@ export default {
             return item.startTime && item.endTime
           })
           if (!check) {
-            callback(new Error('请选择准入时间'))
+            callback(new Error(this.$t('authorize_create_employee_setting_form_permission_error_empty')))
           }
           callback()
         }
       }
     },
     handleNext () {
-      if (!this.checkList.length) return this.$message.error('请选择人员')
+      if (!this.checkList.length) return this.$message.error(this.$t('authorize_create_employee_setting_person_error_empty'))
       this.$refs.form.validate(valid => {
         if (valid) {
           const pageParams = {
@@ -435,27 +435,6 @@ export default {
       margin-left: 12px;
       cursor: pointer;
     }
-  }
-}
-.el-tree/deep/ {
-  .icon-get-into {
-    font-size: 12px;
-  }
-  .el-tree-node__children {
-    overflow: visible;
-  }
-  .el-tree-node__content {
-    height: auto;
-    position: relative;
-    padding: 3px 0;
-  }
-  .el-checkbox {
-    margin-left: 25px;
-    position: absolute;
-    top: 5px;
-  }
-  .name {
-    margin-left: 25px;
   }
 }
 </style>

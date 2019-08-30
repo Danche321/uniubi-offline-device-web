@@ -1,24 +1,24 @@
 <template>
   <div class="login">
-    <p class="login__version">客户端系统V1.0</p>
+    <p class="login__version">{{$t('main_login_version')}}</p>
     <img class="login__img" src="@/assets/images/login-bg.png" />
     <div class="login__form">
-      <p class="welcome">欢迎登录</p>
+      <p class="welcome">{{$t('main_login_welcome')}}</p>
       <el-form ref="form" :model="form" label-width="0" class="login-from" :rules="rules" @keyup.enter.native="handleSubmit">
         <el-form-item prop="userName">
-          <el-input v-model.trim="form.userName" placeholder="用户名" prefix-icon="iconfont icon-Account" disabled></el-input>
+          <el-input v-model.trim="form.userName" :placeholder="$t('main_login_userName_placeholder')" prefix-icon="iconfont icon-Account" disabled></el-input>
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input v-model.trim="form.password" :type="showPass ? 'text' : 'password'" prefix-icon="iconfont icon-password" placeholder="密码">
+          <el-input v-model.trim="form.password" :type="showPass ? 'text' : 'password'" prefix-icon="iconfont icon-password" :placeholder="$t('main_login_password_placeholder')">
             <i slot="suffix" class="iconfont icon-hide" :class="showPass ? 'icon-display' : 'icon-mimabukejian'" @click.stop="showPass = !showPass"></i>
           </el-input>
         </el-form-item>
 
-        <el-button type="primary" @click="handleSubmit" class="btn-login">登 录</el-button>
+        <el-button type="primary" @click="handleSubmit" class="btn-login">{{$t('main_login_submit_text')}}</el-button>
       </el-form>
       <div class="login-tip">
-        <router-link to="/lost-password">忘记密码？</router-link>
+        <router-link to="/lost-password">{{$t('main_login_lost_text')}}</router-link>
       </div>
     </div>
   </div>
@@ -163,8 +163,5 @@ export default {
     .el-input__suffix{
       right: 12px;
     }
-  }
-  .icon-password,.icon-Account{
-    font-size: 14px;
   }
 </style>

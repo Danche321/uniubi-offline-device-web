@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">首页</span>
+      <span class="page__header--title">{{ $t('home_page_title') }}</span>
     </div>
     <div class="page__content">
       <el-scrollbar class="scroll--y">
@@ -14,17 +14,17 @@
             <p>
               <i class="iconfont" :class="item.icon"></i>
               <span class="emp__num">{{ item.num }}</span>
-              <span class="emp__text">{{ item.numType }}</span>
+              <span class="emp__text">{{ $t(item.numType === 'people' ? 'home_summary_people_num_type' : 'home_summary_times_num_type') }}</span>
             </p>
-            <p class="mt10">{{ item.text }}</p>
+            <p class="mt10">{{ $t(item.text) }}</p>
           </div>
         </div>
 
         <div class="quick">
           <div class="quick__title">
-            <p>快捷操作</p>
+            <p>{{ $t('home_quick_btn_title') }}</p>
             <el-tooltip
-              content="编辑"
+              :content="$t('common_edit')"
               placement="left"
               :enterable="false"
               :open-delay="500">
@@ -33,7 +33,7 @@
           </div>
           <div class="quick__content">
             <div class="empty__tip" v-if="!quickBtn.length">
-              <span class="pointer" @click="handleShowDialog('quickBtn')">点击添加快捷操作</span>
+              <span class="pointer" @click="handleShowDialog('quickBtn')">{{ $t('home_quick_btn_add') }}</span>
             </div>
             <el-button
               v-for="(item, index) in quickBtn"
@@ -46,9 +46,9 @@
 
         <div class="quick">
           <div class="quick__title">
-            <p>快捷入口</p>
+            <p>{{ $t('home_quick_enter_title') }}</p>
             <el-tooltip
-              content="编辑"
+              :content="$t('common_edit')"
               placement="left"
               :enterable="false"
               :open-delay="500">
@@ -57,7 +57,7 @@
           </div>
           <div class="quick__content">
             <div class="empty__tip" v-if="!quickEnter.length">
-              <span class="pointer" @click="handleShowDialog('quickEnter')">点击添加快捷入口</span>
+              <span class="pointer" @click="handleShowDialog('quickEnter')">{{ $t('home_quick_enter_add') }}</span>
             </div>
             <div class="quick__enter--item" v-for="(item, index) in quickEnter" :key="index">
               <i class="iconfont" :class="item.icon" @click="$router.push({name: item.url})"></i>
@@ -69,7 +69,7 @@
 
       <el-dialog
         v-if="editDialogVisible"
-        :title="`${dialogType === 'quickEnter' ? '编辑菜单' : '编辑快捷操作'}`"
+        :title="$t(dialogType === 'quickEnter' ? 'home_dialog_quick_enter_title' : 'home_dialog_quick_btn_title')"
         :visible.sync="editDialogVisible"
         width="680px"
         center>
@@ -97,10 +97,10 @@ export default {
       dialogType: '',
       editDialogVisible: false,
       summary: [
-        { icon: 'icon-data_People', num: 0, text: '今日识别人数', numType: '人' },
-        { icon: 'icon-data_success', num: 0, text: '今日识别总次数', numType: '次' },
-        { icon: 'icon-data_People', num: 0, text: '昨日识别人数', numType: '人' },
-        { icon: 'icon-data_success', num: 0, text: '昨日识别总次数', numType: '次' }
+        { icon: 'icon-data_People', num: 0, text: 'home_today_recognition_emp_num', numType: 'people' },
+        { icon: 'icon-data_success', num: 0, text: 'home_today_recognition_num', numType: 'times' },
+        { icon: 'icon-data_People', num: 0, text: 'home_yesterday_recognition_emp_num', numType: 'people' },
+        { icon: 'icon-data_success', num: 0, text: 'home_yesterday_recognition_num', numType: 'times' }
       ],
       quickBtn: [],
       quickEnter: [],

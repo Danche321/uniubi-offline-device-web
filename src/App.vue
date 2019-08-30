@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'APP',
+  created () {
+    this.$i18n.locale = 'zh-CN'
+  }
+}
+</script>
+
 <style lang="scss">
 html,body{
   width: 100%;

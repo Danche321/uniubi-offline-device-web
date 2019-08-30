@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title" @click="$router.back()"
-        ><i class="iconfont icon-retreat"></i>授权详情</span
+        ><i class="iconfont icon-retreat"></i>{{$t('authorize_detail_title_text')}}</span
       >
     </div>
 
@@ -10,11 +10,11 @@
       <div class="page__content">
         <section class="detail__header">
           <p class="title">
-            此次授权人员{{ info.personNum }}名，授权设备{{ info.deviceNum }}台
+            {{$t('authorize_detail_header_person')}}{{ info.personNum }}{{$t('authorize_detail_header_person_unit')}}{{$t('authorize_detail_header_device')}}{{ info.deviceNum }}{{$t('authorize_detail_header_device_unit')}}
           </p>
           <div class="f-flex-spaceBetween-alignCenter content">
             <span
-              >权限有效期：{{
+              >{{$t('authorize_detail_header_period')}}{{
                 info.permissionTime.permissionStartTime
                   ? `${info.permissionTime.permissionStartTime}~${info.permissionTime.permissionEndTime}`
                   : "-"
@@ -26,27 +26,27 @@
         <!--设备信息-->
         <section class="detail__part">
           <div class="detail__search">
-            <p class="search__title">设备信息</p>
+            <p class="search__title">{{$t('authorize_detail_deviceInfo_title')}}</p>
             <el-form
               class="page__content--filter"
               label-position="top"
               :inline="true"
             >
-              <el-form-item label="设备名称">
+              <el-form-item :label="$t('authorize_detail_deviceInfo_search_deviceName_label')">
                 <el-input
                   v-model="deviceTable.searchParams.deviceName"
                   maxlength="32"
                   clearable
                 ></el-input>
               </el-form-item>
-              <el-form-item label="设备序列号">
+              <el-form-item :label="$t('authorize_detail_deviceInfo_search_deviceKey_label')">
                 <el-input
                   v-model="deviceTable.searchParams.deviceKey"
                   maxlength="32"
                   clearable
                 ></el-input>
               </el-form-item>
-              <el-form-item label="设备组">
+              <el-form-item :label="$t('authorize_detail_deviceInfo_search_deviceGroupId_label')">
                 <el-select
                   v-model="deviceTable.searchParams.deviceGroupId"
                   filterable
@@ -63,7 +63,7 @@
               </el-form-item>
               <el-form-item class="btn__search">
                 <el-button icon="iconfont icon-search" @click="getDeviceList(1)"
-                  >查询</el-button
+                  >{{$t('common_search')}}</el-button
                 >
               </el-form-item>
             </el-form>
@@ -74,41 +74,41 @@
               @tab-click="handleDeviceTabChange"
             >
               <el-tab-pane
-                :label="`授权完成(${info.finishDeviceNum})`"
+                :label="`${$t('authorize_detail_deviceInfo_tabs_finish')}(${info.finishDeviceNum})`"
                 name="2"
               ></el-tab-pane>
               <el-tab-pane
-                :label="`授权未完成(${info.unFinishDeviceNum})`"
+                :label="`${$t('authorize_detail_deviceInfo_tabs_unFinish')}(${info.unFinishDeviceNum})`"
                 name="3"
               ></el-tab-pane>
             </el-tabs>
-            <el-table :data="deviceTable.listData" height="250px" empty-text="暂无信息">
+            <el-table :data="deviceTable.listData" height="250px" :empty-text="$t('authorize_detail_deviceInfo_table_header_noData')">
               <el-table-column
                 prop="deviceName"
-                label="设备名称"
+                :label="$t('authorize_detail_deviceInfo_table_header_deviceName_label')"
                 min-width="80"
               ></el-table-column>
               <el-table-column
                 prop="deviceKey"
-                label="设备序列号"
+                :label="$t('authorize_detail_deviceInfo_table_header_deviceKey_label')"
                 min-width="100"
               ></el-table-column>
               <el-table-column
                 prop="deviceGroup"
-                label="设备组"
+                :label="$t('authorize_detail_deviceInfo_table_header_deviceGroup_label')"
                 min-width="80"
               ></el-table-column>
               <el-table-column
                 prop="personNum"
-                label="人数"
+                :label="$t('authorize_detail_deviceInfo_table_header_personNum_label')"
                 min-width="80"
               ></el-table-column>
               <el-table-column
                 prop="photoNum"
-                label="照片数"
+                :label="$t('authorize_detail_deviceInfo_table_header_photoNum_label')"
                 min-width="80"
               ></el-table-column>
-              <el-table-column prop="deviceStatus" label="状态" min-width="80">
+              <el-table-column prop="deviceStatus" :label="$t('authorize_detail_deviceInfo_table_header_deviceStatus_label')" min-width="80">
                 <template slot-scope="scope">
                   <span
                     class="point"
@@ -121,7 +121,7 @@
                 v-if="deviceTable.activeTab === '3'"
                 prop="failedReason"
                 :show-overflow-tooltip="true"
-                label="未完成原因"
+                :label="$t('authorize_detail_deviceInfo_table_header_failedReason_label')"
                 min-width="100"
               >
                 <template slot-scope="scope">
@@ -129,12 +129,12 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="操作"
+                :label="$t('authorize_detail_deviceInfo_table_header_operation_label')"
                 min-width="100"
                 class-name="table__icon--btn"
               >
                 <template slot-scope="scope">
-                  <el-tooltip content="查看" placement="bottom">
+                  <el-tooltip :content="$t('authorize_detail_deviceInfo_table_header_operation_value_look')" placement="bottom">
                     <i
                       class="iconfont icon-View"
                       @click="handleDetail(scope.row)"
@@ -152,7 +152,7 @@
         <!--授权异常人员信息-->
         <section class="detail__part">
           <div class="detail__search">
-            <p class="search__title">授权异常人员信息</p>
+            <p class="search__title">{{$t('authorize_detail_abnormalPeople_title')}}</p>
             <expand-form
               :expand.sync="filterOption.showMore"
               :expandBtn.sync="filterOption.showExpandBtn"
@@ -165,20 +165,20 @@
                 :inline="true"
                 :class="{ 'filter--reduce': !filterOption.showMore }"
               >
-                <el-form-item label="人员">
+                <el-form-item :label="$t('authorize_detail_abnormalPeople_search_emp_label')">
                   <emp-tree-select
                     v-leftClear
                     v-model="employeeTable.searchParams.empId"
                   ></emp-tree-select>
                 </el-form-item>
-                <el-form-item label="员工编号">
+                <el-form-item :label="$t('authorize_detail_abnormalPeople_search_empNo_label')">
                   <el-input
                     v-model="employeeTable.searchParams.empNo"
                     maxlength="32"
                     clearable
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="设备组">
+                <el-form-item :label="$t('authorize_detail_abnormalPeople_search_deviceGroupId_label')">
                   <el-select
                     v-model="employeeTable.searchParams.deviceGroupId"
                     filterable
@@ -193,21 +193,21 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="设备名称">
+                <el-form-item :label="$t('authorize_detail_abnormalPeople_search_deviceName_label')">
                   <el-input
                     v-model="employeeTable.searchParams.deviceName"
                     maxlength="32"
                     clearable
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="卡号">
+                <el-form-item :label="$t('authorize_detail_abnormalPeople_search_cardNum_label')">
                   <el-input
                     v-model="employeeTable.searchParams.cardNum"
                     maxlength="32"
                     clearable
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="设备序列号">
+                <el-form-item :label="$t('authorize_detail_abnormalPeople_search_deviceKey_label')">
                   <el-input
                     v-model="employeeTable.searchParams.deviceKey"
                     maxlength="32"
@@ -223,7 +223,7 @@
                     <el-button
                       icon="iconfont icon-search"
                       @click="getEmpList(1)"
-                      >查询</el-button
+                      >{{$t('common_search')}}</el-button
                     >
                   </el-form-item>
                   <el-form-item class="btn__expand">
@@ -231,7 +231,7 @@
                       @click="filterOption.showMore = !filterOption.showMore"
                       v-if="filterOption.showExpandBtn"
                     >
-                      {{ filterOption.showMore ? "收起" : "展开" }}
+                      {{ filterOption.showMore ? $t('authorize_detail_abnormalPeople_search_close_text') : $t('authorize_detail_abnormalPeople_search_open_text') }}
                       <i
                         class="iconfont"
                         :class="{
@@ -251,46 +251,46 @@
               @tab-click="handleEmpTabChange"
             >
               <el-tab-pane
-                :label="`授权未完成(${info.expPersonNum})`"
+                :label="`${$t('authorize_detail_abnormalPeople_tabs_expPerson')}(${info.expPersonNum})`"
                 name="1"
               ></el-tab-pane>
               <el-tab-pane
-                :label="`照片失败(${info.expFaceNum})`"
+                :label="`${$t('authorize_detail_abnormalPeople_tabs_expFace')}(${info.expFaceNum})`"
                 name="3"
               ></el-tab-pane>
             </el-tabs>
-            <el-table :data="employeeTable.listData" height="250px" empty-text="暂无信息">
-              <el-table-column prop="faceId" label="照片" min-width="80">
+            <el-table :data="employeeTable.listData" height="250px" :empty-text="$t('authorize_detail_abnormalPeople_table_header_noData')">
+              <el-table-column prop="faceId" :label="$t('authorize_detail_abnormalPeople_table_face_label')" min-width="80">
                 <template slot-scope="scope">
                   <img
                     v-if="scope.row.faceId"
                     :key="item"
                     class="photo"
                     :src="`${baseUrl}/file/face/${scope.row.faceId}`"
-                    alt="照片"
+                    :alt="$t('authorize_detail_abnormalPeople_table_face_label')"
                   />
                   <span v-else>-</span>
                 </template>
               </el-table-column>
               <el-table-column
                 prop="empName"
-                label="姓名"
+                :label="$t('authorize_detail_abnormalPeople_table_empName_label')"
                 min-width="80"
               ></el-table-column>
               <el-table-column
                 prop="empNo"
-                label="员工编号"
+                :label="$t('authorize_detail_abnormalPeople_table_empNo_label')"
                 min-width="80"
                 :show-overflow-tooltip="true"
               ></el-table-column>
               <el-table-column
                 prop="cardNo"
-                label="卡号"
+                :label="$t('authorize_detail_abnormalPeople_table_cardNo_label')"
                 min-width="80"
               ></el-table-column>
               <el-table-column
                 prop="failedReason"
-                label="失败原因"
+                :label="$t('authorize_detail_abnormalPeople_table_failedReason_label')"
                 min-width="80"
               >
                 <template slot-scope="scope">
@@ -385,9 +385,9 @@ export default {
     filterStatus (status) {
       switch (status) {
         case 0:
-          return '离线'
+          return this.$t('authorize_detail_deviceInfo_table_header_deviceStatus_value_offline')
         case 1:
-          return '在线'
+          return this.$t('authorize_detail_deviceInfo_table_header_deviceStatus_value_inline')
       }
     }
   },

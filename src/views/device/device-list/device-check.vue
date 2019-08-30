@@ -2,21 +2,21 @@
   <div class="page">
     <div class="page__header">
       <span class="page__header--title" @click="$router.back()"
-        ><i class="iconfont icon-retreat"></i>检查设备</span
+        ><i class="iconfont icon-retreat"></i>{{$t('device_check.title')}}</span
       >
     </div>
     <div class="page__content">
       <div v-if="[1, 2].includes(checkStatus)" class="header__searching">
         <i class="iconfont icon-load"></i>
-        <p class="text">正在检查中···</p>
+        <p class="text">{{$t('device_check.search.checking')}}···</p>
         <div class="tip" v-if="checkStatus === 1">
-          <p>检查设备是否为最新版本</p>
-          <p>通过版本升级，提供更优质服务</p>
+          <p>{{$t('device_check.search.tip1')}}</p>
+          <p>{{$t('device_check.search.tip2')}}</p>
         </div>
       </div>
       <div v-if="checkStatus === 3 && !isEmpty" class="header__result">
-        <p>搜索到设备（{{ total }}）</p>
-        <el-button type="text" @click="handleReCheck">重新检查</el-button>
+        <p>{{$t('device_check.search.tip3')}}（{{ total }}）</p>
+        <el-button type="text" @click="handleReCheck">{{$t('device_check.search.reCheck')}}</el-button>
       </div>
       <!--检查有结果-->
       <div
@@ -25,30 +25,30 @@
         style="height: 100%;width: 100%"
       >
         <div class="f-flex-spaceBetween-alignCenter w100 mb5">
-          <p>通过版本升级，可以提供更优质服务</p>
-          <el-button size="small" type="primary" @click="handleUpgrade(1)">批量升级</el-button>
+          <p>{{$t('device_check.search.tip2')}}</p>
+          <el-button size="small" type="primary" @click="handleUpgrade(1)">{{$t('device_check.search.batchUpgrade')}}</el-button>
         </div>
         <el-tabs v-model="activeTab">
           <el-tab-pane
-            :label="`版本一致(${normalDeviceList.length})`"
+            :label="`${$t('device_check.table.tabs.tab1')}(${normalDeviceList.length})`"
             name="1"
           ></el-tab-pane>
           <el-tab-pane
-            :label="`设备版本低(${lowVersionDeviceList.length})`"
+            :label="`${$t('device_check.table.tabs.tab2')}(${lowVersionDeviceList.length})`"
             name="2"
           ></el-tab-pane>
           <el-tab-pane
-            :label="`客户端版本低(${highVersionDeviceList.length})`"
+            :label="`${$t('device_check.table.tabs.tab3')}(${highVersionDeviceList.length})`"
             name="3"
           ></el-tab-pane>
           <el-tab-pane
-            :label="`离线设备(${offlineDeviceList.length})`"
+            :label="`${$t('device_check.table.tabs.tab4')}(${offlineDeviceList.length})`"
             name="4"
           ></el-tab-pane>
         </el-tabs>
         <el-table :data="tableList" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="deviceKey" label="设备序列号" min-width="120">
+          <el-table-column prop="deviceKey" :label="$t('device_check.table.labels.deviceKey')" min-width="120">
             <template slot-scope="scope">
               <el-tooltip
                 v-if="[0, 2].includes(scope.row.status)"
@@ -68,17 +68,17 @@
           </el-table-column>
           <el-table-column
             prop="version"
-            label="软件版本"
+            :label="$t('device_check.table.labels.version')"
             min-width="80"
           ></el-table-column>
           <el-table-column
             prop="ip"
-            label="IP地址"
+            :label="$t('device_check.table.labels.ipAddress')"
             min-width="80"
           ></el-table-column>
           <el-table-column
             prop="deviceNameFromDevice"
-            label="设备端名称"
+            :label="$t('device_check.table.labels.devicePlateName')"
             min-width="80"
           >
             <template slot-scope="scope">
@@ -87,24 +87,24 @@
           </el-table-column>
           <el-table-column
             prop="deviceName"
-            label="客户端名称"
+            :label="$t('device_check.table.labels.ClientPlateName')"
             min-width="80"
           >
             <template slot-scope="scope">
               <span :class="{'f-red': scope.row.deviceNameFromDevice!==scope.row.deviceName}">{{scope.row.deviceName}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="deviceGroup" label="操作" min-width="80">
+          <el-table-column prop="deviceGroup" :label="$t('device_check.table.labels.handle')" min-width="80">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.deviceNameFromDevice!==scope.row.deviceName && activeTab !== '4'" type="text" @click="handleSync(scope.row)">同步</el-button>
-              <el-button v-if="['2', '3'].includes(activeTab)" :class="{'f-diabeld': activeTab==='3'}" type="text" @click="handleUpgrade(0, scope.row)">升级</el-button>
-              <el-button v-if="scope.row.status === 2" type="text" @click="handleEnable(scope.row)">启用</el-button>
-              <el-button v-if="activeTab === '4'" type="text" @click="handleDelete(scope.row)">强制删除</el-button>
+              <el-button v-if="scope.row.deviceNameFromDevice!==scope.row.deviceName && activeTab !== '4'" type="text" @click="handleSync(scope.row)">{{$t('device_check.table.sync')}}</el-button>
+              <el-button v-if="['2', '3'].includes(activeTab)" :class="{'f-diabeld': activeTab==='3'}" type="text" @click="handleUpgrade(0, scope.row)">{{$t('device_check.table.upgrade')}}</el-button>
+              <el-button v-if="scope.row.status === 2" type="text" @click="handleEnable(scope.row)">{{$t('device_check.table.enable')}}</el-button>
+              <el-button v-if="activeTab === '4'" type="text" @click="handleDelete(scope.row)">{{$t('device_check.table.forceDelete')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
         <p v-show="activeTab === '3' && highVersionDeviceList.length" class="mt10 ac w100">
-          请到客户端设置页面升级客户端版本
+          {{$t('device_check.table.tip')}}
         </p>
       </div>
       <!--检查无结果-->
@@ -112,10 +112,10 @@
         <img
           class="img-empty"
           src="@/assets/images/device/empty-device.jpg"
-          alt="空数据"
+          alt=""
         />
-        <p>没有设备或客户端需要升级</p>
-        <el-button type="text" @click="handleEmptyToCheck">重新检查</el-button>
+        <p>{{$t('device_check.search.noDataTip')}}</p>
+        <el-button type="text" @click="handleEmptyToCheck">{{$t('device_check.search.reCheck')}}</el-button>
       </div>
     </div>
     <el-dialog
@@ -124,16 +124,16 @@
       width="400px"
     >
       <div class="pl30 pr30">
-        <p class="delete__dialog--title">同步</p>
+        <p class="delete__dialog--title">{{$t('device_check.dialog.sync')}}</p>
         <p class="item__radio">
-          <el-radio v-model="syncDialog.val" :label="syncDialog.deviceNameFromDevice">同步成设备端名称</el-radio>
+          <el-radio v-model="syncDialog.val" :label="syncDialog.deviceNameFromDevice">{{$t('device_check.dialog.syncDevice')}}</el-radio>
         </p>
         <p class="item__radio">
-          <el-radio v-model="syncDialog.val" :label="syncDialog.deviceName">同步成客户端名称</el-radio>
+          <el-radio v-model="syncDialog.val" :label="syncDialog.deviceName">{{$t('device_check.dialog.syncClient')}}</el-radio>
         </p>
         <div class="ac pt30">
-          <el-button @click="syncDialog.visible = false">取消</el-button>
-          <el-button type="primary" @click="handleSyncConfirm">同步</el-button>
+          <el-button @click="syncDialog.visible = false">{{$t('common_cancel')}}</el-button>
+          <el-button type="primary" @click="handleSyncConfirm">{{$t('device_check.dialog.sync')}}</el-button>
         </div>
       </div>
     </el-dialog>
@@ -204,9 +204,9 @@ export default {
     filterStatusText (status) {
       switch (status) {
         case 0:
-          return '设备离线'
+          return this.$t('device_check.deviceOffLine')
         case 2: // 禁用
-          return '设备禁用'
+          return this.$t('device_check.deviceDisabled')
       }
     }
   },
@@ -254,7 +254,7 @@ export default {
       }
       deviceUpdate(deviceKey, params).then(res => {
         if (res.success) {
-          this.$message.success('同步成功')
+          this.$message.success(this.$t('device_check.message.syncSuccess'))
           this.syncDialog.visible = false
         }
       })
@@ -263,7 +263,7 @@ export default {
     handleUpgrade (type, data) {
       let deviceList
       if (type === 1) {
-        if (!this.checkList.length) return this.$message.error('请选择要升级的设备')
+        if (!this.checkList.length) return this.$message.error(this.$t('device_check.message.requiredDevice'))
         deviceList = this.checkList
       } else {
         deviceList = [data]
@@ -281,7 +281,7 @@ export default {
       }
       deviceEnable(params).then(res => {
         if (res.success && res.data[0].success) {
-          this.$message.success('设备已启用')
+          this.$message.success(this.$t('device_check.message.hasEnable'))
           this.handleCheck()
         }
       })
@@ -290,17 +290,17 @@ export default {
     handleDelete (item) {
       const { deviceKey } = item
       this.$confirm(
-        '强制删除设备，将删除系统保存的所有设备信息，但保留设备内的所有数据',
-        '强制删除',
+        this.$t('device_check.message.forceDeleteTip'),
+        this.$t('device_check.message.forceDelete'),
         {
           customClass: 'delete__box--confirm',
-          confirmButtonText: '删除',
+          confirmButtonText: this.$t('device_check.message.delete'),
           center: true
         }
       ).then(() => {
         deviceDeleteForce(deviceKey).then(res => {
           if (res.success) {
-            this.$message.success('设备已删除')
+            this.$message.success(this.$t('device_check.message.hasDelete'))
             this.handleCheck()
           }
         })

@@ -1,14 +1,14 @@
 <template>
   <div class="page">
     <div class="page__header">
-      <span class="page__header--title">员工授权</span>
+      <span class="page__header--title">{{$t('authorize_list_title_text')}}</span>
       <div class="page__header--btn">
-        <el-button size="small" @click="handleCancelBatch">批量销权</el-button>
+        <el-button size="small" @click="handleCancelBatch">{{$t('authorize_list_title_buttons_revoke')}}</el-button>
         <el-button
           type="primary"
           size="small"
           @click="$router.push({ name: 'authCreate' })"
-          >新增授权</el-button
+          >{{$t('authorize_list_title_buttons_create')}}</el-button
         >
       </div>
     </div>
@@ -28,19 +28,19 @@
           :model="searchParams"
           @keyup.enter.native="handleQuery('firstPage')"
         >
-          <el-form-item label="部门">
+          <el-form-item :label="$t('authorize_list_search_department_label')">
             <dep-tree-select
               v-leftClear
               v-model="searchParams.departmentId"
             ></dep-tree-select>
           </el-form-item>
-          <el-form-item label="人员">
+          <el-form-item :label="$t('authorize_list_search_emp_label')">
             <emp-tree-select
               v-leftClear
               v-model="searchParams.empId"
             ></emp-tree-select>
           </el-form-item>
-          <el-form-item label="设备组">
+          <el-form-item :label="$t('authorize_list_search_deviceGroup_label')">
             <el-select v-model="searchParams.deviceGroup" filterable clearable v-leftClear>
               <el-option
                 v-for="item in deviceGroupList"
@@ -50,28 +50,28 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="设备名称">
+          <el-form-item :label="$t('authorize_list_search_deviceName_label')">
             <el-input
               v-model.trim="searchParams.deviceName"
               maxlength="32"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="员工编号">
+          <el-form-item :label="$t('authorize_list_search_empNo_label')">
             <el-input
               v-model.trim="searchParams.empNo"
               maxlength="32"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="卡号">
+          <el-form-item :label="$t('authorize_list_search_cardNum_label')">
             <el-input
               v-model.trim="searchParams.cardNum"
               maxlength="32"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="设备序列号">
+          <el-form-item :label="$t('authorize_list_search_deviceKey_label')">
             <el-input
               v-model.trim="searchParams.deviceKey"
               maxlength="32"
@@ -85,12 +85,12 @@
           >
             <el-form-item class="btn__search">
               <el-button icon="iconfont icon-search" @click="handleQuery('firstPage')"
-                >查询</el-button
+                >{{$t('authorize_list_search_button_text')}}</el-button
               >
             </el-form-item>
             <el-form-item class="btn__expand">
               <span @click="filterOption.showMore = !filterOption.showMore" v-if="filterOption.showExpandBtn">
-                {{ filterOption.showMore ? "收起" : "展开" }}
+                {{ filterOption.showMore ? $t('authorize_list_search_close_text') : $t('authorize_list_search_open_text') }}
                 <i
                   class="iconfont"
                   :class="{
@@ -110,14 +110,14 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="46"></el-table-column>
-        <el-table-column prop="faces" label="照片" min-width="120">
+        <el-table-column prop="faces" :label="$t('authorize_list_table_header_faces_label')" min-width="120">
           <template slot-scope="scope">
             <div
               v-for="(item, index) in scope.row.faces"
               :key="index"
               class="m-column-photo"
             >
-              <img class="avatar" :src="`${baseUrl}/file/face/${item.faceId}`" alt="头像" />
+              <img class="avatar" :src="`${baseUrl}/file/face/${item.faceId}`" :alt="$t('authorize_list_facesImg_alt')" />
               <el-tooltip
                 :content="item.failedReason"
                 placement="right"
@@ -128,46 +128,46 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="姓名">
+        <el-table-column :label="$t('authorize_list_table_header_name_label')">
           <template slot-scope="scope">
             <span>{{ scope.row.employee.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="empNo" label="员工编号" :show-overflow-tooltip="true">
+        <el-table-column prop="empNo" :label="$t('authorize_list_table_header_empNo_label')" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <span>{{ scope.row.employee.empNo }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="cardNo" label="卡号">
+        <el-table-column prop="cardNo" :label="$t('authorize_list_table_header_cardNo_label')">
           <template slot-scope="scope">
             <span>{{scope.row.employee.cardNo}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="授权设备">
+        <el-table-column :label="$t('authorize_list_table_header_deviceName_label')">
           <template slot-scope="scope">
             <span>{{ scope.row.device.deviceName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="设备序列号" min-width="120">
+        <el-table-column :label="$t('authorize_list_table_header_deviceKey_label')" min-width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.device.deviceKey }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="设备组">
+        <el-table-column :label="$t('authorize_list_table_header_deviceGroup_label')">
           <template slot-scope="scope">
             <span>{{ scope.row.device.deviceGroup }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" class-name="table__icon--btn">
+        <el-table-column :label="$t('authorize_list_table_header_operation_label')" class-name="table__icon--btn">
           <template slot-scope="scope">
-            <el-tooltip content="查看" placement="bottom">
+            <el-tooltip :content="$t('authorize_list_table_operation_button_look')" placement="bottom">
               <i
                 class="iconfont icon-View"
                 @click="handleDetail(scope.row)"
               ></i>
             </el-tooltip>
             <el-button type="text" @click="handleCancel(scope.row)"
-              >销权</el-button
+              >{{$t('authorize_list_table_operation_button_revoke')}}</el-button
             >
           </template>
         </el-table-column>
@@ -178,14 +178,14 @@
             class="btn--blue"
             size="small"
             @click="$router.push({ name: 'authHistory' })"
-            >历史授权记录</el-button
+            >{{$t('authorize_list_pagination_button_revoke_history')}}</el-button
           >
         </div>
       </m-pagination>
     </div>
     <el-dialog
       v-if="detailDialog.visible"
-      title="授权详情"
+      :title="$t('authorize_list_dialogDetail_title')"
       :visible.sync="detailDialog.visible"
       width="400px"
       center
@@ -193,22 +193,22 @@
       <div class="dialog-detail-box">
         <section class="border-bottom pb20">
           <p>
-            <span class="label">姓名：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_name_label')}}</span>
             <span class="content">{{ detailDialog.data.employee.name }}</span>
           </p>
           <p>
-            <span class="label">人员编号：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_empNo_label')}}</span>
             <span class="content">{{ detailDialog.data.empNo }}</span>
           </p>
           <div class="mt10">
-            <span class="label label-photo">照片：</span>
+            <span class="label label-photo">{{$t('authorize_list_dialogDetail_info_faces_label')}}</span>
             <ul class="photo-list">
               <li
                 v-for="(item, index) in detailDialog.data.faces"
                 :key="index"
                 class="m-photo80"
               >
-                <img class="avatar" :src="`${baseUrl}/file/face/${item.faceId}`" alt="头像" />
+                <img class="avatar" :src="`${baseUrl}/file/face/${item.faceId}`" :alt="$t('authorize_list_facesImg_alt')" />
                 <el-tooltip
                   :content="item.failedReason"
                   placement="right"
@@ -222,40 +222,40 @@
         </section>
         <section class="pt20">
           <div>
-            <span class="label">设备名称：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_deviceName_label')}}</span>
             <span class="content">{{ detailDialog.data.device.deviceName }}</span>
           </div>
           <div>
-            <span class="label">设备序列号：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_deviceKey_label')}}</span>
             <span class="content">{{ detailDialog.data.device.deviceKey }}</span>
           </div>
           <div>
-            <span class="label">设备组：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_deviceGroup_label')}}</span>
             <span class="content">{{ detailDialog.data.device.deviceGroup }}</span>
           </div>
           <div>
-            <span class="label">版本兼容性：</span>
-            <span class="content">{{detailDialog.data.device.versionCompatibility?'兼容':'不兼容'}}</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_versionCompatibility_label')}}</span>
+            <span class="content">{{detailDialog.data.device.versionCompatibility?$t('authorize_list_dialogDetail_info_versionCompatibility_value_true'):$t('authorize_list_dialogDetail_info_versionCompatibility_value_false')}}</span>
           </div>
           <div>
-            <span class="label">有无注册照：</span>
-            <span class="content">{{detailDialog.data.faces?'有':'无'}}</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_haveFaces_label')}}</span>
+            <span class="content">{{detailDialog.data.faces?$t('authorize_list_dialogDetail_info_haveFaces_value_true'):$t('authorize_list_dialogDetail_info_haveFaces_value_false')}}</span>
           </div>
           <div>
-            <span class="label">识别模式：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_recognitionModel_label')}}</span>
             <span class="content">{{detailDialog.data.device.recognitionModel||'-'}}</span>
           </div>
           <div>
-            <span class="label">网络状态：</span>
-            <span class="content">{{detailDialog.data.device.status===1?'在线':'离线'}}</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_status_label')}}</span>
+            <span class="content">{{detailDialog.data.device.status===1?$t('authorize_list_dialogDetail_info_status_label'):$t('authorize_list_dialogDetail_info_status_value_offline')}}</span>
           </div>
           <div>
-            <span class="label">权限有效期：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_permissionTime_label')}}</span>
             <span class="content" v-if="detailDialog.data.permissionTime">{{ detailDialog.data.permissionTime.permissionTimeEntries.startTime }} ~{{ detailDialog.data.permissionTime.permissionTimeEntries.endTime }}</span>
             <span v-else>-</span>
           </div>
           <div class="f-flex-spaceStart-alignStart">
-            <span class="label">准入时间：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_permissionTimeEntries_label')}}</span>
             <div v-if="detailDialog.data.permissionTime.permissionTimeEntries.length" class="content">
               <p v-for="(item, index) in detailDialog.data.permissionTime.permissionTimeEntries" :key="index">
                 {{item.startTime}} ~ {{item.endTime}}
@@ -264,7 +264,7 @@
             <span v-else>-</span>
           </div>
           <div>
-            <span class="label">授权时间：</span>
+            <span class="label">{{$t('authorize_list_dialogDetail_info_createTime_label')}}</span>
             <span class="content">{{detailDialog.data.createTime}}</span>
           </div>
         </section>
@@ -338,14 +338,14 @@ export default {
     // 批量销权
     handleCancelBatch () {
       if (!this.checkList.length) {
-        this.$confirm('请先选择员工', '提示', {
+        this.$confirm(this.$t('authorize_list_dialogRevoke_confirm_content'), this.$t('authorize_list_dialogRevoke_confirm_title'), {
           showCancelButton: false,
           center: true
         }).then(() => {}, () => {})
       } else {
-        this.$confirm('销权后人员将不会被该设备识别', '销权', {
+        this.$confirm(this.$t('authorize_list_dialogRevoke_content'), this.$t('authorize_list_dialogRevoke_title'), {
           customClass: 'delete__box--confirm',
-          confirmButtonText: '销权',
+          confirmButtonText: this.$t('authorize_list_dialogRevoke_submit_text'),
           center: true
         }).then(
           () => {
@@ -354,7 +354,7 @@ export default {
             }
             cancelAuthBatch(params).then(res => {
               if (res.success) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('authorize_list_dialogRevoke_success'))
                 this.getList()
               }
             })
@@ -382,15 +382,15 @@ export default {
     // 销权
     handleCancel (item) {
       const { authId } = item
-      this.$confirm('销权后人员将不会被该设备识别', '销权', {
+      this.$confirm(this.$t('authorize_list_dialogRevoke_content'), this.$t('authorize_list_dialogRevoke_title'), {
         customClass: 'delete__box--confirm',
-        confirmButtonText: '销权',
+        confirmButtonText: this.$t('authorize_list_dialogRevoke_submit_text'),
         center: true
       }).then(
         () => {
           cancelAuth(authId).then(res => {
             if (res.success) {
-              this.$message.success('操作成功')
+              this.$message.success(this.$t('authorize_list_dialogRevoke_success'))
               this.getList()
             }
           })

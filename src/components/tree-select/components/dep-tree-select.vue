@@ -75,7 +75,9 @@ export default {
       checkList: [],
       props: {
         label: 'depName',
-        disabled: 'disabled',
+        disabled: (data) => {
+          return data.special === 1 && this.hasSpecialDep
+        },
         children: 'departmentVOS',
         id: 'id'
       },
@@ -105,6 +107,10 @@ export default {
     depName: {
       type: String,
       default: ''
+    },
+    hasSpecialDep: {
+      type: Boolean,
+      default: false
     }
   },
   created () {
