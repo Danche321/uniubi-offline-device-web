@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@vue/eslint-config-standard": "^4.0.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.6.1",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.0",
